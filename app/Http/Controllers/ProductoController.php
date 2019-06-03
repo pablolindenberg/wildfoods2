@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Producto;
 
 class ProductoController extends Controller
@@ -15,12 +16,12 @@ class ProductoController extends Controller
         $criterio = $request->criterio;
         if ($buscar==''){
             $productos = Producto::join('categorias','productos.idcategoria','=','categorias.id')
-            ->select('productos.id','productos.idcategoria','productos.SKU','productos.nombre','categorias.nombre as nombre_categoria','productos.marca','productos.descripcion','productos.contenido_display','productos.valor_neto','productos.valor_bruto','productos.pvp_unitario','productos.total_neto','productos.total','productos.descuento','productos.estado','productos.imagen')
+            ->select('productos.id','productos.idcategoria','productos.SKU','productos.nombre','categorias.nombre as nombre_categoria','productos.marca','productos.descripcion','productos.contenido_display','productos.valor_neto','productos.valor_bruto','productos.pvp_unitario','productos.total_neto','productos.total','productos.descuento','productos.stock','productos.imagen','productos.estado')
             ->orderBy('productos.id', 'desc')->paginate(3);
         }
         else{
             $productos = Producto::join('categorias','productos.idcategoria','=','categorias.id')
-            ->select('productos.id','productos.idcategoria','productos.SKU','productos.nombre','categorias.nombre as nombre_categoria','productos.marca','productos.descripcion','productos.contenido_display','productos.valor_neto','productos.valor_bruto','productos.pvp_unitario','productos.pvp_unitario','productos.total_neto','productos.total','productos.descuento','productos.estado','productos.imagen')
+            ->select('productos.id','productos.idcategoria','productos.SKU','productos.nombre','categorias.nombre as nombre_categoria','productos.marca','productos.descripcion','productos.contenido_display','productos.valor_neto','productos.valor_bruto','productos.pvp_unitario','productos.pvp_unitario','productos.total_neto','productos.total','productos.descuento','productos.stock','productos.imagen','productos.estado')
             ->where('productos.'.$criterio, 'like', '%'. $buscar . '%')
             ->orderBy('productos.id', 'desc')->paginate(3);
         }
@@ -38,7 +39,8 @@ class ProductoController extends Controller
             'productos' => $productos
         ];
     }   
-  
+ 
+    //todos los metodos sin stock
     public function store(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
@@ -56,8 +58,17 @@ class ProductoController extends Controller
         $producto->total = $request->total;
         $producto->descuento = $request->descuento;
         $producto->estado = $request->estado;
-        $producto->imagen = $request->imagen;      
+        ////$producto->imagen = $request->imagen;  
+        //$imagen=$request->imagen;    
+       // Storage::putFile('public',$imagen);
         $producto->save();
+    }
+    public function cargarImagen(Request $request){
+
+      // $imagen=$request->imagen;
+    //   return Storage::putFile('public',$imagen);
+    $request->file('imagen'); 
+    $request->imagen->store('public');
     }
 
     public function update(Request $request)

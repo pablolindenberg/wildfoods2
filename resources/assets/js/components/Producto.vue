@@ -31,6 +31,7 @@
                         <table class="table table-bordered table-striped table-sm">
                             <thead>
                                 <tr>
+                                    <th></th>
                                     <th>Opciones</th>
                                     <th>SKU</th>
                                     <th>Nombre</th>
@@ -42,6 +43,8 @@
                             </thead>
                             <tbody>
                                 <tr v-for="producto in arrayProducto" :key="producto.id">
+                                    <td><img src="/storage/imagenes/logo1.jpg">
+                                    </td>
                                     <td>
                                         <button type="button" @click="abrirModal('producto','actualizar',producto)" class="btn btn-warning btn-sm">
                                           <i class="icon-pencil"></i>
@@ -102,7 +105,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                            <form action="/producto/cargarImagen" method="post" enctype="multipart/form-data" class="form-horizontal">
                                 <div class="form-group row">
                                     <label class="col-md-3 form-control-label" for="text-input">Categoría</label>
                                     <div class="col-md-9">
@@ -145,6 +148,13 @@
                                         <input type="number" v-model="descuento" class="form-control" placeholder="Descuento">
                                     </div>
                                 </div>
+                                    <div class="form-group row">
+                                    <label class="col-md-3 form-control-label" for="text-input">Imagen</label>
+                                    <div class="col-md-9">
+                                        <input type="file"  class="form-control" name='imagen' >                               
+                                    </div>
+                                </div>  
+                                
                             
                                 <!--
                                <div class="form-group row">
@@ -190,7 +200,15 @@
                 nombre_categoria:'',
                 SKU:'',
                 nombre : '',
-                descripcion : '',
+                descripcion : '', 
+                marca:'',
+                contenido_display:0,
+                valor_neto:0,
+                valor_bruto:0,
+                pvp_unitario:0,
+                total_neto:0,
+                imagen:new Image,
+                stock:0,
                 total:0,
                 estado:0,
                 descuento:0,
@@ -276,16 +294,20 @@
                 //Envia la petición para visualizar la data de esa página
                 me.listarProducto(page,buscar,criterio);
             },
+           
             registrarProducto(){
                 if (this.validarProducto()){
                     return;
                 }
                 
                 let me = this;
+               // axios.post('/producto/cargarImagen',{'imagen':this.imagen});
 
                 axios.post('/producto/registrar',{
+
+                    'imagen':this.imagen,
                     'idcategoria':this.idcategoria,
-                  //  'nombre_categoria':this.nombre_categoria,
+                  //'nombre_categoria':this.nombre_categoria,
                     'SKU':this.SKU,
                     'nombre': this.nombre,
                     'descripcion': this.descripcion,
@@ -298,33 +320,44 @@
                 }).catch(function (error) {
                     console.log(error);
                 });
+                
             },
-            actualizarCategoria(){
-               if (this.validarCategoria()){
+            
+
+            actualizarProducto(){
+               if (this.validarProducto()){
                     return;
                 }
                 
                 let me = this;
 
-                axios.put('/categoria/actualizar',{
+                axios.put('/producto/actualizar',{
+                    
+                    'id': this.producto_id,
+                    'idcategoria':this.idcategoria,
+                  //'nombre_categoria':this.nombre_categoria,
+                    'SKU':this.SKU,
                     'nombre': this.nombre,
                     'descripcion': this.descripcion,
-                    'id': this.categoria_id
+                    'descuento':this.descuento,
+                    'total':this.total,
+                    'estado':this.estado
+                    
                 }).then(function (response) {
                     me.cerrarModal();
-                    me.listarCategoria(1,'','nombre');
+                    me.listarProducto(1,'','nombre');
                 }).catch(function (error) {
                     console.log(error);
                 }); 
             },
-            desactivarCategoria(id){
+             desactivarProducto(id){
                swal({
-                title: 'Esta seguro de desactivar esta categoría?',
+                title: 'Esta seguro de desactivar este producto?',
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Aceptar!',
+                confirmButtonText: 'Aceptar',
                 cancelButtonText: 'Cancelar',
                 confirmButtonClass: 'btn btn-success',
                 cancelButtonClass: 'btn btn-danger',
@@ -334,10 +367,10 @@
                 if (result.value) {
                     let me = this;
 
-                    axios.put('/categoria/desactivar',{
+                    axios.put('/producto/desactivar',{
                         'id': id
                     }).then(function (response) {
-                        me.listarCategoria(1,'','nombre');
+                        me.listarProducto(1,'','nombre');
                         swal(
                         'Desactivado!',
                         'El registro ha sido desactivado con éxito.',
@@ -356,14 +389,14 @@
                 }
                 }) 
             },
-            activarCategoria(id){
+            activarProducto(id){
                swal({
-                title: 'Esta seguro de activar esta categoría?',
+                title: 'Esta seguro de activar este producto?',
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Aceptar!',
+                confirmButtonText: 'Aceptar',
                 cancelButtonText: 'Cancelar',
                 confirmButtonClass: 'btn btn-success',
                 cancelButtonClass: 'btn btn-danger',
@@ -373,10 +406,10 @@
                 if (result.value) {
                     let me = this;
 
-                    axios.put('/categoria/activar',{
+                    axios.put('/producto/activar',{
                         'id': id
                     }).then(function (response) {
-                        me.listarCategoria(1,'','nombre');
+                        me.listarProducto(1,'','nombre');
                         swal(
                         'Activado!',
                         'El registro ha sido activado con éxito.',
@@ -436,6 +469,7 @@
                                 this.total=0;
                                 this.estado=1;
                                 this.tipoAccion = 1;
+                          
                                 break;
                             }
                             case 'actualizar':
@@ -450,8 +484,9 @@
                                 this.SKU=data['SKU'];
                                 this.nombre = data['nombre'];
                                 this.descripcion =data['descripcion'];
-                                this.descuento=data['descuento'];
+                                this.descuento=data['descuento'];                
                                 this.total=data['total'];
+                                this.estado=data['estado'];
                                 break;
                             }
                         }

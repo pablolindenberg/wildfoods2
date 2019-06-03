@@ -20,8 +20,10 @@ class Producto extends Model
     'total_neto',
     'total',
     'descuento',
-    'estado',
-	'imagen'
+    'imagen',
+    'stock',
+    'estado'
+	
     ];
     public function categoria(){
         return $this->belongsTo('App\Categoria');
