@@ -49,6 +49,9 @@
                                         <button type="button" @click="abrirModal('producto','actualizar',producto)" class="btn btn-warning btn-sm">
                                           <i class="icon-pencil"></i>
                                         </button> &nbsp;
+                                        <button type="button" @click="abrirModal('producto','ver',producto)" class="btn btn-warning btn-sm">
+                                          <i class="icon-eye-open"></i>
+                                        </button> &nbsp;
                                         <template v-if="producto.estado">
                                             <button type="button" class="btn btn-danger btn-sm" @click="desactivarProducto(producto.id)">
                                                 <i class="icon-trash"></i>
@@ -105,7 +108,9 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="/producto/cargarImagen" method="post" enctype="multipart/form-data" class="form-horizontal">
+                            
+                           <div v-if="tipoAccion<=2">
+                            <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                                 <div class="form-group row">
                                     <label class="col-md-3 form-control-label" for="text-input">Categoría</label>
                                     <div class="col-md-9">
@@ -118,7 +123,7 @@
                                 <div class="form-group row">
                                     <label class="col-md-3 form-control-label" for="text-input">SKU</label>
                                     <div class="col-md-9">
-                                        <input type="text" v-model="SKU" class="form-control" placeholder="SKU">
+                                        <input type="text" v-if="tipoAccion<=2" v-model="SKU" class="form-control" placeholder="SKU">
                                     </div>
                                 </div>
                                   <div class="form-group row">
@@ -156,7 +161,7 @@
                                 </div>  
                                 
                             
-                                <!--
+                              
                                <div class="form-group row">
                                       <label class="col-md-3 form-control-label" for="text-input">Estado</label>
                                     <div class="col-md-9">
@@ -166,7 +171,7 @@
                                     </select>
                                 </div>
                                </div>
-                               -->
+                             
                                 <div v-show="errorProducto" class="form-group row div-error">
                                     <div class="text-center text-error">
                                         <div v-for="error in errorMostrarMsjProducto" :key="error" v-text="error">
@@ -176,13 +181,22 @@
                                 </div>
 
                             </form>
-                        </div>
+
+                      
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
                             <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="registrarProducto()">Guardar</button>
                             <button type="button" v-if="tipoAccion==2" class="btn btn-primary" @click="actualizarProducto()">Actualizar</button>
+                      
+                         </div>
+                      
+                        </div>
+                        <div v-if="tipoAccion>2">
+                           <img src="/storage/imagenes/logo1.jpg">
+                        </div>
                         </div>
                     </div>
+                  
                     <!-- /.modal-content -->
                 </div>
                 <!-- /.modal-dialog -->
@@ -322,7 +336,9 @@
                 });
                 
             },
-            
+            verProducto(){
+
+            },
 
             actualizarProducto(){
                if (this.validarProducto()){
@@ -478,6 +494,23 @@
                                 this.modal=1;
                                 this.tituloModal='Actualizar Producto';
                                 this.tipoAccion=2;
+                                this.producto_id=data['id'];
+                                this.idcategoria=data['idcategoria'];
+                              //  this.nombre_categoria=data['nombre_categoria'];
+                                this.SKU=data['SKU'];
+                                this.nombre = data['nombre'];
+                                this.descripcion =data['descripcion'];
+                                this.descuento=data['descuento'];                
+                                this.total=data['total'];
+                                this.estado=data['estado'];
+                                break;
+                            }
+                             case 'ver':
+                            {
+                                //console.log(data);
+                                this.modal=1;
+                                this.tituloModal=data['nombre'];
+                                this.tipoAccion=3;
                                 this.producto_id=data['id'];
                                 this.idcategoria=data['idcategoria'];
                               //  this.nombre_categoria=data['nombre_categoria'];
