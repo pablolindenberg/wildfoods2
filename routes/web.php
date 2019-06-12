@@ -34,3 +34,4 @@ Route::put('/producto/desactivar', 'ProductoController@desactivar');
 Route::put('/producto/activar', 'ProductoController@activar');
 
 
+Route::get('/rol', 'RolController@index');

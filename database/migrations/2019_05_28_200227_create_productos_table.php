@@ -27,7 +27,7 @@ class CreateProductosTable extends Migration
             $table->integer('total_neto')->nullable(false);
             $table->integer('total')->nullable(false);
             $table->decimal('descuento',3,2)->default(0);
-            $table->longblob('imagen');
+            $table->binary('imagen');
             $table->integer('stock');
             $table->boolean('estado')->default(1);       
             $table->timestamps();
