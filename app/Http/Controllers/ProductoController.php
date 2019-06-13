@@ -88,7 +88,7 @@ class ProductoController extends Controller
         $producto->total = $request->total;
         $producto->descuento = $request->descuento;
         $producto->estado = $request->estado;
-        $producto->imagen = $request->imagen;      
+      //  $producto->imagen = $request->imagen;      
         $producto->save();
     }
 
