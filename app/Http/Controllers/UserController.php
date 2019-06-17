@@ -19,13 +19,13 @@ class UserController extends Controller
          
         if ($buscar==''){
             $users = User::join('roles','users.idrol','=','roles.id')
-            ->select('users.id','users.usuario','users.password',
+            ->select('users.id','users.usuario','users.password','users.email',
             'users.estado','roles.nombre as rol')
             ->orderBy('users.id', 'desc')->paginate(3);
         }
         else{
             $users = User::join('roles','users.idrol','=','roles.id')
-            ->select('users.usuario','users.password',
+            ->select('users.usuario','users.password','users.email',
             'users.estado','roles.nombre as rol')       
             ->where('users.'.$criterio, 'like', '%'. $buscar . '%')
             ->orderBy('users.id', 'desc')->paginate(3);
@@ -63,6 +63,7 @@ class UserController extends Controller
             $user = new User();
             $user->usuario = $request->usuario;
             $user->password = bcrypt( $request->password);
+            $user->email = $request->email;
             $user->estado = '1';
             $user->idrol = $request->idrol;          
  
@@ -103,7 +104,8 @@ class UserController extends Controller
              
             $user->usuario = $request->usuario;
             $user->password = bcrypt( $request->password);
-            $user->condicion = '1';
+            $user->estado = '1';
+            $user->email = $request->email;
             $user->idrol = $request->idrol;
             $user->save();
  
@@ -120,7 +122,7 @@ class UserController extends Controller
     {
         if (!$request->ajax()) return redirect('/');
         $user = User::findOrFail($request->id);
-        $user->condicion = '0';
+        $user->estado = '0';
         $user->save();
     }
  
@@ -128,7 +130,7 @@ class UserController extends Controller
     {
         if (!$request->ajax()) return redirect('/');
         $user = User::findOrFail($request->id);
-        $user->condicion = '1';
+        $user->estado = '1';
         $user->save();
     }
  

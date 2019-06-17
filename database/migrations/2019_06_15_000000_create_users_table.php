@@ -25,12 +25,11 @@ class CreateUsersTable extends Migration
 
 
             $table->rememberToken();
-            //$table->timestamps();
+            $table->timestamps(false);
         });
     }
 
-    /**
-     * Reverse the migrations.
+    /**   * Reverse the migrations.
      *
      * @return void
      */

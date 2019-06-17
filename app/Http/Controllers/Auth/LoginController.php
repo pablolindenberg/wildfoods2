@@ -5,9 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use App\User;
-
  
 class LoginController extends Controller
 {
@@ -17,21 +14,23 @@ class LoginController extends Controller
  
     public function login(Request $request){
 
+        
+
+     //   $this->validateLogin($request); 
+
+        // if (Auth::loginUsingId($request->usuario)){
+        //  return redirect()->route('main');
+        // }
 
 
-        $this->validateLogin($request); 
-
-         if (Auth::loginUsingId($request->usuario)){
-           return redirect()->route('main');
-         }
          
-         //if (Auth::attempt(['usuario' => $request->usuario,'password' => $request->password,'condicion'=>1])){
-         //   return redirect()->route('main');
-       // }
-        // return back()
-        // ->withErrors(['usuario' => trans('auth.failed')])
-        // ->withInput(request(['usuario']));
-        return trans('auth.failed');
+         if (Auth::attempt(['usuario' => $request->usuario,'password' => $request->password,'estado'=>1])){
+            return redirect()->route('main');
+         }
+         return back()
+         ->withErrors(['usuario' => trans('auth.failed')])
+         ->withInput(request(['usuario']));
+        //return trans('auth.failed');
     }
  
     protected function validateLogin(Request $request){
