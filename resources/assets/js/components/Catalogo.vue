@@ -385,7 +385,7 @@ export default {
       let me = this;
       axios
         .post("/pedido/registrar", {
-          idusuario: this.auth_user,
+          //idusuario: this.auth_user,
           total: this.total_carrito        
         })
         .then(function(response) {

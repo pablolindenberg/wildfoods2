@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Pedido;
 
 class PedidoController extends Controller
 {
@@ -12,6 +13,9 @@ class PedidoController extends Controller
 
         $buscar = $request->buscar;
         $criterio = $request->criterio;
+        $rol = $request->user()->idrol;
+
+        if($rol==1){
         if ($buscar==''){
             $pedidos = Pedido::join('users','pedidos.idusuario','=','users.id')
             ->select('pedidos.id','users.usuario as nombre_usuario','users.email as email_usuario','pedidos.total','pedidos.estado','pedidos.tracking','pedidos.created_at','pedidos.updated_at')
@@ -23,7 +27,25 @@ class PedidoController extends Controller
             ->where('pedidos.'.$criterio, 'like', '%'. $buscar . '%')
             ->orderBy('pedidos.id', 'desc')->paginate(10);
         }
-        
+    }else{
+
+        $buscar=$request->user()->id;
+        $criterio="idusuario";
+
+        if ($buscar==''){
+            $pedidos = Pedido::join('users','pedidos.idusuario','=','users.id')
+            ->select('pedidos.id','users.usuario as nombre_usuario','users.email as email_usuario','pedidos.total','pedidos.estado','pedidos.tracking','pedidos.created_at','pedidos.updated_at')
+            ->orderBy('pedidos.id', 'desc')->paginate(10);
+        }
+        else{
+            $pedidos = Pedido::join('users','pedidos.idusuario','=','users.id')
+            ->select('pedidos.id','users.usuario as nombre_usuario','users.email as email_usuario','pedidos.total','pedidos.estado','pedidos.tracking','pedidos.created_at','pedidos.updated_at')
+            ->where('pedidos.'.$criterio, 'like', '%'. $buscar . '%')
+            ->orderBy('pedidos.id', 'desc')->paginate(10);
+        }  
+    }
+
+
 
         return [
             'pagination' => [
@@ -43,12 +65,14 @@ class PedidoController extends Controller
     {
         if (!$request->ajax()) return redirect('/');
         $pedido = new Pedido();
-        $pedido->idusuario = $request->idusuario;
+
+        $pedido->idusuario = $request->user()->id;
+       // $pedido->idusuario = $request->idusuario;
         $pedido->total = $request->total;
         $pedido->tracking="NA";
         $pedido->estado = 1;  
-        $pedido->created_at =date("F j, Y, g:i a");  
-        $pedido->updated_at = date("F j, Y, g:i a");  
+       // $pedido->created_at =date("F j, Y, g:i a");  
+       // $pedido->updated_at = date("F j, Y, g:i a");  
     
         $pedido->save();
 

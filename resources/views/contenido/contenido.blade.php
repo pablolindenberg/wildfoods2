@@ -19,7 +19,8 @@
                 </template>
 
                 <template v-if="menu==3">
-                    <h1>Contenido del menú 3</h1>
+                    <h1>Pedidos</h1>
+                    <pedido></pedido>
                 </template>
 
                 <template v-if="menu==4">
@@ -55,7 +56,11 @@
             @elseif(Auth::user()->idrol ==3)
                 <template v-if="menu==11">
                 <h1>Catálogo</h1>
-                    <catalogo :auth_user="{{Auth::user()}}"></catalogo>
+                    <catalogo></catalogo>
+                </template>
+                <template v-if="menu==12">
+                <h1>Pedidos</h1>
+                    <pedido></pedido>
                 </template>
             @else
             @endif  

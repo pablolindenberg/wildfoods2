@@ -54,7 +54,7 @@ Route::group(['middleware'=>['auth']],function(){
     //Route::get('/home', 'HomeController@index')->name('home');
 });
 
-Route::group(['middleware'=>['cliente']],function(){
+Route::group(['middleware'=>['Cliente']],function(){
    
     Route::get('/pedido', 'PedidoController@index');
     Route::post('/pedido/registrar', 'PedidoController@store');
