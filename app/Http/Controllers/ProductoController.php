@@ -17,13 +17,13 @@ class ProductoController extends Controller
         if ($buscar==''){
             $productos = Producto::join('categorias','productos.idcategoria','=','categorias.id')
             ->select('productos.id','productos.idcategoria','productos.SKU','productos.nombre','categorias.nombre as nombre_categoria','productos.marca','productos.descripcion','productos.contenido_display','productos.valor_neto','productos.valor_bruto','productos.pvp_unitario','productos.total_neto','productos.total','productos.descuento','productos.stock','productos.imagen','productos.estado')
-            ->orderBy('productos.id', 'desc')->paginate(3);
+            ->orderBy('productos.id', 'desc')->paginate(10);
         }
         else{
             $productos = Producto::join('categorias','productos.idcategoria','=','categorias.id')
             ->select('productos.id','productos.idcategoria','productos.SKU','productos.nombre','categorias.nombre as nombre_categoria','productos.marca','productos.descripcion','productos.contenido_display','productos.valor_neto','productos.valor_bruto','productos.pvp_unitario','productos.pvp_unitario','productos.total_neto','productos.total','productos.descuento','productos.stock','productos.imagen','productos.estado')
             ->where('productos.'.$criterio, 'like', '%'. $buscar . '%')
-            ->orderBy('productos.id', 'desc')->paginate(3);
+            ->orderBy('productos.id', 'desc')->paginate(10);
         }
         
 

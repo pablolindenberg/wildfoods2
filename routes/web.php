@@ -19,6 +19,7 @@ Route::group(['middleware'=>['guest']],function(){
 Route::group(['middleware'=>['auth']],function(){
 
     Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
+    Route::post('/addtocart', 'CatalogoController@addToCart')->name('addtocart');
 
     Route::get('/main', function () {
         return view('contenido/contenido');
@@ -51,6 +52,16 @@ Route::group(['middleware'=>['auth']],function(){
     Route::put('/user/activar', 'UserController@activar');
     
     //Route::get('/home', 'HomeController@index')->name('home');
+});
+
+Route::group(['middleware'=>['cliente']],function(){
+   
+    Route::get('/pedido', 'PedidoController@index');
+    Route::post('/pedido/registrar', 'PedidoController@store');
+
+    Route::get('/detalle_pedido', 'Detalle_PedidoController@index');
+    Route::post('/detalle_pedido/registrar', 'Detalle_PedidoController@store');
+
 });
 
 
