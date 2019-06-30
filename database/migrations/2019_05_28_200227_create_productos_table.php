@@ -18,8 +18,8 @@ class CreateProductosTable extends Migration
             $table->integer('idcategoria')->unsigned();
             $table->string('SKU',50)->nullable();
             $table->string('nombre',100)->unique()->nullable();
-            $table->string('marca',100)->nullable();;
-            $table->string('descripcion',200)->nullable();;
+            $table->string('marca',100)->nullable();
+            $table->string('descripcion',200)->nullable();
             $table->integer('contenido_display')->nullable();;
             $table->integer('valor_neto')->nullable();
             $table->integer('valor_bruto')->nullable();
@@ -30,7 +30,7 @@ class CreateProductosTable extends Migration
             $table->binary('imagen')->nullable();
             $table->integer('stock')->nullable();
             $table->boolean('estado')->default(1)->nullable();       
-            $table->timestamps()->nullable();
+            $table->timestamps();
             $table->foreign('idcategoria')->references('id')->on('categorias');
         });
     }

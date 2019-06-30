@@ -134,6 +134,7 @@
             <div v-if="tipoAccion<=2">
               <form action method="post" enctype="multipart/form-data" class="form-horizontal">
                <div class="row">
+                 
                 <div class="col-md-2">
                    <h4 >SKU</h4>
                 </div>   
@@ -386,11 +387,26 @@ export default {
       axios
         .post("/pedido/registrar", {
           //idusuario: this.auth_user,
-          total: this.total_carrito        
+          total: this.total_carrito,
+          cart: this.cart        
         })
         .then(function(response) {
+         // me.registrarDetalle_Pedido();
           me.cerrarModal();
-         // me.listarPedido(1, "", "id");
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+
+  },
+  registrarDetalle_Pedido(){
+      let me = this;
+      axios
+        .post("/detalle_pedido/registrar", {        
+          cart: this.cart        
+        })
+        .then(function(response) {
+         // me.cerrarModal();
         })
         .catch(function(error) {
           console.log(error);

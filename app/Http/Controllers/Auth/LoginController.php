@@ -18,15 +18,15 @@ class LoginController extends Controller
 
      //   $this->validateLogin($request); 
 
-        // if (Auth::loginUsingId($request->usuario)){
-        //  return redirect()->route('main');
-        // }
+       // if (Auth::loginUsingId($request->usuario)){
+       //  return redirect()->route('main');
+         //  }
 
 
          
          if (Auth::attempt(['usuario' => $request->usuario,'password' => $request->password,'estado'=>1])){
-            return redirect()->route('main');
-         }
+           return redirect()->route('main');
+        }
          return back()
          ->withErrors(['usuario' => trans('auth.failed')])
          ->withInput(request(['usuario']));

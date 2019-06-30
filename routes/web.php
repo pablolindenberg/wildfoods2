@@ -59,8 +59,8 @@ Route::group(['middleware'=>['Cliente']],function(){
     Route::get('/pedido', 'PedidoController@index');
     Route::post('/pedido/registrar', 'PedidoController@store');
 
-    Route::get('/detalle_pedido', 'Detalle_PedidoController@index');
-    Route::post('/detalle_pedido/registrar', 'Detalle_PedidoController@store');
+    Route::get('/detalle_pedido', 'Detalle_pedidoController@index');
+    Route::post('/detalle_pedido/registrar', 'Detalle_pedidoController@store');
 
 });
 

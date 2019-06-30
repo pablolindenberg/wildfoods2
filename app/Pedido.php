@@ -18,4 +18,7 @@ class Pedido extends Model
         public function user(){
             return $this->belongsTo('App\User');
         }
+        public function detalle_pedido(){
+            return $this->hasMany('App\Detalle_Pedido');
+        }
 }

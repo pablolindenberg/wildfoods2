@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Pedido;
+use App\Detalle_pedido;
 
 class PedidoController extends Controller
 {
@@ -64,6 +65,7 @@ class PedidoController extends Controller
     public function store(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
+       
         $pedido = new Pedido();
 
         $pedido->idusuario = $request->user()->id;
@@ -71,11 +73,22 @@ class PedidoController extends Controller
         $pedido->total = $request->total;
         $pedido->tracking="NA";
         $pedido->estado = 1;  
+
        // $pedido->created_at =date("F j, Y, g:i a");  
        // $pedido->updated_at = date("F j, Y, g:i a");  
-    
+        
         $pedido->save();
+            
+       $cart= $request->cart;
 
+       for($i=0;$i<sizeof($cart);$i++){
+        $detalle_pedido = new Detalle_pedido();    
+       $detalle_pedido->idpedido=$pedido->id;
+       $detalle_pedido->idproducto=$cart[$i]['id'];
+       $detalle_pedido->cantidad=$cart[$i]['cantidad'];
+       $detalle_pedido->total=$cart[$i]['total'];
+       $detalle_pedido->save();
+    }
     }
  
     public function update(Request $request)

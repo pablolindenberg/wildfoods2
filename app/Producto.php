@@ -28,4 +28,7 @@ class Producto extends Model
     public function categoria(){
         return $this->belongsTo('App\Categoria');
     }
+    public function detalle_pedido(){
+        return $this->hasMany('App\Detalle_Pedido');
+    }
 }

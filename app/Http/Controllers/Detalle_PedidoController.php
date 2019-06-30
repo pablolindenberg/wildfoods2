@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Detalle_pedido;
 
-class Detalle_PedidoController extends Controller
+class Detalle_pedidoController extends Controller
 {
     public function index(Request $request)
     {
@@ -12,14 +13,17 @@ class Detalle_PedidoController extends Controller
 
         $buscar = $request->buscar;
         $criterio = $request->criterio;
+
+        //$detalle_pedidos = Detalle_pedido::orderBy('idpedido', 'desc')->paginate(3);
+     
         if ($buscar==''){
-            $detalle_pedidos = detalle_pedidos::join('pedidos','detalle_pedidos.idpedido','=','pedidos.id')
+            $detalle_pedidos = Detalle_Pedido::join('pedidos','detalle_pedidos.idpedido','=','pedidos.id')
             ->join('productos','detalle_pedidos.idproducto','productos.id')
             ->select('productos.SKU','productos.nombre','productos.total as unitario_producto','detalle_pedidos.cantidad','detalle_pedidos.total')
-            ->orderBy('detalle_pedido.id', 'desc')->paginate(10);
+            ->orderBy('detalle_pedidos.id', 'desc')->paginate(10);
         }
         else{
-            $detalle_pedidos = detalle_pedidos::join('pedidos','detalle_pedidos.idpedido','=','pedidos.id')
+            $detalle_pedidos = Detalle_Pedido::join('pedidos','detalle_pedidos.idpedido','=','pedidos.id')
             ->join('productos','detalle_pedidos.idproducto','productos.id')
             ->select('productos.SKU','productos.nombre','productos.total as unitario_producto','detalle_pedidos.cantidad','detalle_pedidos.total')
             ->where('detalle_pedidos.'.$criterio, 'like', '%'. $buscar . '%')
@@ -43,17 +47,38 @@ class Detalle_PedidoController extends Controller
     //todos los metodos sin stock
     public function store(Request $request)
     {
-        if (!$request->ajax()) return redirect('/');
-        $detalle_pedidos = new detalle_pedidos();
-        $detalle_pedidos->idpedido = $request->idpedido;
-        $detalle_pedidos->idproducto = $request->idproducto;
-        $detalle_pedidos->cantidad = $request->cantidad;
-        $detalle_pedidos->total = $request->total;
+       // if (!$request->ajax()) return redirect('/');
 
-        $detalle_pedidos->save();
+        // $cart=$request->cart;
+        // for($i=0;$i<=$cart.lenght;$i++){
 
-    }
+        // $detalle_pedidos = new detalle_pedidos();
+
+        // $detalle_pedidos->idpedido = $cart[$i].idpedido;
+        // $detalle_pedidos->idproducto = $cart[$i].idproducto;
+        // $detalle_pedidos->cantidad = $cart[$i].cantidad;
+        // $detalle_pedidos->total = $cart[$i].total;
+
+        // $detalle_pedidos->save();
+        // }
+       
+      
+        $cart= $request->cart;
+
+        $detalle_pedido = new Detalle_pedido();
+   
+
+        //  $detalle_pedido->idpedido=$cart[0]['idpedido'];
+        //  $detalle_pedido->idproducto=$cart[0]['idproducto'];
+        //  $detalle_pedido->cantidad=$cart[0]['cantidad'];
+        //  $detalle_pedido->total=$cart[0]['total'];
+         $detalle_pedido->save();
+       
  
+    
+    }
+
+
     public function update(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
