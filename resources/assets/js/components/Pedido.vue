@@ -241,6 +241,16 @@
                 .catch(function (error) {
                     console.log(error);
                 });
+
+                url= '/pedido?page=' + page + '&buscar='+ buscar + '&criterio=id';
+                axios.get(url).then(function (response) {
+                    var respuesta= response.data;
+                    me.total_carrito = respuesta.pedidos.data[0].total;
+                  
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
             },
 
         cerrarModal() {
