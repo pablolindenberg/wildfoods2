@@ -27,6 +27,7 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps(false);
         });
+        DB::table('users')->insert(array('usuario'=>'admin','password'=>bcrypt('admin'),'email'=>'admin@admin.cl','estado'=>'1','idrol'=>'1'));
     }
 
     /**   * Reverse the migrations.
