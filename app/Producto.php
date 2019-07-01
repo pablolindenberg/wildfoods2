@@ -2,11 +2,16 @@
 
 namespace App;
 
+use App\Events\ProductoSaved;
 use Illuminate\Database\Eloquent\Model;
 
 
 class Producto extends Model
-{ 
+{   
+    // protected $dispatchesEvents =[
+    //     "saved"=> ProductoSaved::class
+    // ];
+
     protected $fillable = [
     'idcategoria',
     'SKU',
