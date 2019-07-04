@@ -52,11 +52,20 @@ Route::group(['middleware'=>['auth']],function(){
     Route::put('/user/activar', 'UserController@activar');
     
     //Route::get('/home', 'HomeController@index')->name('home');
+
+    Route::get('/pedido', 'PedidoController@index');  
+    Route::post('/pedido/registrar', 'PedidoController@store');  
+    Route::put('/pedido/activarBodega', 'PedidoController@activarBodega');
+    Route::put('/pedido/desactivarBodega', 'PedidoController@desactivarBodega');
+
+    Route::put('/pedido/activar', 'PedidoController@activar');
+    Route::put('/pedido/desactivar', 'PedidoController@desactivar');
 });
 
 Route::group(['middleware'=>['Cliente']],function(){
    
     Route::get('/pedido', 'PedidoController@index');
+
     Route::post('/pedido/registrar', 'PedidoController@store');
 
     Route::get('/detalle_pedido', 'Detalle_pedidoController@index');

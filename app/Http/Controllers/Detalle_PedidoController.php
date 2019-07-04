@@ -19,13 +19,13 @@ class Detalle_pedidoController extends Controller
         if ($buscar==''){
             $detalle_pedidos = Detalle_Pedido::join('pedidos','detalle_pedidos.idpedido','=','pedidos.id')
             ->join('productos','detalle_pedidos.idproducto','productos.id')
-            ->select('productos.SKU','productos.nombre','productos.total as unitario_producto','detalle_pedidos.cantidad','detalle_pedidos.total')
+            ->select('productos.SKU','productos.nombre','productos.total as precio_unitario','detalle_pedidos.cantidad','detalle_pedidos.total')
             ->orderBy('detalle_pedidos.id', 'desc')->paginate(10);
         }
         else{
             $detalle_pedidos = Detalle_Pedido::join('pedidos','detalle_pedidos.idpedido','=','pedidos.id')
             ->join('productos','detalle_pedidos.idproducto','productos.id')
-            ->select('productos.SKU','productos.nombre','productos.total as unitario_producto','detalle_pedidos.cantidad','detalle_pedidos.total')
+            ->select('productos.SKU','productos.nombre','productos.total as precio_unitario','detalle_pedidos.cantidad','detalle_pedidos.total')
             ->where('detalle_pedidos.'.$criterio, 'like', '%'. $buscar . '%')
             ->orderBy('detalle_pedidos.id', 'desc')->paginate(10);
         }

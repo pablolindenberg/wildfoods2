@@ -37448,6 +37448,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -37591,7 +37607,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }
       if (cantidad_producto > 0) {
         var total_producto = cantidad_producto * precio_producto;
-        this.cart.push({ id: id_producto, nombre: nombre_producto, precio_unitario: precio_producto, cantidad: cantidad_producto, total: total_producto });
+        this.cart.push({
+          id: id_producto,
+          nombre: nombre_producto,
+          precio_unitario: precio_producto,
+          cantidad: cantidad_producto,
+          total: total_producto
+        });
       }
     },
     listarPedido: function listarPedido(page, buscar, criterio) {
@@ -37837,17 +37859,7 @@ var render = function() {
           }
         }
       },
-      [
-        _c("img", {
-          staticStyle: { float: "right" },
-          attrs: {
-            width: "48",
-            height: "48",
-            src:
-              "https://cdn.imgbin.com/0/2/0/imgbin-shopping-cart-icon-shopping-cart-yellow-shopping-cart-illustration-qn5kAf78HaXAwxPJiCW2BJDVX.jpg"
-          }
-        })
-      ]
+      [_vm._m(0)]
     ),
     _vm._v(" "),
     _c("div", { staticClass: "container" }, [
@@ -37857,7 +37869,7 @@ var render = function() {
         _vm._l(_vm.arrayProducto, function(producto) {
           return _c("div", { key: producto.id, staticClass: "col-md-4" }, [
             _c("div", { staticClass: "card" }, [
-              _vm._m(0, true),
+              _vm._m(1, true),
               _vm._v(" "),
               _c("div", { staticClass: "card-body" }, [
                 _c("div", { staticClass: "row" }, [
@@ -38169,7 +38181,7 @@ var render = function() {
                           }
                         },
                         [
-                          _vm._m(1),
+                          _vm._m(2),
                           _vm._v(" "),
                           _vm._l(_vm.cart, function(item) {
                             return _c(
@@ -38264,6 +38276,21 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { attrs: { href: "#" } }, [
+      _c(
+        "i",
+        {
+          staticClass: "material-icons",
+          staticStyle: { color: "yellow", float: "right", "font-size": "8vh" }
+        },
+        [_vm._v("shopping_cart")]
+      )
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -38399,7 +38426,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #3c29297a !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\n", ""]);
+exports.push([module.i, "\n.modal-content {\r\n  width: 100% !important;\r\n  position: absolute !important;\n}\n.mostrar {\r\n  display: list-item !important;\r\n  opacity: 1 !important;\r\n  position: absolute !important;\r\n  background-color: #3c29297a !important;\n}\n.div-error {\r\n  display: flex;\r\n  justify-content: center;\n}\n.text-error {\r\n  color: red !important;\r\n  font-weight: bold;\n}\r\n", ""]);
 
 // exports
 
@@ -38566,117 +38593,296 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
+  data: function data() {
+    return {
+      arrayPedido: [],
+      total_carrito: 0,
+      cart: [],
+      modal: 0,
 
-            arrayPedido: [],
-            total_carrito: 0,
-            cart: [],
-            modal: 0,
+      tituloModal: "",
+      tipoAccion: 0,
+      pagination: {
+        total: 0,
+        current_page: 0,
+        per_page: 0,
+        last_page: 0,
+        from: 0,
+        to: 0
+      },
+      offset: 3,
+      criterio: "nombre",
+      buscar: ""
+    };
+  },
 
-            tituloModal: '',
-            tipoAccion: 0,
-            pagination: {
-                'total': 0,
-                'current_page': 0,
-                'per_page': 0,
-                'last_page': 0,
-                'from': 0,
-                'to': 0
-            },
-            offset: 3,
-            criterio: 'nombre',
-            buscar: ''
-        };
+
+  computed: {
+    isActived: function isActived() {
+      return this.pagination.current_page;
     },
+    //Calcula los elementos de la paginación
+    pagesNumber: function pagesNumber() {
+      if (!this.pagination.to) {
+        return [];
+      }
 
+      var from = this.pagination.current_page - this.offset;
+      if (from < 1) {
+        from = 1;
+      }
 
-    computed: {
-        isActived: function isActived() {
-            return this.pagination.current_page;
-        },
-        //Calcula los elementos de la paginación
-        pagesNumber: function pagesNumber() {
-            if (!this.pagination.to) {
-                return [];
-            }
+      var to = from + this.offset * 2;
+      if (to >= this.pagination.last_page) {
+        to = this.pagination.last_page;
+      }
 
-            var from = this.pagination.current_page - this.offset;
-            if (from < 1) {
-                from = 1;
-            }
-
-            var to = from + this.offset * 2;
-            if (to >= this.pagination.last_page) {
-                to = this.pagination.last_page;
-            }
-
-            var pagesArray = [];
-            while (from <= to) {
-                pagesArray.push(from);
-                from++;
-            }
-            return pagesArray;
-        }
-    },
-    methods: {
-        listarPedido: function listarPedido(page, buscar, criterio) {
-            var me = this;
-            var url = '/pedido?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
-            axios.get(url).then(function (response) {
-                var respuesta = response.data;
-                me.arrayPedido = respuesta.pedidos.data;
-                me.pagination = respuesta.pagination;
-            }).catch(function (error) {
-                console.log(error);
-            });
-        },
-        cambiarPagina: function cambiarPagina(page, buscar, criterio) {
-            var me = this;
-            //Actualiza la página actual
-            me.pagination.current_page = page;
-            //Envia la petición para visualizar la data de esa página
-            me.listarPedido(page, buscar, criterio);
-        },
-        verDetallePedido: function verDetallePedido(page, buscar, criterio) {
-            var me = this;
-            var url = '/detalle_pedido?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
-            axios.get(url).then(function (response) {
-                var respuesta = response.data;
-                me.cart = respuesta.detalle_pedidos.data;
-                me.pagination = respuesta.pagination;
-            }).catch(function (error) {
-                console.log(error);
-            });
-
-            url = '/pedido?page=' + page + '&buscar=' + buscar + '&criterio=id';
-            axios.get(url).then(function (response) {
-                var respuesta = response.data;
-                me.total_carrito = respuesta.pedidos.data[0].total;
-            }).catch(function (error) {
-                console.log(error);
-            });
-        },
-        cerrarModal: function cerrarModal() {
-            this.modal = 0;
-            this.tituloModal = "";
-            this.tipoAccion = 0;
-            this.cart = [];
-        },
-        abrirModal: function abrirModal(idpedido) {
-
-            this.modal = 1;
-            this.tituloModal = "Detalle del pedido";
-            this.tipoAccion = 2;
-            this.verDetallePedido(1, idpedido, 'idpedido');
-        }
-    },
-
-    mounted: function mounted() {
-        this.listarPedido(1, '', 'idusuario');
+      var pagesArray = [];
+      while (from <= to) {
+        pagesArray.push(from);
+        from++;
+      }
+      return pagesArray;
     }
+  },
+  methods: {
+    listarPedido: function listarPedido(page, buscar, criterio) {
+      var me = this;
+      var url = "/pedido?page=" + page + "&buscar=" + buscar + "&criterio=" + criterio;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.arrayPedido = respuesta.pedidos.data;
+        me.pagination = respuesta.pagination;
+      }).catch(function (error) {
+        console.log(error);
+      });
+    },
+    cambiarPagina: function cambiarPagina(page, buscar, criterio) {
+      var me = this;
+      //Actualiza la página actual
+      me.pagination.current_page = page;
+      //Envia la petición para visualizar la data de esa página
+      me.listarPedido(page, buscar, criterio);
+    },
+    verDetallePedido: function verDetallePedido(page, buscar, criterio) {
+      var me = this;
+      var url = "/detalle_pedido?page=" + page + "&buscar=" + buscar + "&criterio=" + criterio;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.cart = respuesta.detalle_pedidos.data;
+        me.pagination = respuesta.pagination;
+      }).catch(function (error) {
+        console.log(error);
+      });
+
+      url = "/pedido?page=" + page + "&buscar=" + buscar + "&criterio=id";
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.total_carrito = respuesta.pedidos.data[0].total;
+      }).catch(function (error) {
+        console.log(error);
+      });
+    },
+    cerrarModal: function cerrarModal() {
+      this.modal = 0;
+      this.tituloModal = "";
+      this.tipoAccion = 0;
+      this.cart = [];
+    },
+    abrirModal: function abrirModal(idpedido) {
+      this.modal = 1;
+      this.tituloModal = "Detalle del pedido";
+      this.tipoAccion = 2;
+      this.verDetallePedido(1, idpedido, "idpedido");
+    },
+    desactivarBodega: function desactivarBodega(idpedido) {
+      var _this = this;
+
+      swal({
+        title: "Desactivar para bodega?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Aceptar",
+        cancelButtonText: "Cancelar",
+        confirmButtonClass: "btn btn-success",
+        cancelButtonClass: "btn btn-danger",
+        buttonsStyling: false,
+        reverseButtons: true
+      }).then(function (result) {
+        if (result.value) {
+          var me = _this;
+
+          axios.put("/pedido/desactivarBodega", {
+            id: idpedido
+          }).then(function (response) {
+            me.listarPedido(1, "", "idusuario");
+            swal("Desactivado!", "El registro ha sido desactivado con éxito.", "success");
+          }).catch(function (error) {
+            console.log(error);
+          });
+        } else if (
+        // Read more about handling dismissals
+        result.dismiss === swal.DismissReason.cancel) {}
+      });
+    },
+    activarBodega: function activarBodega(idpedido) {
+      var _this2 = this;
+
+      swal({
+        title: "Activar para bodega?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Aceptar",
+        cancelButtonText: "Cancelar",
+        confirmButtonClass: "btn btn-success",
+        cancelButtonClass: "btn btn-danger",
+        buttonsStyling: false,
+        reverseButtons: true
+      }).then(function (result) {
+        if (result.value) {
+          var me = _this2;
+
+          axios.put("/pedido/activarBodega", {
+            id: idpedido
+          }).then(function (response) {
+            me.listarPedido(1, "", "idusuario");
+            swal("Aactivado!", "El registro ha sido activado con éxito.", "success");
+          }).catch(function (error) {
+            console.log(error);
+          });
+        } else if (
+        // Read more about handling dismissals
+        result.dismiss === swal.DismissReason.cancel) {}
+      });
+    },
+    desactivar: function desactivar(idpedido) {
+      var _this3 = this;
+
+      swal({
+        title: "Cambiar pedido a despachado?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Aceptar",
+        cancelButtonText: "Cancelar",
+        confirmButtonClass: "btn btn-success",
+        cancelButtonClass: "btn btn-danger",
+        buttonsStyling: false,
+        reverseButtons: true
+      }).then(function (result) {
+        if (result.value) {
+          var me = _this3;
+
+          axios.put("/pedido/desactivar", {
+            id: idpedido
+          }).then(function (response) {
+            me.listarPedido(1, "", "idusuario");
+            swal("Despachado!", "El pedido ha sido modificado con éxito.", "success");
+          }).catch(function (error) {
+            console.log(error);
+          });
+        } else if (
+        // Read more about handling dismissals
+        result.dismiss === swal.DismissReason.cancel) {}
+      });
+    },
+    activar: function activar(idpedido) {
+      var _this4 = this;
+
+      swal({
+        title: "Cambiar pedido a pendiente?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Aceptar",
+        cancelButtonText: "Cancelar",
+        confirmButtonClass: "btn btn-success",
+        cancelButtonClass: "btn btn-danger",
+        buttonsStyling: false,
+        reverseButtons: true
+      }).then(function (result) {
+        if (result.value) {
+          var me = _this4;
+
+          axios.put("/pedido/activar", {
+            id: idpedido
+          }).then(function (response) {
+            me.listarPedido(1, "", "idusuario");
+            swal("Pendiente!", "El pedido ha sido modificado con éxito.", "success");
+          }).catch(function (error) {
+            console.log(error);
+          });
+        } else if (
+        // Read more about handling dismissals
+        result.dismiss === swal.DismissReason.cancel) {}
+      });
+    }
+  },
+
+  mounted: function mounted() {
+    this.listarPedido(1, "", "idusuario");
+  }
 });
 
 /***/ }),
@@ -38773,7 +38979,10 @@ var render = function() {
                       }
                     }
                   },
-                  [_c("i", { staticClass: "fa fa-search" }), _vm._v(" Buscar")]
+                  [
+                    _c("i", { staticClass: "fa fa-search" }),
+                    _vm._v(" Buscar\n              ")
+                  ]
                 )
               ])
             ])
@@ -38783,28 +38992,106 @@ var render = function() {
             "table",
             { staticClass: "table table-bordered table-striped table-sm" },
             [
-              _vm._m(1),
+              _c("thead", [
+                _c("tr", [
+                  _c("th", [_vm._v("Acciones")]),
+                  _vm._v(" "),
+                  _vm.arrayPedido[0].bodega == 1 ||
+                  _vm.arrayPedido[0].bodega == 0
+                    ? _c("th", [_vm._v("Bodega")])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.arrayPedido[0].bodega == 1 ||
+                  _vm.arrayPedido[0].bodega == 0
+                    ? _c("th", [_vm._v("Factura")])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("ID Pedido")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Total")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Tracking ID")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Fecha ingreso")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Actualizado")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Estado")])
+                ])
+              ]),
               _vm._v(" "),
               _c(
                 "tbody",
                 _vm._l(_vm.arrayPedido, function(pedido) {
                   return _c("tr", { key: pedido.id }, [
                     _c("td", [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-outline-warning",
-                          attrs: { type: "button" },
-                          on: {
-                            click: function($event) {
-                              _vm.abrirModal(pedido.id)
+                      _c("a", { attrs: { href: "#" } }, [
+                        _c(
+                          "i",
+                          {
+                            staticClass: "material-icons",
+                            on: {
+                              click: function($event) {
+                                _vm.abrirModal(pedido.id)
+                              }
                             }
-                          }
-                        },
-                        [_c("i", { staticClass: "icon-eye" })]
-                      ),
-                      _vm._v("  \n                                    ")
+                          },
+                          [_vm._v("zoom_in")]
+                        )
+                      ])
                     ]),
+                    _vm._v(" "),
+                    pedido.bodega == 1 || pedido.bodega == 0
+                      ? _c("td", [
+                          _c("a", { attrs: { href: "#" } }, [
+                            pedido.bodega == 1
+                              ? _c(
+                                  "i",
+                                  {
+                                    staticClass: "material-icons",
+                                    staticStyle: { color: "#009A00" },
+                                    on: {
+                                      click: function($event) {
+                                        _vm.desactivarBodega(pedido.id)
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("check_circle")]
+                                )
+                              : _vm._e()
+                          ]),
+                          _vm._v(" "),
+                          _c("a", { attrs: { href: "#" } }, [
+                            pedido.bodega == 0
+                              ? _c(
+                                  "i",
+                                  {
+                                    staticClass: "material-icons",
+                                    staticStyle: { color: "red" },
+                                    on: {
+                                      click: function($event) {
+                                        _vm.activarBodega(pedido.id)
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("block")]
+                                )
+                              : _vm._e()
+                          ])
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    pedido.bodega == 1 || pedido.bodega == 0
+                      ? _c("td", [
+                          _c("a", { attrs: { href: "#" } }, [
+                            pedido.bodega == 1 || pedido.bodega == 0
+                              ? _c("i", { staticClass: "material-icons" }, [
+                                  _vm._v("attachment")
+                                ])
+                              : _vm._e()
+                          ])
+                        ])
+                      : _vm._e(),
                     _vm._v(" "),
                     _c("td", { domProps: { textContent: _vm._s(pedido.id) } }),
                     _vm._v(" "),
@@ -38827,13 +39114,35 @@ var render = function() {
                     _c("td", [
                       pedido.estado
                         ? _c("div", [
-                            _c("span", { staticClass: "badge badge-success" }, [
-                              _vm._v("Pendiente")
+                            _c("a", { attrs: { href: "#" } }, [
+                              _c(
+                                "span",
+                                {
+                                  staticClass: "badge badge-danger",
+                                  on: {
+                                    click: function($event) {
+                                      _vm.desactivar(pedido.id)
+                                    }
+                                  }
+                                },
+                                [_vm._v("Pendiente")]
+                              )
                             ])
                           ])
                         : _c("div", [
-                            _c("span", { staticClass: "badge badge-danger" }, [
-                              _vm._v("Despachado")
+                            _c("a", { attrs: { href: "#" } }, [
+                              _c(
+                                "span",
+                                {
+                                  staticClass: "badge badge-success",
+                                  on: {
+                                    click: function($event) {
+                                      _vm.activar(pedido.id)
+                                    }
+                                  }
+                                },
+                                [_vm._v("Despachado")]
+                              )
                             ])
                           ])
                     ])
@@ -38977,7 +39286,7 @@ var render = function() {
                   ? _c(
                       "div",
                       [
-                        _vm._m(2),
+                        _vm._m(1),
                         _vm._v(" "),
                         _vm._l(_vm.cart, function(item) {
                           return _c(
@@ -38987,7 +39296,7 @@ var render = function() {
                               _c("div", { staticClass: "row" }, [
                                 _c("div", { staticClass: "col-md-2" }, [
                                   _c("h6", {
-                                    domProps: { textContent: _vm._s(item.id) }
+                                    domProps: { textContent: _vm._s(item.SKU) }
                                   })
                                 ]),
                                 _vm._v(" "),
@@ -39079,29 +39388,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
       _c("i", { staticClass: "fa fa-align-justify" }),
-      _vm._v(" Pedidos\n                      \n                    ")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("Acciones")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("ID Pedido")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Total")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Tracking ID")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Fecha")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Actualizado")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Estado")])
-      ])
+      _vm._v("\n        Pedidos\n      ")
     ])
   },
   function() {

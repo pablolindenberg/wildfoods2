@@ -19,12 +19,12 @@ class PedidoController extends Controller
         if($rol==1){
         if ($buscar==''){
             $pedidos = Pedido::join('users','pedidos.idusuario','=','users.id')
-            ->select('pedidos.id','users.usuario as nombre_usuario','users.email as email_usuario','pedidos.total','pedidos.estado','pedidos.tracking','pedidos.created_at','pedidos.updated_at')
+            ->select('pedidos.id','users.usuario as nombre_usuario','users.email as email_usuario','pedidos.total','pedidos.estado','pedidos.tracking','pedidos.bodega','pedidos.created_at','pedidos.updated_at')
             ->orderBy('pedidos.id', 'desc')->paginate(10);
         }
         else{
             $pedidos = Pedido::join('users','pedidos.idusuario','=','users.id')
-            ->select('pedidos.id','users.usuario as nombre_usuario','users.email as email_usuario','pedidos.total','pedidos.estado','pedidos.tracking','pedidos.created_at','pedidos.updated_at')
+            ->select('pedidos.id','users.usuario as nombre_usuario','users.email as email_usuario','pedidos.total','pedidos.estado','pedidos.tracking','pedidos.bodega','pedidos.created_at','pedidos.updated_at')
             ->where('pedidos.'.$criterio, 'like', '%'. $buscar . '%')
             ->orderBy('pedidos.id', 'desc')->paginate(10);
         }
@@ -72,7 +72,8 @@ class PedidoController extends Controller
        // $pedido->idusuario = $request->idusuario;
         $pedido->total = $request->total;
         $pedido->tracking="NA";
-        $pedido->estado = 1;  
+        $pedido->estado = 1; 
+        $pedido->bodega = 0;   
 
        // $pedido->created_at =date("F j, Y, g:i a");  
        // $pedido->updated_at = date("F j, Y, g:i a");  
@@ -119,7 +120,7 @@ class PedidoController extends Controller
         $pedido->estado = '0';
         $pedido->save();
     }
-
+  
     public function activar(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
@@ -127,4 +128,21 @@ class PedidoController extends Controller
         $pedido->estado = '1';
         $pedido->save();
     }
+
+    public function desactivarBodega(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+        $pedido = Pedido::findOrFail($request->id);
+        $pedido->bodega = '0';
+        $pedido->save();
+    }
+    public function activarBodega(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+        $pedido = Pedido::findOrFail($request->id);
+        $pedido->bodega = '1';
+        $pedido->save();
+    }
+
+
 }

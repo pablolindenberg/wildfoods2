@@ -18,6 +18,7 @@ class CreatePedidosTable extends Migration
             $table->integer('idusuario')->unsigned(); 
             $table->integer('total');
             $table->string('tracking')->nullable();
+            $table->boolean('bodega')->default(0);
             $table->boolean('estado')->default(1);
 
             $table->foreign('idusuario')->references('id')->on('users');

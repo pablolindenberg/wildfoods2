@@ -1,27 +1,25 @@
 
 
 <template>
-
   <main class="main">
     <a @click="abrirModal('catalogo')">
-              <img  
-              style="float: right;"
-              width="48" height="48"
-              src="https://cdn.imgbin.com/0/2/0/imgbin-shopping-cart-icon-shopping-cart-yellow-shopping-cart-illustration-qn5kAf78HaXAwxPJiCW2BJDVX.jpg"
-              >
-            </a>
-   <!--
+     <a href="#"> <i class="material-icons" style="color:yellow;float: right;font-size: 8vh;">shopping_cart</i></a>
+    </a>
+    <!--
                                           <i @click="abrirModal('catalogo')" style="float: right;width: 48px;height: 48px;" class="icon-pencil"></i>
-       -->                                
+    -->
     <!-- Catalogo -->
-   
-    <div class="container" >
-      <div class="row" >   
+
+    <div class="container">
+      <div class="row">
         <div class="col-md-4" v-for="producto in arrayProducto" :key="producto.id">
           <div class="card">
             <a href="#">
-              <img  width="200" height="200"
-              src="https://cdn.shopify.com/s/files/1/2964/0212/products/Barra-Chocolate_800x.png?v=1542991921">
+              <img
+                width="200"
+                height="200"
+                src="https://cdn.shopify.com/s/files/1/2964/0212/products/Barra-Chocolate_800x.png?v=1542991921"
+              />
             </a>
             <div class="card-body">
               <div class="row">
@@ -29,11 +27,15 @@
                   <h5 class="card-title" v-text="producto.nombre"></h5>
                 </div>
                 <div class="col-md-5 text-right">
-                  <p class="card-text" style="color:green;" v-text="'Precio unitario: $'+producto.total"></p>
+                  <p
+                    class="card-text"
+                    style="color:green;"
+                    v-text="'Precio unitario: $'+producto.total"
+                  ></p>
                 </div>
               </div>
-              
-                   <!--
+
+              <!--
             
 
               
@@ -43,73 +45,90 @@
                 type="submit"
                 onClick="agregar({{producto.id}})"
               >agregar carrito</button>
-               -->
-                <button
+              -->
+              <button
                 class="btn btn-info"
                 @click="sumar(producto.id,producto.nombre,1,producto.total)"
-              >+1</button>  
+              >+1</button>
               <button
                 class="btn btn-info"
-                 @click="sumar(producto.id,producto.nombre,5,producto.total)"
-              >+5</button>  
+                @click="sumar(producto.id,producto.nombre,5,producto.total)"
+              >+5</button>
               <button
                 class="btn btn-info"
-                  @click="sumar(producto.id,producto.nombre,10,producto.total)"
+                @click="sumar(producto.id,producto.nombre,10,producto.total)"
               >+10</button>
-              
-               <br>
 
-               <button
+              <br />
+
+              <button
                 class="btn btn-info"
                 @click="sumar(producto.id,producto.nombre,-1,producto.total)"
-              >-1</button>  
+              >-1</button>
               <button
                 class="btn btn-info"
-                 @click="sumar(producto.id,producto.nombre,-5,producto.total)"
-              >-5</button>  
+                @click="sumar(producto.id,producto.nombre,-5,producto.total)"
+              >-5</button>
               <button
                 class="btn btn-info"
-                  @click="sumar(producto.id,producto.nombre,-10,producto.total)"
-              >-10</button> 
-
+                @click="sumar(producto.id,producto.nombre,-10,producto.total)"
+              >-10</button>
 
               <div class="row">
                 <div class="col-md-6">
                   <div v-for="item in cart" :key="item.id">
-                 <h6 v-if="item.cantidad && (producto.id==item.id)">En Carrito: {{item.cantidad}}</h6>                   
-               </div> 
-                </div> 
-               
+                    <h6 v-if="item.cantidad && (producto.id==item.id)">En Carrito: {{item.cantidad}}</h6>
+                  </div>
+                </div>
+
                 <div class="col-md-6 text-right">
                   <div v-for="item in cart" :key="item.id">
-                   
-                 <h5  style="color:green;"  v-if="item.cantidad && (producto.id==item.id)">Total: ${{item.total}}</h5> 
+                    <h5
+                      style="color:green;"
+                      v-if="item.cantidad && (producto.id==item.id)"
+                    >Total: ${{item.total}}</h5>
+                  </div>
                 </div>
-                 </div> 
-
               </div>
-             
             </div>
           </div>
-          <br>
+          <br />
         </div>
       </div>
     </div>
 
-     <nav>
-                            <ul class="pagination">
-                                <li class="page-item" v-if="pagination.current_page > 1">
-                                    <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1,buscar,criterio)">Ant</a>
-                                </li>
-                                <li class="page-item" v-for="page in pagesNumber" :key="page" :class="[page == isActived ? 'active' : '']">
-                                    <a class="page-link" href="#" @click.prevent="cambiarPagina(page,buscar,criterio)" v-text="page"></a>
-                                </li>
-                                <li class="page-item" v-if="pagination.current_page < pagination.last_page">
-                                    <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1,buscar,criterio)">Sig</a>
-                                </li>
-                            </ul>
-                        </nav>
-    
+    <nav>
+      <ul class="pagination">
+        <li class="page-item" v-if="pagination.current_page > 1">
+          <a
+            class="page-link"
+            href="#"
+            @click.prevent="cambiarPagina(pagination.current_page - 1,buscar,criterio)"
+          >Ant</a>
+        </li>
+        <li
+          class="page-item"
+          v-for="page in pagesNumber"
+          :key="page"
+          :class="[page == isActived ? 'active' : '']"
+        >
+          <a
+            class="page-link"
+            href="#"
+            @click.prevent="cambiarPagina(page,buscar,criterio)"
+            v-text="page"
+          ></a>
+        </li>
+        <li class="page-item" v-if="pagination.current_page < pagination.last_page">
+          <a
+            class="page-link"
+            href="#"
+            @click.prevent="cambiarPagina(pagination.current_page + 1,buscar,criterio)"
+          >Sig</a>
+        </li>
+      </ul>
+    </nav>
+
     <!-- Fin Catalogo -->
 
     <!--Inicio del modal agregar/actualizar-->
@@ -133,59 +152,56 @@
           <div class="modal-body">
             <div v-if="tipoAccion<=2">
               <form action method="post" enctype="multipart/form-data" class="form-horizontal">
-               <div class="row">
-                 
-                <div class="col-md-2">
-                   <h4 >SKU</h4>
-                </div>   
-                <div class="col-md-2 text-right">   
-                   <h4>Nombre</h4> 
-                </div> 
-                <div class="col-md-2 text-right">   
-                   <h4>Precio unitario</h4> 
-                </div> 
-                <div class="col-md-2 text-right">   
-                   <h4>Cantidad</h4> 
-                </div> 
-                <div class="col-md-2 text-right">   
-                   <h4>Total</h4> 
-                </div> 
-               </div>
-              <div v-for="item in cart" :key="item.id" :value="item.id">            
                 <div class="row">
-                <div class="col-md-2">
-                   <h6 v-text="item.id"></h6>
-                </div>   
-                <div class="col-md-2">
-                   <h6 v-text="item.nombre"></h6>
-                </div>   
-                <div class="col-md-2">
-                   <h6 v-text="'$'+item.precio_unitario"></h6>
-                </div>   
-                <div class="col-md-2 text-right">   
-                   <h6 v-text="item.cantidad"></h6> 
-                </div>  
-                <div class="col-md-2 text-right">   
-                   <h6 v-text="'$'+item.total"></h6> 
-                </div>    
-              </div>
-              </div>
-                 
-               
+                  <div class="col-md-2">
+                    <h4>SKU</h4>
+                  </div>
+                  <div class="col-md-2 text-right">
+                    <h4>Nombre</h4>
+                  </div>
+                  <div class="col-md-2 text-right">
+                    <h4>Precio unitario</h4>
+                  </div>
+                  <div class="col-md-2 text-right">
+                    <h4>Cantidad</h4>
+                  </div>
+                  <div class="col-md-2 text-right">
+                    <h4>Total</h4>
+                  </div>
+                </div>
+                <div v-for="item in cart" :key="item.id" :value="item.id">
+                  <div class="row">
+                    <div class="col-md-2">
+                      <h6 v-text="item.id"></h6>
+                    </div>
+                    <div class="col-md-2">
+                      <h6 v-text="item.nombre"></h6>
+                    </div>
+                    <div class="col-md-2">
+                      <h6 v-text="'$'+item.precio_unitario"></h6>
+                    </div>
+                    <div class="col-md-2 text-right">
+                      <h6 v-text="item.cantidad"></h6>
+                    </div>
+                    <div class="col-md-2 text-right">
+                      <h6 v-text="'$'+item.total"></h6>
+                    </div>
+                  </div>
+                </div>
               </form>
 
               <div class="modal-footer">
-               <h6 v-text="'Total: $'+total_carrito"></h6> 
-               <!--
+                <h6 v-text="'Total: $'+total_carrito"></h6>
+                <!--
                 <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>             
-              -->
+                -->
                 <button
-                  type="button"          
+                  type="button"
                   class="btn btn-success"
                   @click="registrarPedido()"
                 >Confirmar Pedido</button>
               </div>
-            </div>          
+            </div>
           </div>
         </div>
 
@@ -236,10 +252,10 @@ export default {
       criterio: "nombre",
       buscar: "",
       arrayCategoria: [],
-      arrayCarrito:[],
-      cart:[],
-      total_carrito:0,
-      arrayPedido:[],
+      arrayCarrito: [],
+      cart: [],
+      total_carrito: 0,
+      arrayPedido: []
     };
   },
   computed: {
@@ -343,34 +359,33 @@ export default {
     },
     verProducto() {},
 
-    agregar(){
-      
+    agregar() {},
+    sumar(id_producto, nombre_producto, cantidad_producto, precio_producto) {
+      for (var i = 0; i < this.cart.length; i++) {
+        if (this.cart[i].id == id_producto) {
+          if (!(this.cart[i].cantidad + cantidad_producto < 0)) {
+            this.cart[i].cantidad += cantidad_producto;
+            this.cart[i].total = this.cart[i].cantidad * precio_producto;
+            return;
+          }
+        }
+      }
+      if (cantidad_producto > 0) {
+        var total_producto = cantidad_producto * precio_producto;
+        this.cart.push({
+          id: id_producto,
+          nombre: nombre_producto,
+          precio_unitario: precio_producto,
+          cantidad: cantidad_producto,
+          total: total_producto
+        });
+      }
     },
-    sumar(id_producto,nombre_producto,cantidad_producto,precio_producto){
-       for (var i=0;i<this.cart.length;i++) {
-                if(this.cart[i].id==id_producto){ 
-                  if(!(this.cart[i].cantidad+cantidad_producto<0)){                        
-                  this.cart[i].cantidad+=cantidad_producto;
-                  this.cart[i].total=this.cart[i].cantidad * precio_producto;
-                  return;
-                  }
-                }            
-         }
-         if(cantidad_producto>0){ 
-         var total_producto = cantidad_producto * precio_producto;
-         this.cart.push({id:id_producto,nombre:nombre_producto,precio_unitario:precio_producto,cantidad:cantidad_producto,total:total_producto});  
-         }
-  },
 
-  listarPedido(page, buscar, criterio) {
+    listarPedido(page, buscar, criterio) {
       let me = this;
       var url =
-        "/pedido?page=" +
-        page +
-        "&buscar=" +
-        buscar +
-        "&criterio=" +
-        criterio;
+        "/pedido?page=" + page + "&buscar=" + buscar + "&criterio=" + criterio;
       axios
         .get(url)
         .then(function(response) {
@@ -382,37 +397,35 @@ export default {
           console.log(error);
         });
     },
-  registrarPedido(){
+    registrarPedido() {
       let me = this;
       axios
         .post("/pedido/registrar", {
           //idusuario: this.auth_user,
           total: this.total_carrito,
-          cart: this.cart        
+          cart: this.cart
         })
         .then(function(response) {
-         // me.registrarDetalle_Pedido();
+          // me.registrarDetalle_Pedido();
           me.cerrarModal();
         })
         .catch(function(error) {
           console.log(error);
         });
-
-  },
-  registrarDetalle_Pedido(){
+    },
+    registrarDetalle_Pedido() {
       let me = this;
       axios
-        .post("/detalle_pedido/registrar", {        
-          cart: this.cart        
+        .post("/detalle_pedido/registrar", {
+          cart: this.cart
         })
         .then(function(response) {
-         // me.cerrarModal();
+          // me.cerrarModal();
         })
         .catch(function(error) {
           console.log(error);
         });
-
-  },
+    },
 
     actualizarProducto() {
       if (this.validarProducto()) {
@@ -545,7 +558,7 @@ export default {
       this.estado = 0;
       this.errorProducto = 0;
     },
- 
+
     abrirModal(modelo, accion, data = []) {
       switch (modelo) {
         case "producto": {
@@ -599,27 +612,26 @@ export default {
             }
           }
         }
-        case "catalogo":{
+        case "catalogo": {
           this.modal = 1;
           this.tituloModal = "Carrito";
           this.tipoAccion = 2;
 
-          for (var i=0;i<this.cart.length;i++) {
-                this.total_carrito+=this.cart[i].total;               
-                }      
-          break;      
-         }   
+          for (var i = 0; i < this.cart.length; i++) {
+            this.total_carrito += this.cart[i].total;
+          }
+          break;
+        }
       }
       this.selectCategoria();
     }
   },
- 
+
   mounted() {
     this.listarProducto(1, this.buscar, this.criterio);
     //this.listarPedido(1, this.buscar, this.criterio);
   }
 };
-
 </script>
 <style>
 .modal-content {

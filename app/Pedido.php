@@ -10,6 +10,7 @@ class Pedido extends Model
         'idusuario',
         'total',
         'estado',
+        'bodega',
         'tracking',
         'fecha_creacion',
         'fecha_actualizacion',   
