@@ -1,11 +1,13 @@
 <div class="sidebar">
             <nav class="sidebar-nav">
                 <ul class="nav">
+                <!--
                     <li @click="menu=0" class="nav-item">
                         <a class="nav-link active" href="#"><i class="icon-speedometer"></i>Pedidos Wildfoods</a>
                     </li>
+                -->
                     <li class="nav-title">
-                        Menu
+                        Pedidos WildFoods
                     </li>
                 
                             <li @click="menu=11" class="nav-item">

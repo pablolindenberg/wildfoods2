@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="shortcut icon" href="img/favicon.png">
+    <link rel="shortcut icon" href="img/wildfoods-3232.png">
     <title>Wildfoods</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Icons -->
@@ -24,6 +24,7 @@
         <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button">
           <span class="navbar-toggler-icon"></span>
         </button>
+        <!--
         <ul class="nav navbar-nav d-md-down-none">
             <li class="nav-item px-3">
                 <a class="nav-link" href="#">Escritorio</a>
@@ -32,11 +33,12 @@
                 <a class="nav-link" href="#">Configuraciones</a>
             </li>
         </ul>
+        -->
         <ul class="nav navbar-nav ml-auto">
             <li class="nav-item d-md-down-none">
                 <a class="nav-link" href="#" data-toggle="dropdown">
                     <i class="icon-bell"></i>
-                    <span class="badge badge-pill badge-danger">5</span>
+                    <span class="badge badge-pill badge-danger"><!--5--></span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
                     <div class="dropdown-header text-center">
@@ -44,11 +46,11 @@
                     </div>
                     <a class="dropdown-item" href="#">
                         <i class="fa fa-envelope-o"></i> Ingresos
-                        <span class="badge badge-success">3</span>
+                        <span class="badge badge-success"><!--3--></span>
                     </a>
                     <a class="dropdown-item" href="#">
                         <i class="fa fa-tasks"></i> Ventas
-                        <span class="badge badge-danger">2</span>
+                        <span class="badge badge-danger"><!--2-->/span>
                     </a>
                 </div>
             </li>

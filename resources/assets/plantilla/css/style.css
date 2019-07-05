@@ -7645,7 +7645,7 @@ base-chart.chart {
     padding: 0.5rem 1rem;
     margin-right: 0;
     background-color: #fff;
-    background-image: url("../img/logo.png");
+    background-image: url("../img/logo-wildfoods.png");
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 70px auto;
@@ -8837,6 +8837,10 @@ app-root {
       flex: 0 0 55px; }
 
 .app-footer {
+  /*Footer al fondo*/
+    position: absolute;
+    bottom: 0;
+  /*Footer al fondo*/
   -ms-flex: 0 0 50px;
       flex: 0 0 50px; }
 
@@ -8879,7 +8883,8 @@ app-root {
   height: calc(100vh - 55px); }
 
 .sidebar-fixed .main, .sidebar-fixed .app-footer {
-  margin-left: 200px; }
+  margin-top: 20px;
+  margin-left: 50px; }
 
 .sidebar-fixed.sidebar-hidden .main, .sidebar-fixed.sidebar-hidden .app-footer {
   margin-left: 0; }
