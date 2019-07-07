@@ -33214,6 +33214,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -33635,21 +33639,7 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", {
                       domProps: { textContent: _vm._s(categoria.descripcion) }
-                    }),
-                    _vm._v(" "),
-                    _c("td", [
-                      categoria.condicion
-                        ? _c("div", [
-                            _c("span", { staticClass: "badge badge-success" }, [
-                              _vm._v("Activo")
-                            ])
-                          ])
-                        : _c("div", [
-                            _c("span", { staticClass: "badge badge-danger" }, [
-                              _vm._v("Desactivado")
-                            ])
-                          ])
-                    ])
+                    })
                   ])
                 })
               )
@@ -33968,9 +33958,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Nombre")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Descripción")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Estado")])
+        _c("th", [_vm._v("Descripción")])
       ])
     ])
   }
@@ -37415,6 +37403,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -37823,6 +37815,8 @@ var render = function() {
               _vm._m(1, true),
               _vm._v(" "),
               _c("div", { staticClass: "card-body" }, [
+                _c("hr"),
+                _vm._v(" "),
                 _c("div", { staticClass: "row" }, [
                   _c("div", { staticClass: "col-md-7" }, [
                     _c("h5", {
@@ -38236,9 +38230,16 @@ var staticRenderFns = [
         "i",
         {
           staticClass: "material-icons",
-          staticStyle: { color: "yellow", float: "right", "font-size": "8vh" }
+          staticStyle: {
+            color: "green",
+            float: "right",
+            "font-size": "7vh",
+            width: "50px",
+            height: "50px",
+            "margin-right": "10px"
+          }
         },
-        [_vm._v("shopping_cart")]
+        [_vm._v("shopping_cart \n   ")]
       )
     ])
   },

@@ -33,7 +33,7 @@
                                     <th>Opciones</th>
                                     <th>Nombre</th>
                                     <th>Descripción</th>
-                                    <th>Estado</th>
+                                   <!-- <th>Estado</th> -->
                                 </tr>
                             </thead>
                             <tbody>
@@ -55,6 +55,8 @@
                                     </td>
                                     <td v-text="categoria.nombre"></td>
                                     <td v-text="categoria.descripcion"></td>
+                                    
+                                    <!--
                                     <td>
                                         <div v-if="categoria.condicion">
                                             <span class="badge badge-success">Activo</span>
@@ -64,6 +66,8 @@
                                         </div>
                                         
                                     </td>
+                                    -->
+                                    
                                 </tr>                                
                             </tbody>
                         </table>

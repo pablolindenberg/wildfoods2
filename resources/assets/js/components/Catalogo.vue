@@ -3,7 +3,10 @@
 <template>
   <main class="main">
     <a @click="abrirModal('catalogo')">
-     <a href="#"> <i class="material-icons" style="color:yellow;float: right;font-size: 8vh;">shopping_cart</i></a>
+     <a href="#">
+     <i class="material-icons" style="color:green;float: right;font-size: 7vh;width:50px;height:50px;margin-right:10px;">shopping_cart 
+     </i>
+     </a>
     </a>
     <!--
                                           <i @click="abrirModal('catalogo')" style="float: right;width: 48px;height: 48px;" class="icon-pencil"></i>
@@ -22,6 +25,7 @@
               />
             </a>
             <div class="card-body">
+            <hr>
               <div class="row">
                 <div class="col-md-7">
                   <h5 class="card-title" v-text="producto.nombre"></h5>

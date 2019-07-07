@@ -510,7 +510,7 @@ pre {
   margin-left: auto;
   padding-right: 15px;
   padding-left: 15px;
-  width: 100%; }
+  }
 
 .row {
   display: -ms-flexbox;
@@ -2883,8 +2883,9 @@ tbody.collapse.show {
 .page-item.active .page-link, .pagination-datatables li.active .page-link, .pagination li.active .page-link, .page-item.active .pagination-datatables li a, .pagination-datatables li .page-item.active a, .pagination-datatables li.active a, .page-item.active .pagination li a, .pagination li .page-item.active a, .pagination li.active a {
   z-index: 2;
   color: #fff;
-  background-color: #20a8d8;
-  border-color: #20a8d8; }
+  background-color: #20a8d8; /*original: #20a8d8*/
+  /*border-color: #000000;*/
+  margin-left:50px; } /* Márgen izquierdo del contador */
 
 .page-item.disabled .page-link, .pagination-datatables li.disabled .page-link, .pagination li.disabled .page-link, .page-item.disabled .pagination-datatables li a, .pagination-datatables li .page-item.disabled a, .pagination-datatables li.disabled a, .page-item.disabled .pagination li a, .pagination li .page-item.disabled a, .pagination li.disabled a {
   color: #536c79;
@@ -8884,7 +8885,7 @@ app-root {
 
 .sidebar-fixed .main, .sidebar-fixed .app-footer {
   margin-top: 20px;
-  margin-left: 50px; }
+  margin-left: 200px; }
 
 .sidebar-fixed.sidebar-hidden .main, .sidebar-fixed.sidebar-hidden .app-footer {
   margin-left: 0; }
