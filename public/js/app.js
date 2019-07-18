@@ -38598,6 +38598,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -38670,6 +38680,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       me.pagination.current_page = page;
       //Envia la petición para visualizar la data de esa página
       me.listarPedido(page, buscar, criterio);
+    },
+    descargarPedidos: function descargarPedidos(id) {
+      var me = this;
+
+      axios.get("/pedido/descargar", {
+        idusuario: id
+      }).catch(function (error) {
+        console.log(error);
+      });
     },
     verDetallePedido: function verDetallePedido(page, buscar, criterio) {
       var me = this;
@@ -38884,7 +38903,15 @@ var render = function() {
                   },
                   [
                     _c("option", { attrs: { value: "idusuario" } }, [
-                      _vm._v("idusuario")
+                      _vm._v("ID Usuario")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "estado" } }, [
+                      _vm._v("Estado")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "updated_at" } }, [
+                      _vm._v("Fecha actualización")
                     ])
                   ]
                 ),
@@ -38899,7 +38926,7 @@ var render = function() {
                     }
                   ],
                   staticClass: "form-control",
-                  attrs: { type: "text", placeholder: "Texto a buscar" },
+                  attrs: { type: "text", placeholder: "Buscar" },
                   domProps: { value: _vm.buscar },
                   on: {
                     keyup: function($event) {
@@ -38938,6 +38965,10 @@ var render = function() {
                 )
               ])
             ])
+          ]),
+          _vm._v(" "),
+          _c("a", { attrs: { href: "/pedido/descargar" } }, [
+            _vm._v("Exportar a Excel\n        ")
           ]),
           _vm._v(" "),
           _c(

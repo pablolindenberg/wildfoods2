@@ -12,14 +12,16 @@
             <div class="col-md-6">
               <div class="input-group">
                 <select class="form-control col-md-3" v-model="criterio">
-                  <option value="idusuario">idusuario</option>
+                  <option value="idusuario">ID Usuario</option>
+                  <option value="estado">Estado</option>
+                  <option value="updated_at">Fecha actualización</option>
                 </select>
                 <input
                   type="text"
                   v-model="buscar"
                   @keyup.enter="listarPedido(1,buscar,criterio)"
                   class="form-control"
-                  placeholder="Texto a buscar"
+                  placeholder="Buscar"
                 />
                 <button
                   type="submit"
@@ -31,6 +33,14 @@
               </div>
             </div>
           </div>
+          <!--
+        <a @click="descargarPedidos(buscar)">Descargar
+          </a>
+              -->
+           
+          <a href="/pedido/descargar">Exportar a Excel
+          </a>
+          
           <table
             class="table table-bordered table-striped table-sm"
            
@@ -283,7 +293,17 @@ export default {
       //Envia la petición para visualizar la data de esa página
       me.listarPedido(page, buscar, criterio);
     },
+    descargarPedidos(id){
+      let me = this;
 
+       axios
+            .get("/pedido/descargar",{
+              idusuario: id
+            })          
+        .catch(function(error) {
+          console.log(error);
+        });  
+    },
     verDetallePedido(page, buscar, criterio) {
       let me = this;
       var url =

@@ -60,6 +60,7 @@ Route::group(['middleware'=>['auth']],function(){
 
     Route::put('/pedido/activar', 'PedidoController@activar');
     Route::put('/pedido/desactivar', 'PedidoController@desactivar');
+    Route::get('/pedido/descargar', 'PedidoController@descargar');
 });
 
 Route::group(['middleware'=>['Cliente']],function(){

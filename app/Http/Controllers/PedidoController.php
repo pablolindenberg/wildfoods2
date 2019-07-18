@@ -1,10 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Exports\PedidosExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Pedido;
 use App\Detalle_pedido;
+use App\Http\Controllers\Controller;
+
 
 class PedidoController extends Controller
 {
@@ -143,6 +146,13 @@ class PedidoController extends Controller
         $pedido->bodega = '1';
         $pedido->save();
     }
+    public function descargar(Request $request){
+       
+       // $id= Integer.parse_str($request->idusuario);
 
-
+       // return Excel::download(new PedidosExport($id),'pedidos.xlsx');
+        return Excel::download(new PedidosExport(),'pedidos.xlsx');
+       
+    }
+      
 }
