@@ -33,30 +33,22 @@
               </div>
             </div>
           </div>
-          <!--
-        <a @click="descargarPedidos(buscar)">Descargar
-          </a>
-              -->
-           
-          <a href="/pedido/descargar">Exportar a Excel
-          </a>
-          
+         
           <table
             class="table table-bordered table-striped table-sm"
            
           >
             <thead>
               <tr>
-                <th>Acciones</th>
-                <th v-if="arrayPedido[0].bodega==1 || arrayPedido[0].bodega==0">Bodega</th>
-                <th v-if="arrayPedido[0].bodega==1 || arrayPedido[0].bodega==0">Factura</th>
+                <th>Acciones</th>             
+                <th >Factura</th>
                 <th>ID Pedido</th>
                 <th>Usuario</th>
                 <th>Total</th>
                 <th>Tracking ID</th>
                 <th>Fecha ingreso</th>
                 <th>Actualizado</th>
-                <th>Estado</th>
+               
               </tr>
             </thead>
             <tbody >
@@ -66,24 +58,7 @@
                     <i @click="abrirModal(pedido.id)" class="material-icons">zoom_in</i>
                   </a>
                 </td>
-                <td v-if="pedido.bodega==1 || pedido.bodega==0">
-                  <a href="#">
-                    <i
-                      v-if="pedido.bodega==1"
-                      @click="desactivarBodega(pedido.id)"
-                      class="material-icons"
-                      style="color:#009A00;"
-                    >check_circle</i>
-                  </a>
-                  <a href="#">
-                    <i
-                      v-if="pedido.bodega==0"
-                      @click="activarBodega(pedido.id)"
-                      class="material-icons"
-                      style="color:red;"
-                    >block</i>
-                  </a>
-                </td>
+                
                 <td v-if="pedido.bodega==1 || pedido.bodega==0">
                   <a href="#">
                     <i v-if="pedido.bodega==1 || pedido.bodega==0" class="material-icons">attachment</i>
@@ -95,18 +70,7 @@
                 <td v-text="pedido.tracking"></td>
                 <td v-text="pedido.created_at"></td>
                 <td v-text="pedido.updated_at"></td>
-                <td>
-                  <div v-if="pedido.estado">
-                    <a href="#">
-                      <span class="badge badge-danger" @click="desactivar(pedido.id)">Pendiente</span>
-                    </a>
-                  </div>
-                  <div v-else>
-                    <a href="#">
-                      <span class="badge badge-success" @click="activar(pedido.id)">Despachado</span>
-                    </a>
-                  </div>
-                </td>
+                
               </tr>
             </tbody>
           </table>

@@ -21,6 +21,7 @@ Vue.component('user', require('./components/User.vue'));
 Vue.component('rol', require('./components/Rol.vue'));
 Vue.component('catalogo', require('./components/Catalogo.vue'));
 Vue.component('pedido', require('./components/Pedido.vue'));
+Vue.component('pedidobodega', require('./components/PedidoBodega.vue'));
 
 const app = new Vue({
     el: '#app',
