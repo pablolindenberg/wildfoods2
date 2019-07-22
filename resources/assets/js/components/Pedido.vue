@@ -48,8 +48,8 @@
             <thead>
               <tr>
                 <th>Acciones</th>
-                <th v-if="arrayPedido[0].bodega==1 || arrayPedido[0].bodega==0">Bodega</th>
-                <th v-if="arrayPedido[0].bodega==1 || arrayPedido[0].bodega==0">Factura</th>
+                <th>Bodega</th>
+                <th>Factura</th>
                 <th>ID Pedido</th>
                 <th>Usuario</th>
                 <th>Total</th>
@@ -66,7 +66,7 @@
                     <i @click="abrirModal(pedido.id)" class="material-icons">zoom_in</i>
                   </a>
                 </td>
-                <td v-if="pedido.bodega==1 || pedido.bodega==0">
+                <td >
                   <a href="#">
                     <i
                       v-if="pedido.bodega==1"
@@ -84,9 +84,9 @@
                     >block</i>
                   </a>
                 </td>
-                <td v-if="pedido.bodega==1 || pedido.bodega==0">
+                <td>
                   <a href="#">
-                    <i v-if="pedido.bodega==1 || pedido.bodega==0" class="material-icons">attachment</i>
+                    <i class="material-icons">attachment</i>
                   </a>
                 </td>
                 <td v-text="pedido.id"></td>
@@ -96,14 +96,19 @@
                 <td v-text="pedido.created_at"></td>
                 <td v-text="pedido.updated_at"></td>
                 <td>
-                  <div v-if="pedido.estado">
+                  <div v-if="pedido.estado==0">
                     <a href="#">
-                      <span class="badge badge-danger" @click="desactivar(pedido.id)">Pendiente</span>
+                      <span class="badge badge-danger" @click="activar(pedido.id)">Descartado</span>
                     </a>
                   </div>
-                  <div v-else>
+                  <div v-if="pedido.estado==1">
                     <a href="#">
-                      <span class="badge badge-success" @click="activar(pedido.id)">Despachado</span>
+                      <span class="badge badge-warning" @click="despachado(pedido.id)">Pendiente</span>
+                    </a>
+                  </div>
+                  <div v-if="pedido.estado==2">
+                    <a href="#">
+                      <span class="badge badge-success" @click="desactivar(pedido.id)">Despachado</span>
                     </a>
                   </div>
                 </td>
@@ -431,7 +436,7 @@ export default {
       });
     },
 
-    desactivar(idpedido) {
+    despachado(idpedido) {
       swal({
         title: "Cambiar pedido a despachado?",
         type: "warning",
@@ -449,7 +454,7 @@ export default {
           let me = this;
 
           axios
-            .put("/pedido/desactivar", {
+            .put("/pedido/despachado", {
               id: idpedido
             })
             .then(function(response) {
@@ -495,6 +500,45 @@ export default {
               me.listarPedido(1, "", "idusuario");
               swal(
                 "Pendiente!",
+                "El pedido ha sido modificado con éxito.",
+                "success"
+              );
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        } else if (
+          // Read more about handling dismissals
+          result.dismiss === swal.DismissReason.cancel
+        ) {
+        }
+      });
+    },
+    desactivar(idpedido) {
+      swal({
+        title: "Descartar pedido?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Aceptar",
+        cancelButtonText: "Cancelar",
+        confirmButtonClass: "btn btn-success",
+        cancelButtonClass: "btn btn-danger",
+        buttonsStyling: false,
+        reverseButtons: true
+      }).then(result => {
+        if (result.value) {
+          let me = this;
+
+          axios
+            .put("/pedido/desactivar", {
+              id: idpedido
+            })
+            .then(function(response) {
+              me.listarPedido(1, "", "idusuario");
+              swal(
+                "Descartado!",
                 "El pedido ha sido modificado con éxito.",
                 "success"
               );

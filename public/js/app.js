@@ -38611,6 +38611,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -38788,7 +38793,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         result.dismiss === swal.DismissReason.cancel) {}
       });
     },
-    desactivar: function desactivar(idpedido) {
+    despachado: function despachado(idpedido) {
       var _this3 = this;
 
       swal({
@@ -38807,7 +38812,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         if (result.value) {
           var me = _this3;
 
-          axios.put("/pedido/desactivar", {
+          axios.put("/pedido/despachado", {
             id: idpedido
           }).then(function (response) {
             me.listarPedido(1, "", "idusuario");
@@ -38844,6 +38849,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           }).then(function (response) {
             me.listarPedido(1, "", "idusuario");
             swal("Pendiente!", "El pedido ha sido modificado con éxito.", "success");
+          }).catch(function (error) {
+            console.log(error);
+          });
+        } else if (
+        // Read more about handling dismissals
+        result.dismiss === swal.DismissReason.cancel) {}
+      });
+    },
+    desactivar: function desactivar(idpedido) {
+      var _this5 = this;
+
+      swal({
+        title: "Descartar pedido?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Aceptar",
+        cancelButtonText: "Cancelar",
+        confirmButtonClass: "btn btn-success",
+        cancelButtonClass: "btn btn-danger",
+        buttonsStyling: false,
+        reverseButtons: true
+      }).then(function (result) {
+        if (result.value) {
+          var me = _this5;
+
+          axios.put("/pedido/desactivar", {
+            id: idpedido
+          }).then(function (response) {
+            me.listarPedido(1, "", "idusuario");
+            swal("Descartado!", "El pedido ha sido modificado con éxito.", "success");
           }).catch(function (error) {
             console.log(error);
           });
@@ -38978,35 +39015,7 @@ var render = function() {
             "table",
             { staticClass: "table table-bordered table-striped table-sm" },
             [
-              _c("thead", [
-                _c("tr", [
-                  _c("th", [_vm._v("Acciones")]),
-                  _vm._v(" "),
-                  _vm.arrayPedido[0].bodega == 1 ||
-                  _vm.arrayPedido[0].bodega == 0
-                    ? _c("th", [_vm._v("Bodega")])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.arrayPedido[0].bodega == 1 ||
-                  _vm.arrayPedido[0].bodega == 0
-                    ? _c("th", [_vm._v("Factura")])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("ID Pedido")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Usuario")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Total")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Tracking ID")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Fecha ingreso")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Actualizado")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Estado")])
-                ])
-              ]),
+              _vm._m(1),
               _vm._v(" "),
               _c(
                 "tbody",
@@ -39029,57 +39038,45 @@ var render = function() {
                       ])
                     ]),
                     _vm._v(" "),
-                    pedido.bodega == 1 || pedido.bodega == 0
-                      ? _c("td", [
-                          _c("a", { attrs: { href: "#" } }, [
-                            pedido.bodega == 1
-                              ? _c(
-                                  "i",
-                                  {
-                                    staticClass: "material-icons",
-                                    staticStyle: { color: "#009A00" },
-                                    on: {
-                                      click: function($event) {
-                                        _vm.desactivarBodega(pedido.id)
-                                      }
-                                    }
-                                  },
-                                  [_vm._v("check_circle")]
-                                )
-                              : _vm._e()
-                          ]),
-                          _vm._v(" "),
-                          _c("a", { attrs: { href: "#" } }, [
-                            pedido.bodega == 0
-                              ? _c(
-                                  "i",
-                                  {
-                                    staticClass: "material-icons",
-                                    staticStyle: { color: "red" },
-                                    on: {
-                                      click: function($event) {
-                                        _vm.activarBodega(pedido.id)
-                                      }
-                                    }
-                                  },
-                                  [_vm._v("block")]
-                                )
-                              : _vm._e()
-                          ])
-                        ])
-                      : _vm._e(),
+                    _c("td", [
+                      _c("a", { attrs: { href: "#" } }, [
+                        pedido.bodega == 1
+                          ? _c(
+                              "i",
+                              {
+                                staticClass: "material-icons",
+                                staticStyle: { color: "#009A00" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.desactivarBodega(pedido.id)
+                                  }
+                                }
+                              },
+                              [_vm._v("check_circle")]
+                            )
+                          : _vm._e()
+                      ]),
+                      _vm._v(" "),
+                      _c("a", { attrs: { href: "#" } }, [
+                        pedido.bodega == 0
+                          ? _c(
+                              "i",
+                              {
+                                staticClass: "material-icons",
+                                staticStyle: { color: "red" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.activarBodega(pedido.id)
+                                  }
+                                }
+                              },
+                              [_vm._v("block")]
+                            )
+                          : _vm._e()
+                      ])
+                    ]),
                     _vm._v(" "),
-                    pedido.bodega == 1 || pedido.bodega == 0
-                      ? _c("td", [
-                          _c("a", { attrs: { href: "#" } }, [
-                            pedido.bodega == 1 || pedido.bodega == 0
-                              ? _c("i", { staticClass: "material-icons" }, [
-                                  _vm._v("attachment")
-                                ])
-                              : _vm._e()
-                          ])
-                        ])
-                      : _vm._e(),
+                    _vm._m(2, true),
                     _vm._v(" "),
                     _c("td", { domProps: { textContent: _vm._s(pedido.id) } }),
                     _vm._v(" "),
@@ -39104,7 +39101,7 @@ var render = function() {
                     }),
                     _vm._v(" "),
                     _c("td", [
-                      pedido.estado
+                      pedido.estado == 0
                         ? _c("div", [
                             _c("a", { attrs: { href: "#" } }, [
                               _c(
@@ -39113,7 +39110,26 @@ var render = function() {
                                   staticClass: "badge badge-danger",
                                   on: {
                                     click: function($event) {
-                                      _vm.desactivar(pedido.id)
+                                      _vm.activar(pedido.id)
+                                    }
+                                  }
+                                },
+                                [_vm._v("Descartado")]
+                              )
+                            ])
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      pedido.estado == 1
+                        ? _c("div", [
+                            _c("a", { attrs: { href: "#" } }, [
+                              _c(
+                                "span",
+                                {
+                                  staticClass: "badge badge-warning",
+                                  on: {
+                                    click: function($event) {
+                                      _vm.despachado(pedido.id)
                                     }
                                   }
                                 },
@@ -39121,7 +39137,10 @@ var render = function() {
                               )
                             ])
                           ])
-                        : _c("div", [
+                        : _vm._e(),
+                      _vm._v(" "),
+                      pedido.estado == 2
+                        ? _c("div", [
                             _c("a", { attrs: { href: "#" } }, [
                               _c(
                                 "span",
@@ -39129,7 +39148,7 @@ var render = function() {
                                   staticClass: "badge badge-success",
                                   on: {
                                     click: function($event) {
-                                      _vm.activar(pedido.id)
+                                      _vm.desactivar(pedido.id)
                                     }
                                   }
                                 },
@@ -39137,6 +39156,7 @@ var render = function() {
                               )
                             ])
                           ])
+                        : _vm._e()
                     ])
                   ])
                 })
@@ -39278,7 +39298,7 @@ var render = function() {
                   ? _c(
                       "div",
                       [
-                        _vm._m(1),
+                        _vm._m(3),
                         _vm._v(" "),
                         _vm._l(_vm.cart, function(item) {
                           return _c(
@@ -39381,6 +39401,44 @@ var staticRenderFns = [
     return _c("div", { staticClass: "card-header" }, [
       _c("i", { staticClass: "fa fa-align-justify" }),
       _vm._v("\n        Pedidos\n      ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Acciones")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Bodega")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Factura")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("ID Pedido")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Usuario")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Total")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Tracking ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Fecha ingreso")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Actualizado")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Estado")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [
+      _c("a", { attrs: { href: "#" } }, [
+        _c("i", { staticClass: "material-icons" }, [_vm._v("attachment")])
+      ])
     ])
   },
   function() {

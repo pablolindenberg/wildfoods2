@@ -138,6 +138,13 @@ class PedidoController extends Controller
         $pedido->estado = '1';
         $pedido->save();
     }
+    public function despachado(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+        $pedido = Pedido::findOrFail($request->id);
+        $pedido->estado = '2';
+        $pedido->save();
+    }
 
     public function desactivarBodega(Request $request)
     {
