@@ -42,7 +42,10 @@
                             </thead>
                             <tbody>
                                 <tr v-for="producto in arrayProducto" :key="producto.id">
-                                    <td><img src="/storage/imagenes/logo1.jpg">
+                                    <td>
+                                    <img src="img/productos/1.png">
+
+
                                     </td>
                                     <td>
                                         <button type="button" @click="abrirModal('producto','actualizar',producto)" class="btn btn-warning btn-sm">
@@ -107,6 +110,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
+
                             
                            <div v-if="tipoAccion<=2">
                             <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
@@ -155,8 +159,13 @@
                                     <div class="form-group row">
                                     <label class="col-md-3 form-control-label" for="text-input">Imagen</label>
                                     <div class="col-md-9">
-                                        <input type="file"  class="form-control" name='imagen' >                               
+                                        <input type="file"  class="form-control" name='imagen' @change="updateImage" >   
+                                        <br /> 
+                                        <vue-progress-bar></vue-progress-bar>
+                                        <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click.prevent="updateInfo">Cargar Imagen</button>
+                          
                                     </div>
+                                    
                                 </div>  
                                 
                             
@@ -191,7 +200,9 @@
                       
                         </div>
                         <div v-if="tipoAccion>2">
-                           <img src="/storage/imagenes/logo1.jpg">
+                           <!--<img src="/storage/imagenes/logo1.jpg">-->
+                            <img src="/img/productos/1.png">
+
                         </div>
                         </div>
                     </div>
@@ -220,7 +231,7 @@
                 valor_bruto:0,
                 pvp_unitario:0,
                 total_neto:0,
-                imagen:new Image,
+                imagen:'',
                 stock:0,
                 total:0,
                 estado:0,
@@ -275,6 +286,50 @@
             }
         },
         methods : {
+
+            updateInfo () {
+
+                this.$Progress.start();
+                var url= '/producto/cargarImagen';
+
+                axios.put(url,{
+                    'imagen': this.imagen
+                    }).then(() => {
+                        this.$Progress.finish();
+                    }).catch(() => {
+                         this.$Progress.fail();
+                    });
+
+            },
+
+            updateImage (e){
+                
+                let vm=this;
+                let file = e.target.files[0];
+               // console.log(file);
+                let reader = new FileReader();
+                if(file['size'] < 2111775 ){
+                     reader.onloadend = (file) => {
+                   // console.log('RESULTADO', reader.result);
+                    vm.imagen = reader.result;
+                }
+                reader.readAsDataURL(file);
+                } else {
+
+                        swal({
+                            type: 'error',
+                            title: 'Imagen pesada',
+                            text: 'El peso de la imagen excede el recomendado: 2 MB',
+                        });
+                           vm.imagen = 0;
+                }
+               
+
+
+            },
+
+
+
             listarProducto (page,buscar,criterio){
                 let me=this;
                 var url= '/producto?page=' + page + '&buscar='+ buscar + '&criterio='+ criterio;
@@ -448,6 +503,7 @@
                 this.errorMostrarMsjProducto =[];
                 if (this.idcategoria==0) this.errorMostrarMsjProducto.push("Seleccione una categoria");
                 if (!this.nombre) this.errorMostrarMsjProducto.push("El nombre de del producto no puede estar vacío.");
+                if (this.imagen==0) this.errorMostrarMsjProducto.push("Debe ingresar una imagen");
                 if (this.errorMostrarMsjProducto.length) this.errorProducto = 1;
 
                 return this.errorProducto;

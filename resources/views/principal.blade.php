@@ -50,7 +50,7 @@
                     </a>
                     <a class="dropdown-item" href="#">
                         <i class="fa fa-tasks"></i> Ventas
-                        <span class="badge badge-danger"><!--2-->/span>
+                        <span class="badge badge-danger"><!--2--></span>
                     </a>
                 </div>
             </li>

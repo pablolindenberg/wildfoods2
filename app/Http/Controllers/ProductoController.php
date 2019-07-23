@@ -58,17 +58,28 @@ class ProductoController extends Controller
         $producto->total = $request->total;
         $producto->descuento = $request->descuento;
         $producto->estado = $request->estado;
-        ////$producto->imagen = $request->imagen;  
+        //$producto->imagen = $request->imagen;   
         //$imagen=$request->imagen;    
        // Storage::putFile('public',$imagen);
         $producto->save();
     }
+
     public function cargarImagen(Request $request){
 
-      // $imagen=$request->imagen;
-    //   return Storage::putFile('public',$imagen);
-    $request->file('imagen'); 
-    $request->imagen->store('public');
+
+
+    $user = auth('api')->user();
+    if (!$request->ajax()) return redirect('/');
+
+    if ($request->imagen){
+
+        $name = time(). '.' . explode('/', explode(':', substr($request->imagen,0,strpos($request->imagen,';')))[1])[1];
+
+        \Image::make($request->imagen)->save(public_path('img/productos/')."Wildfoods-".$name);
+
+   }
+
+
     }
 
     public function update(Request $request)
@@ -88,7 +99,8 @@ class ProductoController extends Controller
         $producto->total = $request->total;
         $producto->descuento = $request->descuento;
         $producto->estado = $request->estado;
-      //  $producto->imagen = $request->imagen;      
+      //  $producto->imagen = $request->imagen;
+        $producto->imagen = $request->imagen;           
         $producto->save();
     }
 
