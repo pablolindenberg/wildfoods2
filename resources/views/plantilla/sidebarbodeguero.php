@@ -8,16 +8,11 @@
                         Menu
                     </li>
                    
-                            <li @click="menu=5" class="nav-item">
-                                <a class="nav-link" href="#"><i class="icon-notebook"></i> Ordenes de trabajo</a>
+                            <li @click="menu=1" class="nav-item">
+                                <a class="nav-link" href="#"><i class="icon-notebook"></i>Pedidos</a>
                             </li>
                  
-                    <li class="nav-item nav-dropdown">
-                        <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-pie-chart"></i> Reportes</a>
-                        <ul class="nav-dropdown-items">
-                           
-                        </ul>
-                    </li>
+                
                    
                 </ul>
             </nav>

@@ -19,7 +19,8 @@ class CreatePedidosTable extends Migration
             $table->integer('total');
             $table->string('tracking')->nullable();
             $table->boolean('bodega')->default(0);
-            $table->boolean('estado')->default(1);
+            //'estado' ahora es integer en vez de boolean para poder tener mas opciones; 0=Descartado 1=Pendiente 2=Despachado
+            $table->integer('estado')->default(1);
 
             $table->foreign('idusuario')->references('id')->on('users');
             $table->timestamps();

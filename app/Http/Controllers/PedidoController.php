@@ -31,7 +31,14 @@ class PedidoController extends Controller
             ->where('pedidos.'.$criterio, 'like', '%'. $buscar . '%')
             ->orderBy('pedidos.id', 'desc')->paginate(10);
         }
-    }else{
+    }
+    elseif($rol==2){
+        $pedidos = Pedido::join('users','pedidos.idusuario','=','users.id')
+            ->select('pedidos.id','users.usuario as nombre_usuario','users.email as email_usuario','pedidos.total','pedidos.estado','pedidos.tracking','pedidos.bodega','pedidos.created_at','pedidos.updated_at')
+            ->where('pedidos.bodega', 'like','1')
+            ->orderBy('pedidos.id', 'desc')->paginate(10);
+    }
+    else{
 
         $buscar=$request->user()->id;
         $criterio="idusuario";
@@ -129,6 +136,13 @@ class PedidoController extends Controller
         if (!$request->ajax()) return redirect('/');
         $pedido = Pedido::findOrFail($request->id);
         $pedido->estado = '1';
+        $pedido->save();
+    }
+    public function despachado(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+        $pedido = Pedido::findOrFail($request->id);
+        $pedido->estado = '2';
         $pedido->save();
     }
 

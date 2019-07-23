@@ -36,7 +36,8 @@ Route::group(['middleware'=>['auth']],function(){
     
     Route::get('/producto', 'ProductoController@index');
     Route::post('/producto/registrar', 'ProductoController@store');
-    Route::post('/producto/cargarImagen','ProductoController@cargarImagen');
+    //Route::post('/producto/cargarImagen','ProductoController@cargarImagen');
+    Route::put('/producto/cargarImagen','ProductoController@cargarImagen');
     Route::put('/producto/actualizar', 'ProductoController@update');
     Route::put('/producto/desactivar', 'ProductoController@desactivar');
     Route::put('/producto/activar', 'ProductoController@activar');
@@ -60,6 +61,8 @@ Route::group(['middleware'=>['auth']],function(){
 
     Route::put('/pedido/activar', 'PedidoController@activar');
     Route::put('/pedido/desactivar', 'PedidoController@desactivar');
+    Route::put('/pedido/despachado', 'PedidoController@despachado');
+
     Route::get('/pedido/descargar', 'PedidoController@descargar');
 });
 
