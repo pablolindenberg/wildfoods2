@@ -34483,11 +34483,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             var vm = this;
             var file = e.target.files[0];
-            // console.log(file);
+            //console.log(file);
             var reader = new FileReader();
             if (file['size'] < 2111775) {
                 reader.onloadend = function (file) {
-                    // console.log('RESULTADO', reader.result);
+                    console.log('RESULTADO', reader.result);
                     vm.imagen = reader.result;
                 };
                 reader.readAsDataURL(file);
@@ -34536,7 +34536,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
 
             var me = this;
-            // axios.post('/producto/cargarImagen',{'imagen':this.imagen});
 
             axios.post('/producto/registrar', {
 
