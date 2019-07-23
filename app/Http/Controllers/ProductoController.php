@@ -58,8 +58,7 @@ class ProductoController extends Controller
         $producto->total = $request->total;
         $producto->descuento = $request->descuento;
         $producto->estado = $request->estado;
-        //$producto->imagen = $request->imagen;   
-        //$imagen=$request->imagen;    
+        $producto->imagen = $request->imagen;   
        // Storage::putFile('public',$imagen);
         $producto->save();
     }
@@ -74,7 +73,6 @@ class ProductoController extends Controller
     if ($request->imagen){
 
         $name = time(). '.' . explode('/', explode(':', substr($request->imagen,0,strpos($request->imagen,';')))[1])[1];
-
         \Image::make($request->imagen)->save(public_path('img/productos/')."Wildfoods-".$name);
 
    }
@@ -99,7 +97,6 @@ class ProductoController extends Controller
         $producto->total = $request->total;
         $producto->descuento = $request->descuento;
         $producto->estado = $request->estado;
-      //  $producto->imagen = $request->imagen;
         $producto->imagen = $request->imagen;           
         $producto->save();
     }

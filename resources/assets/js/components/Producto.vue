@@ -579,21 +579,303 @@ export default {
               this.estado = data["estado"];
               break;
             }
-            case "ver": {
-              //console.log(data);
-              this.modal = 1;
-              this.tituloModal = data["nombre"];
-              this.tipoAccion = 3;
-              this.producto_id = data["id"];
-              this.idcategoria = data["idcategoria"];
-              //  this.nombre_categoria=data['nombre_categoria'];
-              this.SKU = data["SKU"];
-              this.nombre = data["nombre"];
-              this.descripcion = data["descripcion"];
-              this.descuento = data["descuento"];
-              this.total = data["total"];
-              this.estado = data["estado"];
-              break;
+        },
+        methods : {
+
+            updateInfo () {
+
+                this.$Progress.start();
+                var url= '/producto/cargarImagen';
+
+                axios.put(url,{
+                    'imagen': this.imagen
+                    }).then(() => {
+                        this.$Progress.finish();
+                    }).catch(() => {
+                         this.$Progress.fail();
+                    });
+
+            },
+
+            updateImage (e){
+                
+                let vm=this;
+                let file = e.target.files[0];
+                console.log(file);
+                let reader = new FileReader();
+                if(file['size'] < 2111775 ){
+                     reader.onloadend = (file) => {
+                    console.log('RESULTADO', reader.result);
+                    vm.imagen = reader.result;
+                }
+                reader.readAsDataURL(file);
+                } else {
+
+                        swal({
+                            type: 'error',
+                            title: 'Imagen pesada',
+                            text: 'El peso de la imagen excede el recomendado: 2 MB',
+                        });
+                           vm.imagen = 0;
+                }
+               
+
+
+            },
+
+
+
+            listarProducto (page,buscar,criterio){
+                let me=this;
+                var url= '/producto?page=' + page + '&buscar='+ buscar + '&criterio='+ criterio;
+                axios.get(url).then(function (response) {
+                    var respuesta= response.data;
+                    me.arrayProducto = respuesta.productos.data;
+                    me.pagination= respuesta.pagination;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+            selectCategoria(){
+                let me=this;
+                var url= '/categoria/selectCategoria';
+                axios.get(url).then(function (response) {
+                   // console.log(response);
+                    var respuesta= response.data;
+                    me.arrayCategoria = respuesta.categorias;
+                
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+            cambiarPagina(page,buscar,criterio){
+                let me = this;
+                //Actualiza la página actual
+                me.pagination.current_page = page;
+                //Envia la petición para visualizar la data de esa página
+                me.listarProducto(page,buscar,criterio);
+            },
+           
+            registrarProducto(){
+                if (this.validarProducto()){
+                    return;
+                }
+                
+                let me = this;
+
+                axios.post('/producto/registrar',{
+
+                    'imagen':this.imagen,
+                    'idcategoria':this.idcategoria,
+                  //'nombre_categoria':this.nombre_categoria,
+                    'SKU':this.SKU,
+                    'nombre': this.nombre,
+                    'descripcion': this.descripcion,
+                    'descuento':this.descuento,
+                    'total':this.total,
+                    'estado':this.estado
+                }).then(function (response) {
+                    me.cerrarModal();
+                    me.listarProducto(1,'','nombre');
+                }).catch(function (error) {
+                    console.log(error);
+                });
+                
+            },
+            verProducto(){
+
+            },
+
+            actualizarProducto(){
+               if (this.validarProducto()){
+                    return;
+                }
+                
+                let me = this;
+
+                axios.put('/producto/actualizar',{
+                    
+                    'id': this.producto_id,
+                    'idcategoria':this.idcategoria,
+                  //'nombre_categoria':this.nombre_categoria,
+                    'SKU':this.SKU,
+                    'nombre': this.nombre,
+                    'descripcion': this.descripcion,
+                    'descuento':this.descuento,
+                    'total':this.total,
+                    'estado':this.estado
+                    
+                }).then(function (response) {
+                    me.cerrarModal();
+                    me.listarProducto(1,'','nombre');
+                }).catch(function (error) {
+                    console.log(error);
+                }); 
+            },
+             desactivarProducto(id){
+               swal({
+                title: 'Esta seguro de desactivar este producto?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Aceptar',
+                cancelButtonText: 'Cancelar',
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger',
+                buttonsStyling: false,
+                reverseButtons: true
+                }).then((result) => {
+                if (result.value) {
+                    let me = this;
+
+                    axios.put('/producto/desactivar',{
+                        'id': id
+                    }).then(function (response) {
+                        me.listarProducto(1,'','nombre');
+                        swal(
+                        'Desactivado!',
+                        'El registro ha sido desactivado con éxito.',
+                        'success'
+                        )
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                    
+                    
+                } else if (
+                    // Read more about handling dismissals
+                    result.dismiss === swal.DismissReason.cancel
+                ) {
+                    
+                }
+                }) 
+            },
+            activarProducto(id){
+               swal({
+                title: 'Esta seguro de activar este producto?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Aceptar',
+                cancelButtonText: 'Cancelar',
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger',
+                buttonsStyling: false,
+                reverseButtons: true
+                }).then((result) => {
+                if (result.value) {
+                    let me = this;
+
+                    axios.put('/producto/activar',{
+                        'id': id
+                    }).then(function (response) {
+                        me.listarProducto(1,'','nombre');
+                        swal(
+                        'Activado!',
+                        'El registro ha sido activado con éxito.',
+                        'success'
+                        )
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                    
+                    
+                } else if (
+                    // Read more about handling dismissals
+                    result.dismiss === swal.DismissReason.cancel
+                ) {
+                    
+                }
+                }) 
+            },
+            validarProducto(){
+                this.errorProducto=0;
+                this.errorMostrarMsjProducto =[];
+                if (this.idcategoria==0) this.errorMostrarMsjProducto.push("Seleccione una categoria");
+                if (!this.nombre) this.errorMostrarMsjProducto.push("El nombre de del producto no puede estar vacío.");
+                if (this.imagen==0) this.errorMostrarMsjProducto.push("Debe ingresar una imagen");
+                if (this.errorMostrarMsjProducto.length) this.errorProducto = 1;
+
+                return this.errorProducto;
+            },
+            cerrarModal(){
+                this.modal=0;
+                this.tituloModal='';
+                this.idcategoria=0;
+                this.nombre_categoria='';
+                this.SKU='';
+                this.nombre = '';
+                this.descripcion = '';
+                this.descuento=0;
+                this.total=0;
+                this.estado=0;
+                this.errorProducto = 0;
+           
+            },
+            abrirModal(modelo, accion, data = []){
+                switch(modelo){
+                    case "producto":
+                    {
+                        switch(accion){
+                            case 'registrar':
+                            {
+                                this.modal = 1;
+                                this.tituloModal = 'Registrar Producto';
+                                this.idcategoria=0;
+                                this.nombre_categoria='';
+                                this.SKU='';
+                                this.nombre = '';
+                                this.descripcion = '';
+                                this.descuento=0;
+                                this.total=0;
+                                this.estado=1;
+                                this.tipoAccion = 1;
+                          
+                                break;
+                            }
+                            case 'actualizar':
+                            {
+                                //console.log(data);
+                                this.modal=1;
+                                this.tituloModal='Actualizar Producto';
+                                this.tipoAccion=2;
+                                this.producto_id=data['id'];
+                                this.idcategoria=data['idcategoria'];
+                              //  this.nombre_categoria=data['nombre_categoria'];
+                                this.SKU=data['SKU'];
+                                this.nombre = data['nombre'];
+                                this.descripcion =data['descripcion'];
+                                this.descuento=data['descuento'];                
+                                this.total=data['total'];
+                                this.estado=data['estado'];
+                                break;
+                            }
+                             case 'ver':
+                            {
+                                //console.log(data);
+                                this.modal=1;
+                                this.tituloModal=data['nombre'];
+                                this.tipoAccion=3;
+                                this.producto_id=data['id'];
+                                this.idcategoria=data['idcategoria'];
+                              //  this.nombre_categoria=data['nombre_categoria'];
+                                this.SKU=data['SKU'];
+                                this.nombre = data['nombre'];
+                                this.descripcion =data['descripcion'];
+                                this.descuento=data['descuento'];                
+                                this.total=data['total'];
+                                this.estado=data['estado'];
+                                break;
+                            }
+                        }
+                       
+                    }
+                }
+                this.selectCategoria();
             }
           }
         }
