@@ -24,12 +24,8 @@
                             <li @click="menu=3" class="nav-item">
                                 <a class="nav-link" href="#"><i class="icon-basket-loaded"></i> Pedidos</a>
                             </li>
-                            <li @click="menu=4" class="nav-item">
-                                <a class="nav-link" href="#"><i class="icon-notebook"></i> Clientes</a>
-                            </li>
-                            <li @click="menu=5" class="nav-item">
-                                <a class="nav-link" href="#"><i class="icon-notebook"></i> Ordenes de trabajo</a>
-                            </li>
+                            
+                        
                     
                     <li class="nav-item nav-dropdown">
                         <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-people"></i>Acceso</a>

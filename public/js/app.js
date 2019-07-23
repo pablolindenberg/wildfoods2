@@ -33036,7 +33036,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #3c29297a !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\n", ""]);
+exports.push([module.i, "\n.modal-content {\r\n  width: 100% !important;\r\n  position: absolute !important;\n}\n.mostrar {\r\n  display: list-item !important;\r\n  opacity: 1 !important;\r\n  position: absolute !important;\r\n  background-color: #3c29297a !important;\n}\n.div-error {\r\n  display: flex;\r\n  justify-content: center;\n}\n.text-error {\r\n  color: red !important;\r\n  font-weight: bold;\n}\r\n", ""]);
 
 // exports
 
@@ -33219,230 +33219,290 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            categoria_id: 0,
-            nombre: '',
-            descripcion: '',
-            arrayCategoria: [],
-            modal: 0,
-            tituloModal: '',
-            tipoAccion: 0,
-            errorCategoria: 0,
-            errorMostrarMsjCategoria: [],
-            pagination: {
-                'total': 0,
-                'current_page': 0,
-                'per_page': 0,
-                'last_page': 0,
-                'from': 0,
-                'to': 0
-            },
-            offset: 3,
-            criterio: 'nombre',
-            buscar: ''
-        };
+  data: function data() {
+    return {
+      categoria_id: 0,
+      nombre: "",
+      descripcion: "",
+      arrayCategoria: [],
+      modal: 0,
+      tituloModal: "",
+      tipoAccion: 0,
+      errorCategoria: 0,
+      errorMostrarMsjCategoria: [],
+      pagination: {
+        total: 0,
+        current_page: 0,
+        per_page: 0,
+        last_page: 0,
+        from: 0,
+        to: 0
+      },
+      offset: 3,
+      criterio: "nombre",
+      buscar: ""
+    };
+  },
+
+  computed: {
+    isActived: function isActived() {
+      return this.pagination.current_page;
     },
+    //Calcula los elementos de la paginación
+    pagesNumber: function pagesNumber() {
+      if (!this.pagination.to) {
+        return [];
+      }
 
-    computed: {
-        isActived: function isActived() {
-            return this.pagination.current_page;
-        },
-        //Calcula los elementos de la paginación
-        pagesNumber: function pagesNumber() {
-            if (!this.pagination.to) {
-                return [];
-            }
+      var from = this.pagination.current_page - this.offset;
+      if (from < 1) {
+        from = 1;
+      }
 
-            var from = this.pagination.current_page - this.offset;
-            if (from < 1) {
-                from = 1;
-            }
+      var to = from + this.offset * 2;
+      if (to >= this.pagination.last_page) {
+        to = this.pagination.last_page;
+      }
 
-            var to = from + this.offset * 2;
-            if (to >= this.pagination.last_page) {
-                to = this.pagination.last_page;
-            }
-
-            var pagesArray = [];
-            while (from <= to) {
-                pagesArray.push(from);
-                from++;
-            }
-            return pagesArray;
-        }
-    },
-    methods: {
-        listarCategoria: function listarCategoria(page, buscar, criterio) {
-            var me = this;
-            var url = '/categoria?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
-            axios.get(url).then(function (response) {
-                var respuesta = response.data;
-                me.arrayCategoria = respuesta.categorias.data;
-                me.pagination = respuesta.pagination;
-            }).catch(function (error) {
-                console.log(error);
-            });
-        },
-        cambiarPagina: function cambiarPagina(page, buscar, criterio) {
-            var me = this;
-            //Actualiza la página actual
-            me.pagination.current_page = page;
-            //Envia la petición para visualizar la data de esa página
-            me.listarCategoria(page, buscar, criterio);
-        },
-        registrarCategoria: function registrarCategoria() {
-            if (this.validarCategoria()) {
-                return;
-            }
-
-            var me = this;
-
-            axios.post('/categoria/registrar', {
-                'nombre': this.nombre,
-                'descripcion': this.descripcion
-            }).then(function (response) {
-                me.cerrarModal();
-                me.listarCategoria(1, '', 'nombre');
-            }).catch(function (error) {
-                console.log(error);
-            });
-        },
-        actualizarCategoria: function actualizarCategoria() {
-            if (this.validarCategoria()) {
-                return;
-            }
-
-            var me = this;
-
-            axios.put('/categoria/actualizar', {
-                'nombre': this.nombre,
-                'descripcion': this.descripcion,
-                'id': this.categoria_id
-            }).then(function (response) {
-                me.cerrarModal();
-                me.listarCategoria(1, '', 'nombre');
-            }).catch(function (error) {
-                console.log(error);
-            });
-        },
-        desactivarCategoria: function desactivarCategoria(id) {
-            var _this = this;
-
-            swal({
-                title: 'Esta seguro de desactivar esta categoría?',
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Aceptar!',
-                cancelButtonText: 'Cancelar',
-                confirmButtonClass: 'btn btn-success',
-                cancelButtonClass: 'btn btn-danger',
-                buttonsStyling: false,
-                reverseButtons: true
-            }).then(function (result) {
-                if (result.value) {
-                    var me = _this;
-
-                    axios.put('/categoria/desactivar', {
-                        'id': id
-                    }).then(function (response) {
-                        me.listarCategoria(1, '', 'nombre');
-                        swal('Desactivado!', 'El registro ha sido desactivado con éxito.', 'success');
-                    }).catch(function (error) {
-                        console.log(error);
-                    });
-                } else if (
-                // Read more about handling dismissals
-                result.dismiss === swal.DismissReason.cancel) {}
-            });
-        },
-        activarCategoria: function activarCategoria(id) {
-            var _this2 = this;
-
-            swal({
-                title: 'Esta seguro de activar esta categoría?',
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Aceptar!',
-                cancelButtonText: 'Cancelar',
-                confirmButtonClass: 'btn btn-success',
-                cancelButtonClass: 'btn btn-danger',
-                buttonsStyling: false,
-                reverseButtons: true
-            }).then(function (result) {
-                if (result.value) {
-                    var me = _this2;
-
-                    axios.put('/categoria/activar', {
-                        'id': id
-                    }).then(function (response) {
-                        me.listarCategoria(1, '', 'nombre');
-                        swal('Activado!', 'El registro ha sido activado con éxito.', 'success');
-                    }).catch(function (error) {
-                        console.log(error);
-                    });
-                } else if (
-                // Read more about handling dismissals
-                result.dismiss === swal.DismissReason.cancel) {}
-            });
-        },
-        validarCategoria: function validarCategoria() {
-            this.errorCategoria = 0;
-            this.errorMostrarMsjCategoria = [];
-
-            if (!this.nombre) this.errorMostrarMsjCategoria.push("El nombre de la categoría no puede estar vacío.");
-
-            if (this.errorMostrarMsjCategoria.length) this.errorCategoria = 1;
-
-            return this.errorCategoria;
-        },
-        cerrarModal: function cerrarModal() {
-            this.modal = 0;
-            this.tituloModal = '';
-            this.nombre = '';
-            this.descripcion = '';
-        },
-        abrirModal: function abrirModal(modelo, accion) {
-            var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
-
-            switch (modelo) {
-                case "categoria":
-                    {
-                        switch (accion) {
-                            case 'registrar':
-                                {
-                                    this.modal = 1;
-                                    this.tituloModal = 'Registrar Categoría';
-                                    this.nombre = '';
-                                    this.descripcion = '';
-                                    this.tipoAccion = 1;
-                                    break;
-                                }
-                            case 'actualizar':
-                                {
-                                    //console.log(data);
-                                    this.modal = 1;
-                                    this.tituloModal = 'Actualizar categoría';
-                                    this.tipoAccion = 2;
-                                    this.categoria_id = data['id'];
-                                    this.nombre = data['nombre'];
-                                    this.descripcion = data['descripcion'];
-                                    break;
-                                }
-                        }
-                    }
-            }
-        }
-    },
-    mounted: function mounted() {
-        this.listarCategoria(1, this.buscar, this.criterio);
+      var pagesArray = [];
+      while (from <= to) {
+        pagesArray.push(from);
+        from++;
+      }
+      return pagesArray;
     }
+  },
+  methods: {
+    listarCategoria: function listarCategoria(page, buscar, criterio) {
+      var me = this;
+      var url = "/categoria?page=" + page + "&buscar=" + buscar + "&criterio=" + criterio;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.arrayCategoria = respuesta.categorias.data;
+        me.pagination = respuesta.pagination;
+      }).catch(function (error) {
+        console.log(error);
+      });
+    },
+    cambiarPagina: function cambiarPagina(page, buscar, criterio) {
+      var me = this;
+      //Actualiza la página actual
+      me.pagination.current_page = page;
+      //Envia la petición para visualizar la data de esa página
+      me.listarCategoria(page, buscar, criterio);
+    },
+    registrarCategoria: function registrarCategoria() {
+      if (this.validarCategoria()) {
+        return;
+      }
+
+      var me = this;
+
+      axios.post("/categoria/registrar", {
+        nombre: this.nombre,
+        descripcion: this.descripcion
+      }).then(function (response) {
+        me.cerrarModal();
+        me.listarCategoria(1, "", "nombre");
+      }).catch(function (error) {
+        console.log(error);
+      });
+    },
+    actualizarCategoria: function actualizarCategoria() {
+      if (this.validarCategoria()) {
+        return;
+      }
+
+      var me = this;
+
+      axios.put("/categoria/actualizar", {
+        nombre: this.nombre,
+        descripcion: this.descripcion,
+        id: this.categoria_id
+      }).then(function (response) {
+        me.cerrarModal();
+        me.listarCategoria(1, "", "nombre");
+      }).catch(function (error) {
+        console.log(error);
+      });
+    },
+    desactivarCategoria: function desactivarCategoria(id) {
+      var _this = this;
+
+      swal({
+        title: "Esta seguro de desactivar esta categoría?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Aceptar!",
+        cancelButtonText: "Cancelar",
+        confirmButtonClass: "btn btn-success",
+        cancelButtonClass: "btn btn-danger",
+        buttonsStyling: false,
+        reverseButtons: true
+      }).then(function (result) {
+        if (result.value) {
+          var me = _this;
+
+          axios.put("/categoria/desactivar", {
+            id: id
+          }).then(function (response) {
+            me.listarCategoria(1, "", "nombre");
+            swal("Desactivado!", "El registro ha sido desactivado con éxito.", "success");
+          }).catch(function (error) {
+            console.log(error);
+          });
+        } else if (
+        // Read more about handling dismissals
+        result.dismiss === swal.DismissReason.cancel) {}
+      });
+    },
+    activarCategoria: function activarCategoria(id) {
+      var _this2 = this;
+
+      swal({
+        title: "Esta seguro de activar esta categoría?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Aceptar!",
+        cancelButtonText: "Cancelar",
+        confirmButtonClass: "btn btn-success",
+        cancelButtonClass: "btn btn-danger",
+        buttonsStyling: false,
+        reverseButtons: true
+      }).then(function (result) {
+        if (result.value) {
+          var me = _this2;
+
+          axios.put("/categoria/activar", {
+            id: id
+          }).then(function (response) {
+            me.listarCategoria(1, "", "nombre");
+            swal("Activado!", "El registro ha sido activado con éxito.", "success");
+          }).catch(function (error) {
+            console.log(error);
+          });
+        } else if (
+        // Read more about handling dismissals
+        result.dismiss === swal.DismissReason.cancel) {}
+      });
+    },
+    validarCategoria: function validarCategoria() {
+      this.errorCategoria = 0;
+      this.errorMostrarMsjCategoria = [];
+
+      if (!this.nombre) this.errorMostrarMsjCategoria.push("El nombre de la categoría no puede estar vacío.");
+
+      if (this.errorMostrarMsjCategoria.length) this.errorCategoria = 1;
+
+      return this.errorCategoria;
+    },
+    cerrarModal: function cerrarModal() {
+      this.modal = 0;
+      this.tituloModal = "";
+      this.nombre = "";
+      this.descripcion = "";
+    },
+    abrirModal: function abrirModal(modelo, accion) {
+      var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+
+      switch (modelo) {
+        case "categoria":
+          {
+            switch (accion) {
+              case "registrar":
+                {
+                  this.modal = 1;
+                  this.tituloModal = "Registrar Categoría";
+                  this.nombre = "";
+                  this.descripcion = "";
+                  this.tipoAccion = 1;
+                  break;
+                }
+              case "actualizar":
+                {
+                  //console.log(data);
+                  this.modal = 1;
+                  this.tituloModal = "Actualizar categoría";
+                  this.tipoAccion = 2;
+                  this.categoria_id = data["id"];
+                  this.nombre = data["nombre"];
+                  this.descripcion = data["descripcion"];
+                  break;
+                }
+            }
+          }
+      }
+    }
+  },
+  mounted: function mounted() {
+    this.listarCategoria(1, this.buscar, this.criterio);
+  }
 });
 
 /***/ }),
@@ -33458,7 +33518,7 @@ var render = function() {
       _c("div", { staticClass: "card" }, [
         _c("div", { staticClass: "card-header" }, [
           _c("i", { staticClass: "fa fa-align-justify" }),
-          _vm._v(" Categorías\n                "),
+          _vm._v(" Categorías\n        "),
           _c(
             "button",
             {
@@ -33470,10 +33530,7 @@ var render = function() {
                 }
               }
             },
-            [
-              _c("i", { staticClass: "icon-plus" }),
-              _vm._v(" Nuevo\n                ")
-            ]
+            [_c("i", { staticClass: "icon-plus" }), _vm._v(" Nuevo\n        ")]
           )
         ]),
         _vm._v(" "),
@@ -33562,7 +33619,10 @@ var render = function() {
                       }
                     }
                   },
-                  [_c("i", { staticClass: "fa fa-search" }), _vm._v(" Buscar")]
+                  [
+                    _c("i", { staticClass: "fa fa-search" }),
+                    _vm._v(" Buscar\n              ")
+                  ]
                 )
               ])
             ])
@@ -33578,61 +33638,28 @@ var render = function() {
                 "tbody",
                 _vm._l(_vm.arrayCategoria, function(categoria) {
                   return _c("tr", { key: categoria.id }, [
-                    _c(
-                      "td",
-                      [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-warning btn-sm",
-                            attrs: { type: "button" },
-                            on: {
-                              click: function($event) {
-                                _vm.abrirModal(
-                                  "categoria",
-                                  "actualizar",
-                                  categoria
-                                )
-                              }
+                    _c("td", [
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              _vm.abrirModal(
+                                "categoria",
+                                "actualizar",
+                                categoria
+                              )
                             }
-                          },
-                          [_c("i", { staticClass: "icon-pencil" })]
-                        ),
-                        _vm._v("  \n                                "),
-                        categoria.condicion
-                          ? [
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-danger btn-sm",
-                                  attrs: { type: "button" },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.desactivarCategoria(categoria.id)
-                                    }
-                                  }
-                                },
-                                [_c("i", { staticClass: "icon-trash" })]
-                              )
-                            ]
-                          : [
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-info btn-sm",
-                                  attrs: { type: "button" },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.activarCategoria(categoria.id)
-                                    }
-                                  }
-                                },
-                                [_c("i", { staticClass: "icon-check" })]
-                              )
-                            ]
-                      ],
-                      2
-                    ),
+                          }
+                        },
+                        [
+                          _c("i", { staticClass: "material-icons" }, [
+                            _vm._v("edit")
+                          ])
+                        ]
+                      )
+                    ]),
                     _vm._v(" "),
                     _c("td", {
                       domProps: { textContent: _vm._s(categoria.nombre) }
@@ -33640,7 +33667,51 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", {
                       domProps: { textContent: _vm._s(categoria.descripcion) }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _c("td", [
+                      categoria.condicion
+                        ? _c("div", [
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.desactivarCategoria(categoria.id)
+                                  }
+                                }
+                              },
+                              [
+                                _c(
+                                  "span",
+                                  { staticClass: "badge badge-success" },
+                                  [_vm._v("Activa")]
+                                )
+                              ]
+                            )
+                          ])
+                        : _c("div", [
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.activarCategoria(categoria.id)
+                                  }
+                                }
+                              },
+                              [
+                                _c(
+                                  "span",
+                                  { staticClass: "badge badge-danger" },
+                                  [_vm._v("Desactivada")]
+                                )
+                              ]
+                            )
+                          ])
+                    ])
                   ])
                 })
               )
@@ -33959,7 +34030,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Nombre")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Descripción")])
+        _c("th", [_vm._v("Descripción")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Estado")])
       ])
     ])
   }
@@ -34059,7 +34132,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #3c29297a !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\n", ""]);
+exports.push([module.i, "\n.modal-content {\r\n  width: 100% !important;\r\n  position: absolute !important;\n}\n.mostrar {\r\n  display: list-item !important;\r\n  opacity: 1 !important;\r\n  position: absolute !important;\r\n  background-color: #3c29297a !important;\n}\n.div-error {\r\n  display: flex;\r\n  justify-content: center;\n}\n.text-error {\r\n  color: red !important;\r\n  font-weight: bold;\n}\r\n", ""]);
 
 // exports
 
@@ -34276,311 +34349,375 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            producto_id: 0,
-            idcategoria: 0,
-            nombre_categoria: '',
-            SKU: '',
-            nombre: '',
-            descripcion: '',
-            marca: '',
-            contenido_display: 0,
-            valor_neto: 0,
-            valor_bruto: 0,
-            pvp_unitario: 0,
-            total_neto: 0,
-            imagen: new Image(),
-            stock: 0,
-            total: 0,
-            estado: 0,
-            descuento: 0,
-            arrayProducto: [],
-            modal: 0,
-            tituloModal: '',
-            tipoAccion: 0,
-            errorProducto: 0,
-            errorMostrarMsjProducto: [],
-            pagination: {
-                'total': 0,
-                'current_page': 0,
-                'per_page': 0,
-                'last_page': 0,
-                'from': 0,
-                'to': 0
-            },
-            offset: 3,
-            criterio: 'nombre',
-            buscar: '',
-            arrayCategoria: []
-        };
+  data: function data() {
+    return {
+      producto_id: 0,
+      idcategoria: 0,
+      nombre_categoria: "",
+      SKU: "",
+      nombre: "",
+      descripcion: "",
+      marca: "",
+      contenido_display: 0,
+      valor_neto: 0,
+      valor_bruto: 0,
+      pvp_unitario: 0,
+      total_neto: 0,
+      imagen: new Image(),
+      stock: 0,
+      total: 0,
+      estado: 0,
+      descuento: 0,
+      arrayProducto: [],
+      modal: 0,
+      tituloModal: "",
+      tipoAccion: 0,
+      errorProducto: 0,
+      errorMostrarMsjProducto: [],
+      pagination: {
+        total: 0,
+        current_page: 0,
+        per_page: 0,
+        last_page: 0,
+        from: 0,
+        to: 0
+      },
+      offset: 3,
+      criterio: "nombre",
+      buscar: "",
+      arrayCategoria: []
+    };
+  },
+
+  computed: {
+    isActived: function isActived() {
+      return this.pagination.current_page;
     },
+    //Calcula los elementos de la paginación
+    pagesNumber: function pagesNumber() {
+      if (!this.pagination.to) {
+        return [];
+      }
 
-    computed: {
-        isActived: function isActived() {
-            return this.pagination.current_page;
-        },
-        //Calcula los elementos de la paginación
-        pagesNumber: function pagesNumber() {
-            if (!this.pagination.to) {
-                return [];
-            }
+      var from = this.pagination.current_page - this.offset;
+      if (from < 1) {
+        from = 1;
+      }
 
-            var from = this.pagination.current_page - this.offset;
-            if (from < 1) {
-                from = 1;
-            }
+      var to = from + this.offset * 2;
+      if (to >= this.pagination.last_page) {
+        to = this.pagination.last_page;
+      }
 
-            var to = from + this.offset * 2;
-            if (to >= this.pagination.last_page) {
-                to = this.pagination.last_page;
-            }
-
-            var pagesArray = [];
-            while (from <= to) {
-                pagesArray.push(from);
-                from++;
-            }
-            return pagesArray;
-        }
-    },
-    methods: {
-        listarProducto: function listarProducto(page, buscar, criterio) {
-            var me = this;
-            var url = '/producto?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
-            axios.get(url).then(function (response) {
-                var respuesta = response.data;
-                me.arrayProducto = respuesta.productos.data;
-                me.pagination = respuesta.pagination;
-            }).catch(function (error) {
-                console.log(error);
-            });
-        },
-        selectCategoria: function selectCategoria() {
-            var me = this;
-            var url = '/categoria/selectCategoria';
-            axios.get(url).then(function (response) {
-                // console.log(response);
-                var respuesta = response.data;
-                me.arrayCategoria = respuesta.categorias;
-            }).catch(function (error) {
-                console.log(error);
-            });
-        },
-        cambiarPagina: function cambiarPagina(page, buscar, criterio) {
-            var me = this;
-            //Actualiza la página actual
-            me.pagination.current_page = page;
-            //Envia la petición para visualizar la data de esa página
-            me.listarProducto(page, buscar, criterio);
-        },
-        registrarProducto: function registrarProducto() {
-            if (this.validarProducto()) {
-                return;
-            }
-
-            var me = this;
-            // axios.post('/producto/cargarImagen',{'imagen':this.imagen});
-
-            axios.post('/producto/registrar', {
-
-                'imagen': this.imagen,
-                'idcategoria': this.idcategoria,
-                //'nombre_categoria':this.nombre_categoria,
-                'SKU': this.SKU,
-                'nombre': this.nombre,
-                'descripcion': this.descripcion,
-                'descuento': this.descuento,
-                'total': this.total,
-                'estado': this.estado
-            }).then(function (response) {
-                me.cerrarModal();
-                me.listarProducto(1, '', 'nombre');
-            }).catch(function (error) {
-                console.log(error);
-            });
-        },
-        verProducto: function verProducto() {},
-        actualizarProducto: function actualizarProducto() {
-            if (this.validarProducto()) {
-                return;
-            }
-
-            var me = this;
-
-            axios.put('/producto/actualizar', {
-
-                'id': this.producto_id,
-                'idcategoria': this.idcategoria,
-                //'nombre_categoria':this.nombre_categoria,
-                'SKU': this.SKU,
-                'nombre': this.nombre,
-                'descripcion': this.descripcion,
-                'descuento': this.descuento,
-                'total': this.total,
-                'estado': this.estado
-
-            }).then(function (response) {
-                me.cerrarModal();
-                me.listarProducto(1, '', 'nombre');
-            }).catch(function (error) {
-                console.log(error);
-            });
-        },
-        desactivarProducto: function desactivarProducto(id) {
-            var _this = this;
-
-            swal({
-                title: 'Esta seguro de desactivar este producto?',
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Aceptar',
-                cancelButtonText: 'Cancelar',
-                confirmButtonClass: 'btn btn-success',
-                cancelButtonClass: 'btn btn-danger',
-                buttonsStyling: false,
-                reverseButtons: true
-            }).then(function (result) {
-                if (result.value) {
-                    var me = _this;
-
-                    axios.put('/producto/desactivar', {
-                        'id': id
-                    }).then(function (response) {
-                        me.listarProducto(1, '', 'nombre');
-                        swal('Desactivado!', 'El registro ha sido desactivado con éxito.', 'success');
-                    }).catch(function (error) {
-                        console.log(error);
-                    });
-                } else if (
-                // Read more about handling dismissals
-                result.dismiss === swal.DismissReason.cancel) {}
-            });
-        },
-        activarProducto: function activarProducto(id) {
-            var _this2 = this;
-
-            swal({
-                title: 'Esta seguro de activar este producto?',
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Aceptar',
-                cancelButtonText: 'Cancelar',
-                confirmButtonClass: 'btn btn-success',
-                cancelButtonClass: 'btn btn-danger',
-                buttonsStyling: false,
-                reverseButtons: true
-            }).then(function (result) {
-                if (result.value) {
-                    var me = _this2;
-
-                    axios.put('/producto/activar', {
-                        'id': id
-                    }).then(function (response) {
-                        me.listarProducto(1, '', 'nombre');
-                        swal('Activado!', 'El registro ha sido activado con éxito.', 'success');
-                    }).catch(function (error) {
-                        console.log(error);
-                    });
-                } else if (
-                // Read more about handling dismissals
-                result.dismiss === swal.DismissReason.cancel) {}
-            });
-        },
-        validarProducto: function validarProducto() {
-            this.errorProducto = 0;
-            this.errorMostrarMsjProducto = [];
-            if (this.idcategoria == 0) this.errorMostrarMsjProducto.push("Seleccione una categoria");
-            if (!this.nombre) this.errorMostrarMsjProducto.push("El nombre de del producto no puede estar vacío.");
-            if (this.errorMostrarMsjProducto.length) this.errorProducto = 1;
-
-            return this.errorProducto;
-        },
-        cerrarModal: function cerrarModal() {
-            this.modal = 0;
-            this.tituloModal = '';
-            this.idcategoria = 0;
-            this.nombre_categoria = '';
-            this.SKU = '';
-            this.nombre = '';
-            this.descripcion = '';
-            this.descuento = 0;
-            this.total = 0;
-            this.estado = 0;
-            this.errorProducto = 0;
-        },
-        abrirModal: function abrirModal(modelo, accion) {
-            var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
-
-            switch (modelo) {
-                case "producto":
-                    {
-                        switch (accion) {
-                            case 'registrar':
-                                {
-                                    this.modal = 1;
-                                    this.tituloModal = 'Registrar Producto';
-                                    this.idcategoria = 0;
-                                    this.nombre_categoria = '';
-                                    this.SKU = '';
-                                    this.nombre = '';
-                                    this.descripcion = '';
-                                    this.descuento = 0;
-                                    this.total = 0;
-                                    this.estado = 1;
-                                    this.tipoAccion = 1;
-
-                                    break;
-                                }
-                            case 'actualizar':
-                                {
-                                    //console.log(data);
-                                    this.modal = 1;
-                                    this.tituloModal = 'Actualizar Producto';
-                                    this.tipoAccion = 2;
-                                    this.producto_id = data['id'];
-                                    this.idcategoria = data['idcategoria'];
-                                    //  this.nombre_categoria=data['nombre_categoria'];
-                                    this.SKU = data['SKU'];
-                                    this.nombre = data['nombre'];
-                                    this.descripcion = data['descripcion'];
-                                    this.descuento = data['descuento'];
-                                    this.total = data['total'];
-                                    this.estado = data['estado'];
-                                    break;
-                                }
-                            case 'ver':
-                                {
-                                    //console.log(data);
-                                    this.modal = 1;
-                                    this.tituloModal = data['nombre'];
-                                    this.tipoAccion = 3;
-                                    this.producto_id = data['id'];
-                                    this.idcategoria = data['idcategoria'];
-                                    //  this.nombre_categoria=data['nombre_categoria'];
-                                    this.SKU = data['SKU'];
-                                    this.nombre = data['nombre'];
-                                    this.descripcion = data['descripcion'];
-                                    this.descuento = data['descuento'];
-                                    this.total = data['total'];
-                                    this.estado = data['estado'];
-                                    break;
-                                }
-                        }
-                    }
-            }
-            this.selectCategoria();
-        }
-    },
-    mounted: function mounted() {
-        this.listarProducto(1, this.buscar, this.criterio);
+      var pagesArray = [];
+      while (from <= to) {
+        pagesArray.push(from);
+        from++;
+      }
+      return pagesArray;
     }
+  },
+  methods: {
+    listarProducto: function listarProducto(page, buscar, criterio) {
+      var me = this;
+      var url = "/producto?page=" + page + "&buscar=" + buscar + "&criterio=" + criterio;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.arrayProducto = respuesta.productos.data;
+        me.pagination = respuesta.pagination;
+      }).catch(function (error) {
+        console.log(error);
+      });
+    },
+    selectCategoria: function selectCategoria() {
+      var me = this;
+      var url = "/categoria/selectCategoria";
+      axios.get(url).then(function (response) {
+        // console.log(response);
+        var respuesta = response.data;
+        me.arrayCategoria = respuesta.categorias;
+      }).catch(function (error) {
+        console.log(error);
+      });
+    },
+    cambiarPagina: function cambiarPagina(page, buscar, criterio) {
+      var me = this;
+      //Actualiza la página actual
+      me.pagination.current_page = page;
+      //Envia la petición para visualizar la data de esa página
+      me.listarProducto(page, buscar, criterio);
+    },
+    registrarProducto: function registrarProducto() {
+      if (this.validarProducto()) {
+        return;
+      }
+
+      var me = this;
+      // axios.post('/producto/cargarImagen',{'imagen':this.imagen});
+
+      axios.post("/producto/registrar", {
+        imagen: this.imagen,
+        idcategoria: this.idcategoria,
+        //'nombre_categoria':this.nombre_categoria,
+        SKU: this.SKU,
+        nombre: this.nombre,
+        descripcion: this.descripcion,
+        descuento: this.descuento,
+        total: this.total,
+        estado: this.estado
+      }).then(function (response) {
+        me.cerrarModal();
+        me.listarProducto(1, "", "nombre");
+      }).catch(function (error) {
+        console.log(error);
+      });
+    },
+    verProducto: function verProducto() {},
+    actualizarProducto: function actualizarProducto() {
+      if (this.validarProducto()) {
+        return;
+      }
+
+      var me = this;
+
+      axios.put("/producto/actualizar", {
+        id: this.producto_id,
+        idcategoria: this.idcategoria,
+        //'nombre_categoria':this.nombre_categoria,
+        SKU: this.SKU,
+        nombre: this.nombre,
+        descripcion: this.descripcion,
+        descuento: this.descuento,
+        total: this.total,
+        estado: this.estado
+      }).then(function (response) {
+        me.cerrarModal();
+        me.listarProducto(1, "", "nombre");
+      }).catch(function (error) {
+        console.log(error);
+      });
+    },
+    desactivarProducto: function desactivarProducto(id) {
+      var _this = this;
+
+      swal({
+        title: "Esta seguro de desactivar este producto?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Aceptar",
+        cancelButtonText: "Cancelar",
+        confirmButtonClass: "btn btn-success",
+        cancelButtonClass: "btn btn-danger",
+        buttonsStyling: false,
+        reverseButtons: true
+      }).then(function (result) {
+        if (result.value) {
+          var me = _this;
+
+          axios.put("/producto/desactivar", {
+            id: id
+          }).then(function (response) {
+            me.listarProducto(1, "", "nombre");
+            swal("Desactivado!", "El registro ha sido desactivado con éxito.", "success");
+          }).catch(function (error) {
+            console.log(error);
+          });
+        } else if (
+        // Read more about handling dismissals
+        result.dismiss === swal.DismissReason.cancel) {}
+      });
+    },
+    activarProducto: function activarProducto(id) {
+      var _this2 = this;
+
+      swal({
+        title: "Esta seguro de activar este producto?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Aceptar",
+        cancelButtonText: "Cancelar",
+        confirmButtonClass: "btn btn-success",
+        cancelButtonClass: "btn btn-danger",
+        buttonsStyling: false,
+        reverseButtons: true
+      }).then(function (result) {
+        if (result.value) {
+          var me = _this2;
+
+          axios.put("/producto/activar", {
+            id: id
+          }).then(function (response) {
+            me.listarProducto(1, "", "nombre");
+            swal("Activado!", "El registro ha sido activado con éxito.", "success");
+          }).catch(function (error) {
+            console.log(error);
+          });
+        } else if (
+        // Read more about handling dismissals
+        result.dismiss === swal.DismissReason.cancel) {}
+      });
+    },
+    validarProducto: function validarProducto() {
+      this.errorProducto = 0;
+      this.errorMostrarMsjProducto = [];
+      if (this.idcategoria == 0) this.errorMostrarMsjProducto.push("Seleccione una categoria");
+      if (!this.nombre) this.errorMostrarMsjProducto.push("El nombre de del producto no puede estar vacío.");
+      if (this.errorMostrarMsjProducto.length) this.errorProducto = 1;
+
+      return this.errorProducto;
+    },
+    cerrarModal: function cerrarModal() {
+      this.modal = 0;
+      this.tituloModal = "";
+      this.idcategoria = 0;
+      this.nombre_categoria = "";
+      this.SKU = "";
+      this.nombre = "";
+      this.descripcion = "";
+      this.descuento = 0;
+      this.total = 0;
+      this.estado = 0;
+      this.errorProducto = 0;
+    },
+    abrirModal: function abrirModal(modelo, accion) {
+      var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+
+      switch (modelo) {
+        case "producto":
+          {
+            switch (accion) {
+              case "registrar":
+                {
+                  this.modal = 1;
+                  this.tituloModal = "Registrar Producto";
+                  this.idcategoria = 0;
+                  this.nombre_categoria = "";
+                  this.SKU = "";
+                  this.nombre = "";
+                  this.descripcion = "";
+                  this.descuento = 0;
+                  this.total = 0;
+                  this.estado = 1;
+                  this.tipoAccion = 1;
+
+                  break;
+                }
+              case "actualizar":
+                {
+                  //console.log(data);
+                  this.modal = 1;
+                  this.tituloModal = "Actualizar Producto";
+                  this.tipoAccion = 2;
+                  this.producto_id = data["id"];
+                  this.idcategoria = data["idcategoria"];
+                  //  this.nombre_categoria=data['nombre_categoria'];
+                  this.SKU = data["SKU"];
+                  this.nombre = data["nombre"];
+                  this.descripcion = data["descripcion"];
+                  this.descuento = data["descuento"];
+                  this.total = data["total"];
+                  this.estado = data["estado"];
+                  break;
+                }
+              case "ver":
+                {
+                  //console.log(data);
+                  this.modal = 1;
+                  this.tituloModal = data["nombre"];
+                  this.tipoAccion = 3;
+                  this.producto_id = data["id"];
+                  this.idcategoria = data["idcategoria"];
+                  //  this.nombre_categoria=data['nombre_categoria'];
+                  this.SKU = data["SKU"];
+                  this.nombre = data["nombre"];
+                  this.descripcion = data["descripcion"];
+                  this.descuento = data["descuento"];
+                  this.total = data["total"];
+                  this.estado = data["estado"];
+                  break;
+                }
+            }
+          }
+      }
+      this.selectCategoria();
+    }
+  },
+  mounted: function mounted() {
+    this.listarProducto(1, this.buscar, this.criterio);
+  }
 });
 
 /***/ }),
@@ -34596,7 +34733,7 @@ var render = function() {
       _c("div", { staticClass: "card" }, [
         _c("div", { staticClass: "card-header" }, [
           _c("i", { staticClass: "fa fa-align-justify" }),
-          _vm._v(" Productos\n                "),
+          _vm._v(" Productos\n        "),
           _c(
             "button",
             {
@@ -34608,10 +34745,7 @@ var render = function() {
                 }
               }
             },
-            [
-              _c("i", { staticClass: "icon-plus" }),
-              _vm._v(" Nuevo\n                ")
-            ]
+            [_c("i", { staticClass: "icon-plus" }), _vm._v(" Nuevo\n        ")]
           )
         ]),
         _vm._v(" "),
@@ -34700,7 +34834,10 @@ var render = function() {
                       }
                     }
                   },
-                  [_c("i", { staticClass: "fa fa-search" }), _vm._v(" Buscar")]
+                  [
+                    _c("i", { staticClass: "fa fa-search" }),
+                    _vm._v(" Buscar\n              ")
+                  ]
                 )
               ])
             ])
@@ -34718,75 +34855,41 @@ var render = function() {
                   return _c("tr", { key: producto.id }, [
                     _vm._m(1, true),
                     _vm._v(" "),
-                    _c(
-                      "td",
-                      [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-warning btn-sm",
-                            attrs: { type: "button" },
-                            on: {
-                              click: function($event) {
-                                _vm.abrirModal(
-                                  "producto",
-                                  "actualizar",
-                                  producto
-                                )
-                              }
+                    _c("td", [
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              _vm.abrirModal("producto", "actualizar", producto)
                             }
-                          },
-                          [_c("i", { staticClass: "icon-pencil" })]
-                        ),
-                        _vm._v("  \n                                "),
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-warning btn-sm",
-                            attrs: { type: "button" },
-                            on: {
-                              click: function($event) {
-                                _vm.abrirModal("producto", "ver", producto)
-                              }
+                          }
+                        },
+                        [
+                          _c("i", { staticClass: "material-icons" }, [
+                            _vm._v("edit")
+                          ])
+                        ]
+                      ),
+                      _vm._v("\n                 \n                "),
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              _vm.abrirModal("producto", "ver", producto)
                             }
-                          },
-                          [_c("i", { staticClass: "icon-eye-open" })]
-                        ),
-                        _vm._v("  \n                                "),
-                        producto.estado
-                          ? [
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-danger btn-sm",
-                                  attrs: { type: "button" },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.desactivarProducto(producto.id)
-                                    }
-                                  }
-                                },
-                                [_c("i", { staticClass: "icon-trash" })]
-                              )
-                            ]
-                          : [
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-info btn-sm",
-                                  attrs: { type: "button" },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.activarProducto(producto.id)
-                                    }
-                                  }
-                                },
-                                [_c("i", { staticClass: "icon-check" })]
-                              )
-                            ]
-                      ],
-                      2
-                    ),
+                          }
+                        },
+                        [
+                          _c("i", { staticClass: "material-icons" }, [
+                            _vm._v("zoom_in")
+                          ])
+                        ]
+                      )
+                    ]),
                     _vm._v(" "),
                     _c("td", {
                       domProps: { textContent: _vm._s(producto.SKU) }
@@ -34813,14 +34916,44 @@ var render = function() {
                     _c("td", [
                       producto.estado
                         ? _c("div", [
-                            _c("span", { staticClass: "badge badge-success" }, [
-                              _vm._v("Activo")
-                            ])
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.desactivarProducto(producto.id)
+                                  }
+                                }
+                              },
+                              [
+                                _c(
+                                  "span",
+                                  { staticClass: "badge badge-success" },
+                                  [_vm._v("Activo")]
+                                )
+                              ]
+                            )
                           ])
                         : _c("div", [
-                            _c("span", { staticClass: "badge badge-danger" }, [
-                              _vm._v("Desactivado")
-                            ])
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.activarProducto(producto.id)
+                                  }
+                                }
+                              },
+                              [
+                                _c(
+                                  "span",
+                                  { staticClass: "badge badge-danger" },
+                                  [_vm._v("Desactivado")]
+                                )
+                              ]
+                            )
                           ])
                     ])
                   ])
@@ -35208,7 +35341,7 @@ var render = function() {
                                 ],
                                 staticClass: "form-control",
                                 attrs: {
-                                  type: "number",
+                                  type: "hidden",
                                   placeholder: "Descuento"
                                 },
                                 domProps: { value: _vm.descuento },
@@ -35528,7 +35661,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #3c29297a !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\n", ""]);
+exports.push([module.i, "\n.modal-content {\r\n  width: 100% !important;\r\n  position: absolute !important;\n}\n.mostrar {\r\n  display: list-item !important;\r\n  opacity: 1 !important;\r\n  position: absolute !important;\r\n  background-color: #3c29297a !important;\n}\n.div-error {\r\n  display: flex;\r\n  justify-content: center;\n}\n.text-error {\r\n  color: red !important;\r\n  font-weight: bold;\n}\r\n", ""]);
 
 // exports
 
@@ -35698,255 +35831,319 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            usuario_id: 0,
-            usuario: '',
-            password: '',
-            email: '',
-            idrol: 0,
-            arrayRol: [],
-            modal: 0,
-            tituloModal: '',
-            tipoAccion: 0,
-            errorUsuario: 0,
-            errorMostrarMsjUsuario: [],
-            pagination: {
-                'total': 0,
-                'current_page': 0,
-                'per_page': 0,
-                'last_page': 0,
-                'from': 0,
-                'to': 0
-            },
-            offset: 3,
-            criterio: 'usuario',
-            buscar: ''
-        };
+  data: function data() {
+    return {
+      usuario_id: 0,
+      usuario: "",
+      password: "",
+      email: "",
+      idrol: 0,
+      arrayRol: [],
+      modal: 0,
+      tituloModal: "",
+      tipoAccion: 0,
+      errorUsuario: 0,
+      errorMostrarMsjUsuario: [],
+      pagination: {
+        total: 0,
+        current_page: 0,
+        per_page: 0,
+        last_page: 0,
+        from: 0,
+        to: 0
+      },
+      offset: 3,
+      criterio: "usuario",
+      buscar: ""
+    };
+  },
+
+  computed: {
+    isActived: function isActived() {
+      return this.pagination.current_page;
     },
+    //Calcula los elementos de la paginación
+    pagesNumber: function pagesNumber() {
+      if (!this.pagination.to) {
+        return [];
+      }
 
-    computed: {
-        isActived: function isActived() {
-            return this.pagination.current_page;
-        },
-        //Calcula los elementos de la paginación
-        pagesNumber: function pagesNumber() {
-            if (!this.pagination.to) {
-                return [];
-            }
+      var from = this.pagination.current_page - this.offset;
+      if (from < 1) {
+        from = 1;
+      }
 
-            var from = this.pagination.current_page - this.offset;
-            if (from < 1) {
-                from = 1;
-            }
+      var to = from + this.offset * 2;
+      if (to >= this.pagination.last_page) {
+        to = this.pagination.last_page;
+      }
 
-            var to = from + this.offset * 2;
-            if (to >= this.pagination.last_page) {
-                to = this.pagination.last_page;
-            }
-
-            var pagesArray = [];
-            while (from <= to) {
-                pagesArray.push(from);
-                from++;
-            }
-            return pagesArray;
-        }
-    },
-    methods: {
-        listarUsuario: function listarUsuario(page, buscar, criterio) {
-            var me = this;
-            var url = '/user?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
-            axios.get(url).then(function (response) {
-                var respuesta = response.data;
-                me.arrayUsuario = respuesta.users.data;
-                me.pagination = respuesta.pagination;
-            }).catch(function (error) {
-                console.log(error);
-            });
-        },
-        selectRol: function selectRol() {
-            var me = this;
-            var url = '/rol/selectRol';
-            axios.get(url).then(function (response) {
-                // console.log(response);
-                var respuesta = response.data;
-                me.arrayRol = respuesta.roles;
-            }).catch(function (error) {
-                console.log(error);
-            });
-        },
-        cambiarPagina: function cambiarPagina(page, buscar, criterio) {
-            var me = this;
-            //Actualiza la página actual
-            me.pagination.current_page = page;
-            //Envia la petición para visualizar la data de esa página
-            me.listarCategoria(page, buscar, criterio);
-        },
-        registrarUsuario: function registrarUsuario() {
-            if (this.validarUsuario()) {
-                return;
-            }
-
-            var me = this;
-
-            axios.post('/user/registrar', {
-                'usuario': this.usuario,
-                'password': this.password,
-                'email': this.email,
-                'idrol': this.idrol
-            }).then(function (response) {
-                me.cerrarModal();
-                me.listarUsuario(1, '', 'id');
-            }).catch(function (error) {
-                console.log(error);
-            });
-        },
-        actualizarUsuario: function actualizarUsuario() {
-            if (this.validarUsuario()) {
-                return;
-            }
-
-            var me = this;
-
-            axios.put('/usuario/actualizar', {
-                'usuario': this.usuario,
-                'password': this.password,
-                'email': this.email,
-                'idrol': this.idrol,
-                'id': this.usuario_id
-            }).then(function (response) {
-                me.cerrarModal();
-                me.listarUsuario(1, '', 'id');
-            }).catch(function (error) {
-                console.log(error);
-            });
-        },
-        desactivarUsuario: function desactivarUsuario(id) {
-            var _this = this;
-
-            swal({
-                title: 'Esta seguro de desactivar este usuario?',
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Aceptar!',
-                cancelButtonText: 'Cancelar',
-                confirmButtonClass: 'btn btn-success',
-                cancelButtonClass: 'btn btn-danger',
-                buttonsStyling: false,
-                reverseButtons: true
-            }).then(function (result) {
-                if (result.value) {
-                    var me = _this;
-
-                    axios.put('/user/desactivar', {
-                        'id': id
-                    }).then(function (response) {
-                        me.listarUsuario(1, '', 'id');
-                        swal('Desactivado!', 'El registro ha sido desactivado con éxito.', 'success');
-                    }).catch(function (error) {
-                        console.log(error);
-                    });
-                } else if (
-                // Read more about handling dismissals
-                result.dismiss === swal.DismissReason.cancel) {}
-            });
-        },
-        activarUsuario: function activarUsuario(id) {
-            var _this2 = this;
-
-            swal({
-                title: 'Esta seguro de activar este usuario?',
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Aceptar!',
-                cancelButtonText: 'Cancelar',
-                confirmButtonClass: 'btn btn-success',
-                cancelButtonClass: 'btn btn-danger',
-                buttonsStyling: false,
-                reverseButtons: true
-            }).then(function (result) {
-                if (result.value) {
-                    var me = _this2;
-
-                    axios.put('/user/activar', {
-                        'id': id
-                    }).then(function (response) {
-                        me.listarUsuario(1, '', 'id');
-                        swal('Activado!', 'El registro ha sido activado con éxito.', 'success');
-                    }).catch(function (error) {
-                        console.log(error);
-                    });
-                } else if (
-                // Read more about handling dismissals
-                result.dismiss === swal.DismissReason.cancel) {}
-            });
-        },
-        validarUsuario: function validarUsuario() {
-            this.errorCategoria = 0;
-            this.errorMostrarMsjCategoria = [];
-
-            if (!this.usuario) this.errorMostrarMsjUsuario.push("El nombre de usuario no puede estar vacío.");
-            if (!this.password) this.errorMostrarMsjUsuario.push("La contraseña no puede estar vacía.");
-            if (this.errorMostrarMsjUsuario.length) this.errorUsuario = 1;
-
-            return this.errorUsuario;
-        },
-        cerrarModal: function cerrarModal() {
-            this.modal = 0;
-            this.tituloModal = '';
-            this.usuario = '';
-            this.password = '';
-            this.email = '';
-            this.idrol = '';
-        },
-        abrirModal: function abrirModal(modelo, accion) {
-            var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
-
-            switch (modelo) {
-                case "usuario":
-                    {
-                        switch (accion) {
-                            case 'registrar':
-                                {
-                                    this.modal = 1;
-                                    this.tituloModal = 'Registrar usuario';
-                                    this.usuario = '';
-                                    this.password = '';
-                                    this.email = '';
-                                    this.idrol = 0;
-                                    this.estado = 1;
-                                    this.tipoAccion = 1;
-                                    break;
-                                }
-                            case 'actualizar':
-                                {
-                                    //console.log(data);
-                                    this.modal = 1;
-                                    this.tituloModal = 'Actualizar categoría';
-                                    this.tipoAccion = 2;
-                                    this.usuario_id = data['id'];
-                                    this.usuario = data['usuario'];
-                                    this.password = data['password'];
-                                    this.email = data['email'];
-                                    this.idrol = data['idrol'];
-                                    break;
-                                }
-                        }
-                    }
-            }
-            this.selectRol();
-        }
-    },
-    mounted: function mounted() {
-        this.listarUsuario(1, this.buscar, this.criterio);
+      var pagesArray = [];
+      while (from <= to) {
+        pagesArray.push(from);
+        from++;
+      }
+      return pagesArray;
     }
+  },
+  methods: {
+    listarUsuario: function listarUsuario(page, buscar, criterio) {
+      var me = this;
+      var url = "/user?page=" + page + "&buscar=" + buscar + "&criterio=" + criterio;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.arrayUsuario = respuesta.users.data;
+        me.pagination = respuesta.pagination;
+      }).catch(function (error) {
+        console.log(error);
+      });
+    },
+    selectRol: function selectRol() {
+      var me = this;
+      var url = "/rol/selectRol";
+      axios.get(url).then(function (response) {
+        // console.log(response);
+        var respuesta = response.data;
+        me.arrayRol = respuesta.roles;
+      }).catch(function (error) {
+        console.log(error);
+      });
+    },
+    cambiarPagina: function cambiarPagina(page, buscar, criterio) {
+      var me = this;
+      //Actualiza la página actual
+      me.pagination.current_page = page;
+      //Envia la petición para visualizar la data de esa página
+      me.listarCategoria(page, buscar, criterio);
+    },
+    registrarUsuario: function registrarUsuario() {
+      if (this.validarUsuario()) {
+        return;
+      }
+
+      var me = this;
+
+      axios.post("/user/registrar", {
+        usuario: this.usuario,
+        password: this.password,
+        email: this.email,
+        idrol: this.idrol
+      }).then(function (response) {
+        me.cerrarModal();
+        me.listarUsuario(1, "", "id");
+      }).catch(function (error) {
+        console.log(error);
+      });
+    },
+    actualizarUsuario: function actualizarUsuario() {
+      if (this.validarUsuario()) {
+        return;
+      }
+
+      var me = this;
+
+      axios.put("/usuario/actualizar", {
+        usuario: this.usuario,
+        password: this.password,
+        email: this.email,
+        idrol: this.idrol,
+        id: this.usuario_id
+      }).then(function (response) {
+        me.cerrarModal();
+        me.listarUsuario(1, "", "id");
+      }).catch(function (error) {
+        console.log(error);
+      });
+    },
+    desactivarUsuario: function desactivarUsuario(id) {
+      var _this = this;
+
+      swal({
+        title: "Esta seguro de desactivar este usuario?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Aceptar!",
+        cancelButtonText: "Cancelar",
+        confirmButtonClass: "btn btn-success",
+        cancelButtonClass: "btn btn-danger",
+        buttonsStyling: false,
+        reverseButtons: true
+      }).then(function (result) {
+        if (result.value) {
+          var me = _this;
+
+          axios.put("/user/desactivar", {
+            id: id
+          }).then(function (response) {
+            me.listarUsuario(1, "", "id");
+            swal("Desactivado!", "El registro ha sido desactivado con éxito.", "success");
+          }).catch(function (error) {
+            console.log(error);
+          });
+        } else if (
+        // Read more about handling dismissals
+        result.dismiss === swal.DismissReason.cancel) {}
+      });
+    },
+    activarUsuario: function activarUsuario(id) {
+      var _this2 = this;
+
+      swal({
+        title: "Esta seguro de activar este usuario?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Aceptar!",
+        cancelButtonText: "Cancelar",
+        confirmButtonClass: "btn btn-success",
+        cancelButtonClass: "btn btn-danger",
+        buttonsStyling: false,
+        reverseButtons: true
+      }).then(function (result) {
+        if (result.value) {
+          var me = _this2;
+
+          axios.put("/user/activar", {
+            id: id
+          }).then(function (response) {
+            me.listarUsuario(1, "", "id");
+            swal("Activado!", "El registro ha sido activado con éxito.", "success");
+          }).catch(function (error) {
+            console.log(error);
+          });
+        } else if (
+        // Read more about handling dismissals
+        result.dismiss === swal.DismissReason.cancel) {}
+      });
+    },
+    validarUsuario: function validarUsuario() {
+      this.errorCategoria = 0;
+      this.errorMostrarMsjCategoria = [];
+
+      if (!this.usuario) this.errorMostrarMsjUsuario.push("El nombre de usuario no puede estar vacío.");
+      if (!this.password) this.errorMostrarMsjUsuario.push("La contraseña no puede estar vacía.");
+      if (this.errorMostrarMsjUsuario.length) this.errorUsuario = 1;
+
+      return this.errorUsuario;
+    },
+    cerrarModal: function cerrarModal() {
+      this.modal = 0;
+      this.tituloModal = "";
+      this.usuario = "";
+      this.password = "";
+      this.email = "";
+      this.idrol = "";
+    },
+    abrirModal: function abrirModal(modelo, accion) {
+      var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+
+      switch (modelo) {
+        case "usuario":
+          {
+            switch (accion) {
+              case "registrar":
+                {
+                  this.modal = 1;
+                  this.tituloModal = "Registrar usuario";
+                  this.usuario = "";
+                  this.password = "";
+                  this.email = "";
+                  this.idrol = 0;
+                  this.estado = 1;
+                  this.tipoAccion = 1;
+                  break;
+                }
+              case "actualizar":
+                {
+                  //console.log(data);
+                  this.modal = 1;
+                  this.tituloModal = "Actualizar categoría";
+                  this.tipoAccion = 2;
+                  this.usuario_id = data["id"];
+                  this.usuario = data["usuario"];
+                  this.password = data["password"];
+                  this.email = data["email"];
+                  this.idrol = data["idrol"];
+                  break;
+                }
+            }
+          }
+      }
+      this.selectRol();
+    }
+  },
+  mounted: function mounted() {
+    this.listarUsuario(1, this.buscar, this.criterio);
+  }
 });
 
 /***/ }),
@@ -35962,7 +36159,7 @@ var render = function() {
       _c("div", { staticClass: "card" }, [
         _c("div", { staticClass: "card-header" }, [
           _c("i", { staticClass: "fa fa-align-justify" }),
-          _vm._v(" Usuarios\n                "),
+          _vm._v(" Usuarios\n        "),
           _c(
             "button",
             {
@@ -35974,10 +36171,7 @@ var render = function() {
                 }
               }
             },
-            [
-              _c("i", { staticClass: "icon-plus" }),
-              _vm._v(" Nuevo\n                ")
-            ]
+            [_c("i", { staticClass: "icon-plus" }), _vm._v(" Nuevo\n        ")]
           )
         ]),
         _vm._v(" "),
@@ -36062,7 +36256,10 @@ var render = function() {
                       }
                     }
                   },
-                  [_c("i", { staticClass: "fa fa-search" }), _vm._v(" Buscar")]
+                  [
+                    _c("i", { staticClass: "fa fa-search" }),
+                    _vm._v(" Buscar\n              ")
+                  ]
                 )
               ])
             ])
@@ -36078,57 +36275,24 @@ var render = function() {
                 "tbody",
                 _vm._l(_vm.arrayUsuario, function(user) {
                   return _c("tr", { key: user.id }, [
-                    _c(
-                      "td",
-                      [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-warning btn-sm",
-                            attrs: { type: "button" },
-                            on: {
-                              click: function($event) {
-                                _vm.abrirModal("usuario", "actualizar", user)
-                              }
+                    _c("td", [
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              _vm.abrirModal("usuario", "actualizar", user)
                             }
-                          },
-                          [_c("i", { staticClass: "icon-pencil" })]
-                        ),
-                        _vm._v("  \n                                "),
-                        user.estado
-                          ? [
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-danger btn-sm",
-                                  attrs: { type: "button" },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.desactivarUsuario(user.id)
-                                    }
-                                  }
-                                },
-                                [_c("i", { staticClass: "icon-trash" })]
-                              )
-                            ]
-                          : [
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-info btn-sm",
-                                  attrs: { type: "button" },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.activarUsuario(user.id)
-                                    }
-                                  }
-                                },
-                                [_c("i", { staticClass: "icon-check" })]
-                              )
-                            ]
-                      ],
-                      2
-                    ),
+                          }
+                        },
+                        [
+                          _c("i", { staticClass: "material-icons" }, [
+                            _vm._v("edit")
+                          ])
+                        ]
+                      )
+                    ]),
                     _vm._v(" "),
                     _c("td", { domProps: { textContent: _vm._s(user.id) } }),
                     _vm._v(" "),
@@ -36143,14 +36307,44 @@ var render = function() {
                     _c("td", [
                       user.estado
                         ? _c("div", [
-                            _c("span", { staticClass: "badge badge-success" }, [
-                              _vm._v("Activo")
-                            ])
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.desactivarUsuario(user.id)
+                                  }
+                                }
+                              },
+                              [
+                                _c(
+                                  "span",
+                                  { staticClass: "badge badge-success" },
+                                  [_vm._v("Activo")]
+                                )
+                              ]
+                            )
                           ])
                         : _c("div", [
-                            _c("span", { staticClass: "badge badge-danger" }, [
-                              _vm._v("Desactivado")
-                            ])
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.activarUsuario(user.id)
+                                  }
+                                }
+                              },
+                              [
+                                _c(
+                                  "span",
+                                  { staticClass: "badge badge-danger" },
+                                  [_vm._v("Desactivado")]
+                                )
+                              ]
+                            )
                           ])
                     ])
                   ])
