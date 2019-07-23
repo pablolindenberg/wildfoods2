@@ -306,11 +306,11 @@
                 
                 let vm=this;
                 let file = e.target.files[0];
-               // console.log(file);
+                //console.log(file);
                 let reader = new FileReader();
                 if(file['size'] < 2111775 ){
                      reader.onloadend = (file) => {
-                   // console.log('RESULTADO', reader.result);
+                    console.log('RESULTADO', reader.result);
                     vm.imagen = reader.result;
                 }
                 reader.readAsDataURL(file);
@@ -369,7 +369,6 @@
                 }
                 
                 let me = this;
-               // axios.post('/producto/cargarImagen',{'imagen':this.imagen});
 
                 axios.post('/producto/registrar',{
 
