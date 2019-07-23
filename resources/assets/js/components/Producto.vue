@@ -59,7 +59,7 @@
             <tbody>
               <tr v-for="producto in arrayProducto" :key="producto.id">
                 <td>
-                  <img src="/storage/imagenes/logo1.jpg" />
+                 <img src="img/productos/1.png">
                 </td>
                 <td>
                   <a href="#" @click="abrirModal('producto','actualizar',producto)">
