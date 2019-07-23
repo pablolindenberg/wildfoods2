@@ -34483,7 +34483,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             var vm = this;
             var file = e.target.files[0];
-            //console.log(file);
+            console.log(file);
             var reader = new FileReader();
             if (file['size'] < 2111775) {
                 reader.onloadend = function (file) {
