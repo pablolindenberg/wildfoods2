@@ -50,8 +50,9 @@
                 </template>        
 
             @elseif(Auth::user()->idrol ==2)
-               <template v-if="menu==0">
-                   <!-- <h1>Contenido del menú 0</h1> -->
+            <template v-if="menu==1">
+                    <!--<h1>Pedidos</h1>-->
+                    <pedidoBodega></pedidoBodega>
                 </template>
             @elseif(Auth::user()->idrol ==3)
                 <template v-if="menu==11">
