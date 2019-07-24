@@ -33,30 +33,22 @@
               </div>
             </div>
           </div>
-          <!--
-        <a @click="descargarPedidos(buscar)">Descargar
-          </a>
-              -->
-           
-          <a href="/pedido/descargar">Exportar a Excel
-          </a>
-          
+         
           <table
             class="table table-bordered table-striped table-sm"
            
           >
             <thead>
               <tr>
-                <th>Acciones</th>
-                <th>Bodega</th>
-                <th>Factura</th>
+                <th>Acciones</th>             
+                <th >Factura</th>
                 <th>ID Pedido</th>
                 <th>Usuario</th>
                 <th>Total</th>
                 <th>Tracking ID</th>
                 <th>Fecha ingreso</th>
                 <th>Actualizado</th>
-                <th>Estado</th>
+               
               </tr>
             </thead>
             <tbody >
@@ -66,27 +58,10 @@
                     <i @click="abrirModal(pedido.id)" class="material-icons">zoom_in</i>
                   </a>
                 </td>
-                <td >
+                
+                <td v-if="pedido.bodega==1 || pedido.bodega==0">
                   <a href="#">
-                    <i
-                      v-if="pedido.bodega==1"
-                      @click="desactivarBodega(pedido.id)"
-                      class="material-icons"
-                      style="color:#009A00;"
-                    >check_circle</i>
-                  </a>
-                  <a href="#">
-                    <i
-                      v-if="pedido.bodega==0"
-                      @click="activarBodega(pedido.id)"
-                      class="material-icons"
-                      style="color:red;"
-                    >block</i>
-                  </a>
-                </td>
-                <td>
-                  <a href="#">
-                    <i class="material-icons">attachment</i>
+                    <i v-if="pedido.bodega==1 || pedido.bodega==0" class="material-icons">attachment</i>
                   </a>
                 </td>
                 <td v-text="pedido.id"></td>
@@ -95,23 +70,7 @@
                 <td v-text="pedido.tracking"></td>
                 <td v-text="pedido.created_at"></td>
                 <td v-text="pedido.updated_at"></td>
-                <td>
-                  <div v-if="pedido.estado==0">
-                    <a href="#">
-                      <span class="badge badge-danger" @click="activar(pedido.id)">Descartado</span>
-                    </a>
-                  </div>
-                  <div v-if="pedido.estado==1">
-                    <a href="#">
-                      <span class="badge badge-warning" @click="despachado(pedido.id)">Pendiente</span>
-                    </a>
-                  </div>
-                  <div v-if="pedido.estado==2">
-                    <a href="#">
-                      <span class="badge badge-success" @click="desactivar(pedido.id)">Despachado</span>
-                    </a>
-                  </div>
-                </td>
+                
               </tr>
             </tbody>
           </table>
@@ -436,7 +395,7 @@ export default {
       });
     },
 
-    despachado(idpedido) {
+    desactivar(idpedido) {
       swal({
         title: "Cambiar pedido a despachado?",
         type: "warning",
@@ -454,7 +413,7 @@ export default {
           let me = this;
 
           axios
-            .put("/pedido/despachado", {
+            .put("/pedido/desactivar", {
               id: idpedido
             })
             .then(function(response) {
@@ -500,45 +459,6 @@ export default {
               me.listarPedido(1, "", "idusuario");
               swal(
                 "Pendiente!",
-                "El pedido ha sido modificado con éxito.",
-                "success"
-              );
-            })
-            .catch(function(error) {
-              console.log(error);
-            });
-        } else if (
-          // Read more about handling dismissals
-          result.dismiss === swal.DismissReason.cancel
-        ) {
-        }
-      });
-    },
-    desactivar(idpedido) {
-      swal({
-        title: "Descartar pedido?",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Aceptar",
-        cancelButtonText: "Cancelar",
-        confirmButtonClass: "btn btn-success",
-        cancelButtonClass: "btn btn-danger",
-        buttonsStyling: false,
-        reverseButtons: true
-      }).then(result => {
-        if (result.value) {
-          let me = this;
-
-          axios
-            .put("/pedido/desactivar", {
-              id: idpedido
-            })
-            .then(function(response) {
-              me.listarPedido(1, "", "idusuario");
-              swal(
-                "Descartado!",
                 "El pedido ha sido modificado con éxito.",
                 "success"
               );

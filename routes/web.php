@@ -60,6 +60,8 @@ Route::group(['middleware'=>['auth']],function(){
 
     Route::put('/pedido/activar', 'PedidoController@activar');
     Route::put('/pedido/desactivar', 'PedidoController@desactivar');
+    Route::put('/pedido/despachado', 'PedidoController@despachado');
+
     Route::get('/pedido/descargar', 'PedidoController@descargar');
 });
 
