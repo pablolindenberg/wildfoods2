@@ -59,7 +59,9 @@
             <tbody>
               <tr v-for="producto in arrayProducto" :key="producto.id">
                 <td>
-                  <img src="/storage/imagenes/logo1.jpg" />
+                  <!--<img src="/img/productos/1.png" />-->
+                    <img :src="getImage()" />
+
                 </td>
                 <td>
                   <a href="#" @click="abrirModal('producto','actualizar',producto)">
@@ -220,7 +222,10 @@
                 <div class="form-group row">
                   <label class="col-md-3 form-control-label" for="text-input">Imagen</label>
                   <div class="col-md-9">
-                    <input type="file" class="form-control" name="imagen" />
+                   <input type="file"  class="form-control" name='imagen' @change="updateImage" >   
+                    <br /> 
+                    <vue-progress-bar></vue-progress-bar>
+                    <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click.prevent="updateInfo">Cargar Imagen</button>
                   </div>
                 </div>
 
@@ -287,7 +292,7 @@ export default {
       valor_bruto: 0,
       pvp_unitario: 0,
       total_neto: 0,
-      imagen: new Image(),
+      imagen: '',
       stock: 0,
       total: 0,
       estado: 0,
@@ -342,6 +347,52 @@ export default {
   },
   methods: {
     //
+
+    getImage(){
+      return "img/productos/"+ this.imagen;
+    },
+
+     updateInfo () {
+
+      this.$Progress.start();
+      var url= '/producto/cargarImagen';
+
+      axios.put(url,{
+          'imagen': this.imagen
+          }).then(() => {
+              this.$Progress.finish();
+          }).catch(() => {
+                this.$Progress.fail();
+          });
+
+    },
+
+    updateImage (e){
+                
+      let vm=this;
+      let file = e.target.files[0];
+      // console.log(file);
+      let reader = new FileReader();
+      if(file['size'] < 2111775 ){
+            reader.onloadend = (file) => {
+
+          // console.log('RESULTADO', reader.result);
+       vm.imagen = reader.result;
+      
+      }
+      reader.readAsDataURL(file);
+      } else {
+
+              swal({
+                  type: 'error',
+                  title: 'Imagen pesada',
+                  text: 'El peso de la imagen excede el recomendado: 2 MB',
+              });
+                  vm.imagen = 0;
+      }
+
+  },
+
     listarProducto(page, buscar, criterio) {
       let me = this;
       var url =
@@ -394,7 +445,7 @@ export default {
 
       axios
         .post("/producto/registrar", {
-          imagen: this.imagen,
+          imagen: 'texto_img', /*this.imagen*/ /* Acá va el nombre de la imagen que se aloja en la BBDD */
           idcategoria: this.idcategoria,
           //'nombre_categoria':this.nombre_categoria,
           SKU: this.SKU,

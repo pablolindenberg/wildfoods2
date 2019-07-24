@@ -24,6 +24,16 @@ Vue.component('pedido', require('./components/Pedido.vue'));
 Vue.component('pedidobodega', require('./components/PedidoBodega.vue'));
 Vue.component('pedidocliente', require('./components/PedidoCliente.vue'));
 
+
+import VueProgressBar from 'vue-progressbar'
+
+Vue.use(VueProgressBar, {
+  color: 'rgb(143, 255, 199)',
+  failedColor: 'red',
+  height: '3px'
+})
+
+
 const app = new Vue({
     el: '#app',
     data :{
