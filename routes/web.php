@@ -63,6 +63,8 @@ Route::group(['middleware'=>['auth']],function(){
     Route::put('/pedido/despachado', 'PedidoController@despachado');
 
     Route::get('/pedido/descargar', 'PedidoController@descargar');
+    
+    Route::put('/pedido/cargarFactura', 'PedidoController@cargarFactura');
 });
 
 Route::group(['middleware'=>['Cliente']],function(){

@@ -51,7 +51,7 @@
                 <th>Bodega</th>
                 <th>Factura</th>
                 <th>ID Pedido</th>
-                <th>Usuario</th>
+                <th>Cliente</th>
                 <th>Total</th>
                 <th>Tracking ID</th>
                 <th>Fecha ingreso</th>
@@ -86,7 +86,9 @@
                 </td>
                 <td>
                   <a href="#">
-                    <i class="material-icons">attachment</i>
+                    <i 
+                    @click="cargarFactura(pedido.id)"
+                    class="material-icons">attachment</i>
                   </a>
 
                    <a href="#">
@@ -304,6 +306,19 @@ export default {
       me.pagination.current_page = page;
       //Envia la petición para visualizar la data de esa página
       me.listarPedido(page, buscar, criterio);
+    },
+    cargarFactura(id) {
+      let me = this;
+      axios
+        .put("/pedido/cargarFactura",{
+        idpedido: id
+        })      
+        .then(function(response) {
+          me.listarPedido(1, "", "idusuario");
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     },
     descargarPedidos(id){
       let me = this;
