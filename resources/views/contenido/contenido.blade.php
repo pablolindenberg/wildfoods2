@@ -61,7 +61,7 @@
                 </template>
                 <template v-if="menu==12">
               <!--  <h1>Pedidos</h1> -->
-                    <pedido></pedido>
+                    <pedidoCliente></pedidoCliente>
                 </template>
             @else
             @endif  
