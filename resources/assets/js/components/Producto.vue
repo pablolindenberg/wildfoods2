@@ -341,6 +341,7 @@ export default {
     }
   },
   methods: {
+    //
     listarProducto(page, buscar, criterio) {
       let me = this;
       var url =
