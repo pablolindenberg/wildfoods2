@@ -22,19 +22,19 @@ class PedidoController extends Controller
         if($rol==1){
         if ($buscar==''){
             $pedidos = Pedido::join('users','pedidos.idusuario','=','users.id')
-            ->select('pedidos.id','users.usuario as nombre_usuario','users.email as email_usuario','pedidos.total','pedidos.estado','pedidos.tracking','pedidos.bodega','pedidos.created_at','pedidos.updated_at')
+            ->select('pedidos.id','users.usuario as nombre_usuario','users.email as email_usuario','pedidos.total','pedidos.estado','pedidos.tracking','pedidos.bodega','pedidos.created_at','pedidos.updated_at','pedidos.factura')
             ->orderBy('pedidos.id', 'desc')->paginate(10);
         }
         else{
             $pedidos = Pedido::join('users','pedidos.idusuario','=','users.id')
-            ->select('pedidos.id','users.usuario as nombre_usuario','users.email as email_usuario','pedidos.total','pedidos.estado','pedidos.tracking','pedidos.bodega','pedidos.created_at','pedidos.updated_at')
+            ->select('pedidos.id','users.usuario as nombre_usuario','users.email as email_usuario','pedidos.total','pedidos.estado','pedidos.tracking','pedidos.bodega','pedidos.created_at','pedidos.updated_at','pedidos.factura')
             ->where('pedidos.'.$criterio, 'like', '%'. $buscar . '%')
             ->orderBy('pedidos.id', 'desc')->paginate(10);
         }
     }
     elseif($rol==2){
         $pedidos = Pedido::join('users','pedidos.idusuario','=','users.id')
-            ->select('pedidos.id','users.usuario as nombre_usuario','users.email as email_usuario','pedidos.total','pedidos.estado','pedidos.tracking','pedidos.bodega','pedidos.created_at','pedidos.updated_at')
+            ->select('pedidos.id','users.usuario as nombre_usuario','users.email as email_usuario','pedidos.total','pedidos.estado','pedidos.tracking','pedidos.bodega','pedidos.created_at','pedidos.updated_at','pedidos.factura')
             ->where('pedidos.bodega', 'like','1')
             ->orderBy('pedidos.id', 'desc')->paginate(10);
     }
@@ -45,12 +45,12 @@ class PedidoController extends Controller
 
         if ($buscar==''){
             $pedidos = Pedido::join('users','pedidos.idusuario','=','users.id')
-            ->select('pedidos.id','users.usuario as nombre_usuario','users.email as email_usuario','pedidos.total','pedidos.estado','pedidos.tracking','pedidos.created_at','pedidos.updated_at')
+            ->select('pedidos.id','users.usuario as nombre_usuario','users.email as email_usuario','pedidos.total','pedidos.estado','pedidos.tracking','pedidos.created_at','pedidos.updated_at','pedidos.factura')
             ->orderBy('pedidos.id', 'desc')->paginate(10);
         }
         else{
             $pedidos = Pedido::join('users','pedidos.idusuario','=','users.id')
-            ->select('pedidos.id','users.usuario as nombre_usuario','users.email as email_usuario','pedidos.total','pedidos.estado','pedidos.tracking','pedidos.created_at','pedidos.updated_at')
+            ->select('pedidos.id','users.usuario as nombre_usuario','users.email as email_usuario','pedidos.total','pedidos.estado','pedidos.tracking','pedidos.created_at','pedidos.updated_at','pedidos.factura')
             ->where('pedidos.'.$criterio, 'like', '%'. $buscar . '%')
             ->orderBy('pedidos.id', 'desc')->paginate(10);
         }  
@@ -104,23 +104,17 @@ class PedidoController extends Controller
  
     public function update(Request $request)
     {
-    //     if (!$request->ajax()) return redirect('/');
-    //     $producto = Producto::findOrFail($request->id);
-    //     $producto->idcategoria = $request->idcategoria;
-    //     $producto->SKU = $request->SKU;
-    //     $producto->nombre = $request->nombre;
-    //     $producto->marca = $request->marca;
-    //     $producto->descripcion = $request->descripcion;
-    //     $producto->contenido_display = $request ->contenido_display;
-    //     $producto->valor_neto = $request->valor_neto;
-    //     $producto->valor_bruto = $request->valor_bruto;
-    //     $producto->pvp_unitario = $request->pvp_unitario;
-    //     $producto->total_neto = $request->total_neto;
-    //     $producto->total = $request->total;
-    //     $producto->descuento = $request->descuento;
-    //     $producto->estado = $request->estado;
-    //   // $producto->imagen = $request->imagen;      
-    //     $producto->save();
+        // if (!$request->ajax()) return redirect('/');
+        // $pedido = Pedido::findOrFail($request->id);
+        // $pedido->factura = $request->factura;
+        // $pedido->save();
+    }
+    public function cargarFactura(Request $request)
+    {
+         if (!$request->ajax()) return redirect('/');
+         $pedido = Pedido::findOrFail($request->idpedido);
+         $pedido->factura = 1;
+         $pedido->save();
     }
 
     public function desactivar(Request $request)

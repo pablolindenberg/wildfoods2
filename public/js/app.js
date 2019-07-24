@@ -37812,6 +37812,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           if (!(this.cart[i].cantidad + cantidad_producto < 0)) {
             this.cart[i].cantidad += cantidad_producto;
             this.cart[i].total = this.cart[i].cantidad * precio_producto;
+            if (this.cart[i].cantidad == 0) {
+              this.cart.splice(i, 1);
+            }
             return;
           }
         }
@@ -37840,16 +37843,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     registrarPedido: function registrarPedido() {
       var me = this;
-      axios.post("/pedido/registrar", {
-        //idusuario: this.auth_user,
-        total: this.total_carrito,
-        cart: this.cart
-      }).then(function (response) {
-        // me.registrarDetalle_Pedido();
-        me.cerrarModal();
-      }).catch(function (error) {
-        console.log(error);
-      });
+
+      if (this.cart.length > 0) {
+        axios.post("/pedido/registrar", {
+          //idusuario: this.auth_user,
+          total: this.total_carrito,
+          cart: this.cart
+        }).then(function (response) {
+          // me.registrarDetalle_Pedido();
+          me.cerrarModal();
+        }).catch(function (error) {
+          console.log(error);
+        });
+      } else {
+        alert('No tiene productos en el carrito para hacer un pedido');
+      }
     },
     registrarDetalle_Pedido: function registrarDetalle_Pedido() {
       var me = this;
@@ -37970,6 +37978,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.total = 0;
       this.estado = 0;
       this.errorProducto = 0;
+      this.total_carrito = 0;
     },
     abrirModal: function abrirModal(modelo, accion) {
       var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
@@ -38883,6 +38892,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -38995,6 +39009,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.tituloModal = "Detalle del pedido";
       this.tipoAccion = 2;
       this.verDetallePedido(1, idpedido, "idpedido");
+    },
+    verFactura: function verFactura(idepedido) {
+      this.modal = 1;
+      this.tituloModal = "Factura " + idpedido;
+      this.tipoAccion = 1;
     },
     desactivarBodega: function desactivarBodega(idpedido) {
       var _this = this;
@@ -39343,7 +39362,26 @@ var render = function() {
                       ])
                     ]),
                     _vm._v(" "),
-                    _vm._m(2, true),
+                    _c("td", [
+                      _vm._m(2, true),
+                      _vm._v(" "),
+                      _c("a", { attrs: { href: "#" } }, [
+                        pedido.factura == 1
+                          ? _c(
+                              "span",
+                              {
+                                staticClass: "badge badge-success",
+                                on: {
+                                  click: function($event) {
+                                    _vm.verFactura(pedido.id)
+                                  }
+                                }
+                              },
+                              [_vm._v("Abrir")]
+                            )
+                          : _vm._e()
+                      ])
+                    ]),
                     _vm._v(" "),
                     _c("td", { domProps: { textContent: _vm._s(pedido.id) } }),
                     _vm._v(" "),
@@ -39702,10 +39740,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("a", { attrs: { href: "#" } }, [
-        _c("i", { staticClass: "material-icons" }, [_vm._v("attachment")])
-      ])
+    return _c("a", { attrs: { href: "#" } }, [
+      _c("i", { staticClass: "material-icons" }, [_vm._v("attachment")])
     ])
   },
   function() {
@@ -40024,6 +40060,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -40102,6 +40141,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       axios.get("/pedido/descargar", {
         idusuario: id
+      }).catch(function (error) {
+        console.log(error);
+      });
+    },
+    cargarFactura: function cargarFactura(id) {
+      var me = this;
+      axios.put("/pedido/cargarFactura", {
+        idpedido: id
+      }).then(function (response) {
+        me.listarPedido(1, "", "idusuario");
       }).catch(function (error) {
         console.log(error);
       });
@@ -40410,17 +40459,39 @@ var render = function() {
                       ])
                     ]),
                     _vm._v(" "),
-                    pedido.bodega == 1 || pedido.bodega == 0
-                      ? _c("td", [
-                          _c("a", { attrs: { href: "#" } }, [
-                            pedido.bodega == 1 || pedido.bodega == 0
-                              ? _c("i", { staticClass: "material-icons" }, [
-                                  _vm._v("attachment")
-                                ])
-                              : _vm._e()
-                          ])
-                        ])
-                      : _vm._e(),
+                    _c("td", [
+                      _c("a", { attrs: { href: "#" } }, [
+                        _c(
+                          "i",
+                          {
+                            staticClass: "material-icons",
+                            on: {
+                              click: function($event) {
+                                _vm.cargarFactura(pedido.id)
+                              }
+                            }
+                          },
+                          [_vm._v("attachment")]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("a", { attrs: { href: "#" } }, [
+                        pedido.factura == 1
+                          ? _c(
+                              "span",
+                              {
+                                staticClass: "badge badge-success",
+                                on: {
+                                  click: function($event) {
+                                    _vm.verFactura(pedido.id)
+                                  }
+                                }
+                              },
+                              [_vm._v("Abrir")]
+                            )
+                          : _vm._e()
+                      ])
+                    ]),
                     _vm._v(" "),
                     _c("td", { domProps: { textContent: _vm._s(pedido.id) } }),
                     _vm._v(" "),

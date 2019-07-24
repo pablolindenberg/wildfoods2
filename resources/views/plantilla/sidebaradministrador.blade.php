@@ -10,7 +10,7 @@
                         Menu
                     </li>
                     <li class="nav-item nav-dropdown">
-                        <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-bag"></i> Productos</a>
+                        <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-bag"></i> Tienda</a>
                         <ul class="nav-dropdown-items">
                             <li @click="menu=1" class="nav-item">
                                 <a class="nav-link" href="#"><i class="icon-bag"></i> Categorías</a>
@@ -18,10 +18,13 @@
                             <li @click="menu=2" class="nav-item">
                                 <a class="nav-link" href="#"><i class="icon-bag"></i> Productos</a>
                             </li>
+                            <li @click="menu=3" class="nav-item">
+                                <a class="nav-link" href="#"><i class="icon-bag"></i> Catálogo</a>
+                            </li>
                         </ul>
                     </li>
                   
-                            <li @click="menu=3" class="nav-item">
+                            <li @click="menu=4" class="nav-item">
                                 <a class="nav-link" href="#"><i class="icon-basket-loaded"></i> Pedidos</a>
                             </li>
                             

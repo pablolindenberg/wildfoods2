@@ -11,9 +11,10 @@ class Pedido extends Model
         'total',
         'estado',
         'bodega',
+        'factura',
         'tracking',
         'fecha_creacion',
-        'fecha_actualizacion',   
+        'fecha_actualizacion'  
         
         ];
         public function user(){

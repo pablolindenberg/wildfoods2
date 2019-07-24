@@ -88,6 +88,11 @@
                   <a href="#">
                     <i class="material-icons">attachment</i>
                   </a>
+
+                   <a href="#">
+                      <span v-if="pedido.factura==1" class="badge badge-success" @click="verFactura(pedido.id)">Abrir</span>
+                    </a>
+
                 </td>
                 <td v-text="pedido.id"></td>
                 <td v-text="pedido.nombre_usuario"></td>
@@ -355,6 +360,11 @@ export default {
       this.tituloModal = "Detalle del pedido";
       this.tipoAccion = 2;
       this.verDetallePedido(1, idpedido, "idpedido");
+    },
+    verFactura(idepedido){
+      this.modal = 1;
+      this.tituloModal = "Factura "+ idpedido;
+      this.tipoAccion = 1;  
     },
 
     desactivarBodega(idpedido) {

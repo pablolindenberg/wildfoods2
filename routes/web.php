@@ -76,6 +76,12 @@ Route::group(['middleware'=>['Cliente']],function(){
 
 });
 
+Route::group(['middleware'=>['Bodeguero']],function(){
+   
+    Route::put('/pedido/cargarFactura', 'PedidoController@cargarFactura');
+
+});
+
 
 });
 

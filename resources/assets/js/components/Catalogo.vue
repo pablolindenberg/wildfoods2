@@ -370,6 +370,9 @@ export default {
           if (!(this.cart[i].cantidad + cantidad_producto < 0)) {
             this.cart[i].cantidad += cantidad_producto;
             this.cart[i].total = this.cart[i].cantidad * precio_producto;
+            if(this.cart[i].cantidad==0){
+              this.cart.splice(i,1);
+            }
             return;
           }
         }
@@ -403,6 +406,8 @@ export default {
     },
     registrarPedido() {
       let me = this;
+
+      if(this.cart.length >0){
       axios
         .post("/pedido/registrar", {
           //idusuario: this.auth_user,
@@ -416,6 +421,9 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
+    }else{
+      alert('No tiene productos en el carrito para hacer un pedido');
+    }
     },
     registrarDetalle_Pedido() {
       let me = this;
@@ -561,6 +569,7 @@ export default {
       this.total = 0;
       this.estado = 0;
       this.errorProducto = 0;
+      this.total_carrito= 0;
     },
 
     abrirModal(modelo, accion, data = []) {
