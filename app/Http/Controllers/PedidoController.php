@@ -79,8 +79,7 @@ class PedidoController extends Controller
         if (!$request->ajax()) return redirect('/');
        
         $pedido = new Pedido();
-
-        $pedido->idusuario = $request->user()->id;
+        $pedido->idusuario = $request->user()->id;  
        // $pedido->idusuario = $request->idusuario;
         $pedido->total = $request->total;
         $pedido->tracking="NA";

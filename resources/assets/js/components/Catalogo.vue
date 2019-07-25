@@ -40,10 +40,6 @@
               </div>
 
               <!--
-            
-
-              
-              
                <button
                 class="btn btn-info"
                 type="submit"
