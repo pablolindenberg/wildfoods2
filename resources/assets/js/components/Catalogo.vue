@@ -18,11 +18,19 @@
         <div class="col-md-4" v-for="producto in arrayProducto" :key="producto.id">
           <div class="card">
             <a href="#">
-              <img
+              
+              <!--<img
                 width="200"
                 height="200"
                 src="https://cdn.shopify.com/s/files/1/2964/0212/products/Barra-Chocolate_800x.png?v=1542991921"
-              />
+              />-->
+             
+             
+             
+              <img :src="'/img/productos/'+producto.imagen" style="max-width:200px;"/>
+
+
+
             </a>
             <div class="card-body">
             <hr>
@@ -50,43 +58,53 @@
                 onClick="agregar({{producto.id}})"
               >agregar carrito</button>
               -->
-              <button
-                class="btn btn-info"
+          
+               <button
+                class="btn btn-outline-success"
+                @click="sumar(producto.id,producto.nombre,-1,producto.total)"
+              >-1</button>
+                  <button
+                class="btn btn-outline-success"
                 @click="sumar(producto.id,producto.nombre,1,producto.total)"
               >+1</button>
-              <button
-                class="btn btn-info"
+              <br />
+             
+          
+               <button
+                class="btn btn-outline-success"  style="margin-top:3px;margin-bottom:3px;"
+                @click="sumar(producto.id,producto.nombre,-5,producto.total)"
+              >-5</button>
+                  <button
+                class="btn btn-outline-success" style="margin-top:3px;margin-bottom:3px;"
                 @click="sumar(producto.id,producto.nombre,5,producto.total)"
               >+5</button>
-              <button
-                class="btn btn-info"
+              <br/>
+           
+              <button 
+                class="btn btn-outline-success" style="padding-left:9px;padding-right:8px;"
+                @click="sumar(producto.id,producto.nombre,-10,producto.total)"
+              >-10</button>
+                 <button
+                class="btn btn-outline-success" style="padding-left:8px;padding-right:8px;"
                 @click="sumar(producto.id,producto.nombre,10,producto.total)"
               >+10</button>
 
-              <br />
-
-              <button
-                class="btn btn-info"
-                @click="sumar(producto.id,producto.nombre,-1,producto.total)"
-              >-1</button>
-              <button
-                class="btn btn-info"
-                @click="sumar(producto.id,producto.nombre,-5,producto.total)"
-              >-5</button>
-              <button
-                class="btn btn-info"
-                @click="sumar(producto.id,producto.nombre,-10,producto.total)"
-              >-10</button>
-
               <div class="row">
+              
                 <div class="col-md-6">
+                <!--
                   <div v-for="item in cart" :key="item.id">
                     <h6 v-if="item.cantidad && (producto.id==item.id)">En Carrito: {{item.cantidad}}</h6>
                   </div>
+                  -->
                 </div>
+                
 
                 <div class="col-md-6 text-right">
                   <div v-for="item in cart" :key="item.id">
+                   <div v-for="item in cart" :key="item.id">
+                    <h6 v-if="item.cantidad && (producto.id==item.id)">En Carrito: {{item.cantidad}}</h6>
+                  </div>
                     <h5
                       style="color:green;"
                       v-if="item.cantidad && (producto.id==item.id)"

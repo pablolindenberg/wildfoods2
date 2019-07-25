@@ -58,25 +58,42 @@ class ProductoController extends Controller
         $producto->total = $request->total;
         $producto->descuento = $request->descuento;
         $producto->estado = $request->estado;
-        $producto->imagen = $request->imagen;  
-       // $imagen=$request->imagen;    
-       // Storage::putFile('public',$imagen);
+    
+       if ($request->imagen){
+        
+        $name = "Wildfoods-".time(). '.' . explode('/', explode(':', substr($request->imagen,0,strpos($request->imagen,';')))[1])[1];
+        
+        \Image::make($request->imagen)->save(public_path('img/productos/').$name);
+
+                $request->imagen = $name;
+         }   
+         
+         $producto->imagen = $request->imagen;  
+          
         $producto->save();
+        return ['message' => "Wena"];
     }
+
+
+////////////////
+
     public function cargarImagen(Request $request){
 
-        $user = auth('api')->user();
-        if (!$request->ajax()) return redirect('/');
-    
+      
+
         if ($request->imagen){
     
-            $name = time(). '.' . explode('/', explode(':', substr($request->imagen,0,strpos($request->imagen,';')))[1])[1];
+            $name = "Wildfoods-".time(). '.' . explode('/', explode(':', substr($request->imagen,0,strpos($request->imagen,';')))[1])[1];
     
-            \Image::make($request->imagen)->save(public_path('img/productos/')."Wildfoods-".$name);
-    
+            \Image::make($request->imagen)->save(public_path('img/productos/').$name);
+
+ 
        }
-    
+
     }
+
+////////////////////
+
 
     public function update(Request $request)
     {
@@ -95,8 +112,32 @@ class ProductoController extends Controller
         $producto->total = $request->total;
         $producto->descuento = $request->descuento;
         $producto->estado = $request->estado;
-      //  $producto->imagen = $request->imagen;      
-        $producto->save();
+
+        // Updatear la foto:
+        $currentFoto =  $producto->imagen;
+        if ($request->imagen != $currentFoto){
+        
+            $name = "Wildfoods-".time(). '.' . explode('/', explode(':', substr($request->imagen,0,strpos($request->imagen,';')))[1])[1];
+            
+            \Image::make($request->imagen)->save(public_path('img/productos/').$name);
+    
+                    $request->merge(['imagen' => $name]);
+
+            // Borrar fotos del servidor si se actualiza a una nueva
+            
+            $productoFoto = public_path('img/productos/').$currentFoto;
+
+            if (file_exists($productoFoto)){
+
+                @unlink($productoFoto);
+            }
+
+
+        }   
+
+        //$producto->save();
+        $producto->update($request->all());
+        return ['message ' => 'exito!!!'];
     }
 
     public function desactivar(Request $request)

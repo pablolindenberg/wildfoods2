@@ -60,7 +60,8 @@
               <tr v-for="producto in arrayProducto" :key="producto.id">
                 <td>
                   <!--<img src="/img/productos/1.png" />-->
-                    <img :src="getImage()" />
+                   <img :src="'/img/productos/'+producto.imagen" style="max-width:40px;"/>
+                   
 
                 </td>
                 <td>
@@ -225,7 +226,9 @@
                    <input type="file"  class="form-control" name='imagen' @change="updateImage" >   
                     <br /> 
                     <vue-progress-bar></vue-progress-bar>
+                    <!--
                     <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click.prevent="updateInfo">Cargar Imagen</button>
+                    -->
                   </div>
                 </div>
 
@@ -292,7 +295,7 @@ export default {
       valor_bruto: 0,
       pvp_unitario: 0,
       total_neto: 0,
-      imagen: '',
+      imagen: 0,
       stock: 0,
       total: 0,
       estado: 0,
@@ -349,9 +352,13 @@ export default {
     //
 
     getImage(){
-      return "img/productos/"+ this.imagen;
-    },
 
+       let vm=this;
+      return "img/productos/"+ vm.imagen;
+    },
+    
+    /*
+    
      updateInfo () {
 
       this.$Progress.start();
@@ -365,21 +372,21 @@ export default {
                 this.$Progress.fail();
           });
 
-    },
+    },*/
 
     updateImage (e){
                 
       let vm=this;
       let file = e.target.files[0];
-      // console.log(file);
+      console.log(file);
       let reader = new FileReader();
+        
       if(file['size'] < 2111775 ){
             reader.onloadend = (file) => {
-
-          // console.log('RESULTADO', reader.result);
-       vm.imagen = reader.result;
-      
-      }
+           //console.log('nombre img', reader.result);
+            vm.imagen = reader.result;
+          //
+        }
       reader.readAsDataURL(file);
       } else {
 
@@ -441,11 +448,12 @@ export default {
       }
 
       let me = this;
-      // axios.post('/producto/cargarImagen',{'imagen':this.imagen});
+
+    //this.$Progress.start();
 
       axios
         .post("/producto/registrar", {
-          imagen: 'texto_img', /*this.imagen*/ /* Acá va el nombre de la imagen que se aloja en la BBDD */
+          imagen: this.imagen, /*this.imagen*/ /* Acá va el nombre de la imagen que se aloja en la BBDD */
           idcategoria: this.idcategoria,
           //'nombre_categoria':this.nombre_categoria,
           SKU: this.SKU,
@@ -456,12 +464,15 @@ export default {
           estado: this.estado
         })
         .then(function(response) {
+          //this.$Progress.finish();
           me.cerrarModal();
           me.listarProducto(1, "", "nombre");
         })
         .catch(function(error) {
+           //this.$Progress.fail();
           console.log(error);
         });
+         
     },
     verProducto() {},
 
@@ -476,6 +487,7 @@ export default {
         .put("/producto/actualizar", {
           id: this.producto_id,
           idcategoria: this.idcategoria,
+          imagen: this.imagen,
           //'nombre_categoria':this.nombre_categoria,
           SKU: this.SKU,
           nombre: this.nombre,
@@ -579,6 +591,8 @@ export default {
         this.errorMostrarMsjProducto.push(
           "El nombre de del producto no puede estar vacío."
         );
+         if (this.imagen == 0)
+        this.errorMostrarMsjProducto.push("Debe ingresar una imagen");
       if (this.errorMostrarMsjProducto.length) this.errorProducto = 1;
 
       return this.errorProducto;

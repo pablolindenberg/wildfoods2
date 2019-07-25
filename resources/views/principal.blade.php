@@ -50,7 +50,7 @@
                     </a>
                     <a class="dropdown-item" href="#">
                         <i class="fa fa-tasks"></i> Ventas
-                        <span class="badge badge-danger"><!--2-->/span>
+                        <span class="badge badge-danger"><!--2--></span>
                     </a>
                 </div>
             </li>
@@ -91,9 +91,10 @@
         <!-- /Fin del contenido principal -->
     </div>   
     </div>
+    <!--
     <footer class="app-footer">
         <span class="ml-auto">Desarrollado por <a href="#">Oportus-Lindenberg</a></span>
-    </footer>
+    </footer>-->
     
 
     <script src="js/app.js"></script>

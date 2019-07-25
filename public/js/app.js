@@ -34434,6 +34434,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -34450,7 +34453,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       valor_bruto: 0,
       pvp_unitario: 0,
       total_neto: 0,
-      imagen: '',
+      imagen: 0,
       stock: 0,
       total: 0,
       estado: 0,
@@ -34508,33 +34511,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     //
 
     getImage: function getImage() {
-      return "img/productos/" + this.imagen;
-    },
-    updateInfo: function updateInfo() {
-      var _this = this;
 
-      this.$Progress.start();
-      var url = '/producto/cargarImagen';
-
-      axios.put(url, {
-        'imagen': this.imagen
-      }).then(function () {
-        _this.$Progress.finish();
-      }).catch(function () {
-        _this.$Progress.fail();
-      });
+      var vm = this;
+      return "img/productos/" + vm.imagen;
     },
+
+
+    /*
+    
+     updateInfo () {
+        this.$Progress.start();
+      var url= '/producto/cargarImagen';
+        axios.put(url,{
+          'imagen': this.imagen
+          }).then(() => {
+              this.$Progress.finish();
+          }).catch(() => {
+                this.$Progress.fail();
+          });
+      },*/
+
     updateImage: function updateImage(e) {
 
       var vm = this;
       var file = e.target.files[0];
-      // console.log(file);
+      console.log(file);
       var reader = new FileReader();
+
       if (file['size'] < 2111775) {
         reader.onloadend = function (file) {
-
-          // console.log('RESULTADO', reader.result);
+          //console.log('nombre img', reader.result);
           vm.imagen = reader.result;
+          //
         };
         reader.readAsDataURL(file);
       } else {
@@ -34582,10 +34590,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }
 
       var me = this;
-      // axios.post('/producto/cargarImagen',{'imagen':this.imagen});
+
+      //this.$Progress.start();
 
       axios.post("/producto/registrar", {
-        imagen: 'texto_img', /*this.imagen*/ /* Acá va el nombre de la imagen que se aloja en la BBDD */
+        imagen: this.imagen, /*this.imagen*/ /* Acá va el nombre de la imagen que se aloja en la BBDD */
         idcategoria: this.idcategoria,
         //'nombre_categoria':this.nombre_categoria,
         SKU: this.SKU,
@@ -34595,9 +34604,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         total: this.total,
         estado: this.estado
       }).then(function (response) {
+        //this.$Progress.finish();
         me.cerrarModal();
         me.listarProducto(1, "", "nombre");
       }).catch(function (error) {
+        //this.$Progress.fail();
         console.log(error);
       });
     },
@@ -34612,6 +34623,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       axios.put("/producto/actualizar", {
         id: this.producto_id,
         idcategoria: this.idcategoria,
+        imagen: this.imagen,
         //'nombre_categoria':this.nombre_categoria,
         SKU: this.SKU,
         nombre: this.nombre,
@@ -34627,7 +34639,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       });
     },
     desactivarProducto: function desactivarProducto(id) {
-      var _this2 = this;
+      var _this = this;
 
       swal({
         title: "Esta seguro de desactivar este producto?",
@@ -34643,7 +34655,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         reverseButtons: true
       }).then(function (result) {
         if (result.value) {
-          var me = _this2;
+          var me = _this;
 
           axios.put("/producto/desactivar", {
             id: id
@@ -34659,7 +34671,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       });
     },
     activarProducto: function activarProducto(id) {
-      var _this3 = this;
+      var _this2 = this;
 
       swal({
         title: "Esta seguro de activar este producto?",
@@ -34675,7 +34687,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         reverseButtons: true
       }).then(function (result) {
         if (result.value) {
-          var me = _this3;
+          var me = _this2;
 
           axios.put("/producto/activar", {
             id: id
@@ -34695,6 +34707,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.errorMostrarMsjProducto = [];
       if (this.idcategoria == 0) this.errorMostrarMsjProducto.push("Seleccione una categoria");
       if (!this.nombre) this.errorMostrarMsjProducto.push("El nombre de del producto no puede estar vacío.");
+      if (this.imagen == 0) this.errorMostrarMsjProducto.push("Debe ingresar una imagen");
       if (this.errorMostrarMsjProducto.length) this.errorProducto = 1;
 
       return this.errorProducto;
@@ -34913,7 +34926,12 @@ var render = function() {
                 "tbody",
                 _vm._l(_vm.arrayProducto, function(producto) {
                   return _c("tr", { key: producto.id }, [
-                    _c("td", [_c("img", { attrs: { src: _vm.getImage() } })]),
+                    _c("td", [
+                      _c("img", {
+                        staticStyle: { "max-width": "40px" },
+                        attrs: { src: "/img/productos/" + producto.imagen }
+                      })
+                    ]),
                     _vm._v(" "),
                     _c("td", [
                       _c(
@@ -35439,24 +35457,7 @@ var render = function() {
                                 _vm._v(" "),
                                 _c("br"),
                                 _vm._v(" "),
-                                _c("vue-progress-bar"),
-                                _vm._v(" "),
-                                _vm.tipoAccion == 1
-                                  ? _c(
-                                      "button",
-                                      {
-                                        staticClass: "btn btn-primary",
-                                        attrs: { type: "button" },
-                                        on: {
-                                          click: function($event) {
-                                            $event.preventDefault()
-                                            _vm.updateInfo($event)
-                                          }
-                                        }
-                                      },
-                                      [_vm._v("Cargar Imagen")]
-                                    )
-                                  : _vm._e()
+                                _c("vue-progress-bar")
                               ],
                               1
                             )
@@ -37675,6 +37676,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -38080,7 +38099,12 @@ var render = function() {
         _vm._l(_vm.arrayProducto, function(producto) {
           return _c("div", { key: producto.id, staticClass: "col-md-4" }, [
             _c("div", { staticClass: "card" }, [
-              _vm._m(1, true),
+              _c("a", { attrs: { href: "#" } }, [
+                _c("img", {
+                  staticStyle: { "max-width": "200px" },
+                  attrs: { src: "/img/productos/" + producto.imagen }
+                })
+              ]),
               _vm._v(" "),
               _c("div", { staticClass: "card-body" }, [
                 _c("hr"),
@@ -38109,63 +38133,7 @@ var render = function() {
                 _c(
                   "button",
                   {
-                    staticClass: "btn btn-info",
-                    on: {
-                      click: function($event) {
-                        _vm.sumar(
-                          producto.id,
-                          producto.nombre,
-                          1,
-                          producto.total
-                        )
-                      }
-                    }
-                  },
-                  [_vm._v("+1")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-info",
-                    on: {
-                      click: function($event) {
-                        _vm.sumar(
-                          producto.id,
-                          producto.nombre,
-                          5,
-                          producto.total
-                        )
-                      }
-                    }
-                  },
-                  [_vm._v("+5")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-info",
-                    on: {
-                      click: function($event) {
-                        _vm.sumar(
-                          producto.id,
-                          producto.nombre,
-                          10,
-                          producto.total
-                        )
-                      }
-                    }
-                  },
-                  [_vm._v("+10")]
-                ),
-                _vm._v(" "),
-                _c("br"),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-info",
+                    staticClass: "btn btn-outline-success",
                     on: {
                       click: function($event) {
                         _vm.sumar(
@@ -38183,7 +38151,31 @@ var render = function() {
                 _c(
                   "button",
                   {
-                    staticClass: "btn btn-info",
+                    staticClass: "btn btn-outline-success",
+                    on: {
+                      click: function($event) {
+                        _vm.sumar(
+                          producto.id,
+                          producto.nombre,
+                          1,
+                          producto.total
+                        )
+                      }
+                    }
+                  },
+                  [_vm._v("+1")]
+                ),
+                _vm._v(" "),
+                _c("br"),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-outline-success",
+                    staticStyle: {
+                      "margin-top": "3px",
+                      "margin-bottom": "3px"
+                    },
                     on: {
                       click: function($event) {
                         _vm.sumar(
@@ -38201,7 +38193,35 @@ var render = function() {
                 _c(
                   "button",
                   {
-                    staticClass: "btn btn-info",
+                    staticClass: "btn btn-outline-success",
+                    staticStyle: {
+                      "margin-top": "3px",
+                      "margin-bottom": "3px"
+                    },
+                    on: {
+                      click: function($event) {
+                        _vm.sumar(
+                          producto.id,
+                          producto.nombre,
+                          5,
+                          producto.total
+                        )
+                      }
+                    }
+                  },
+                  [_vm._v("+5")]
+                ),
+                _vm._v(" "),
+                _c("br"),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-outline-success",
+                    staticStyle: {
+                      "padding-left": "9px",
+                      "padding-right": "8px"
+                    },
                     on: {
                       click: function($event) {
                         _vm.sumar(
@@ -38216,32 +38236,59 @@ var render = function() {
                   [_vm._v("-10")]
                 ),
                 _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-outline-success",
+                    staticStyle: {
+                      "padding-left": "8px",
+                      "padding-right": "8px"
+                    },
+                    on: {
+                      click: function($event) {
+                        _vm.sumar(
+                          producto.id,
+                          producto.nombre,
+                          10,
+                          producto.total
+                        )
+                      }
+                    }
+                  },
+                  [_vm._v("+10")]
+                ),
+                _vm._v(" "),
                 _c("div", { staticClass: "row" }, [
-                  _c(
-                    "div",
-                    { staticClass: "col-md-6" },
-                    _vm._l(_vm.cart, function(item) {
-                      return _c("div", { key: item.id }, [
-                        item.cantidad && producto.id == item.id
-                          ? _c("h6", [
-                              _vm._v("En Carrito: " + _vm._s(item.cantidad))
-                            ])
-                          : _vm._e()
-                      ])
-                    })
-                  ),
+                  _c("div", { staticClass: "col-md-6" }),
                   _vm._v(" "),
                   _c(
                     "div",
                     { staticClass: "col-md-6 text-right" },
                     _vm._l(_vm.cart, function(item) {
-                      return _c("div", { key: item.id }, [
-                        item.cantidad && producto.id == item.id
-                          ? _c("h5", { staticStyle: { color: "green" } }, [
-                              _vm._v("Total: $" + _vm._s(item.total))
+                      return _c(
+                        "div",
+                        { key: item.id },
+                        [
+                          _vm._l(_vm.cart, function(item) {
+                            return _c("div", { key: item.id }, [
+                              item.cantidad && producto.id == item.id
+                                ? _c("h6", [
+                                    _vm._v(
+                                      "En Carrito: " + _vm._s(item.cantidad)
+                                    )
+                                  ])
+                                : _vm._e()
                             ])
-                          : _vm._e()
-                      ])
+                          }),
+                          _vm._v(" "),
+                          item.cantidad && producto.id == item.id
+                            ? _c("h5", { staticStyle: { color: "green" } }, [
+                                _vm._v("Total: $" + _vm._s(item.total))
+                              ])
+                            : _vm._e()
+                        ],
+                        2
+                      )
                     })
                   )
                 ])
@@ -38394,7 +38441,7 @@ var render = function() {
                           }
                         },
                         [
-                          _vm._m(2),
+                          _vm._m(1),
                           _vm._v(" "),
                           _vm._l(_vm.cart, function(item) {
                             return _c(
@@ -38509,21 +38556,6 @@ var staticRenderFns = [
         },
         [_vm._v("shopping_cart \n   ")]
       )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("a", { attrs: { href: "#" } }, [
-      _c("img", {
-        attrs: {
-          width: "200",
-          height: "200",
-          src:
-            "https://cdn.shopify.com/s/files/1/2964/0212/products/Barra-Chocolate_800x.png?v=1542991921"
-        }
-      })
     ])
   },
   function() {
