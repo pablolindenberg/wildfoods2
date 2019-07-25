@@ -110,7 +110,7 @@
                   </div>
                   <div v-if="pedido.estado==1">
                     <a href="#">
-                      <span class="badge badge-warning" @click="despachado(pedido.id)">Pendiente</span>
+                      <span class="badge badge-warning" @click="despachado(pedido.id,pedido.id_usuario)">Pendiente</span>
                     </a>
                   </div>
                   <div v-if="pedido.estado==2">
@@ -461,7 +461,7 @@ export default {
       });
     },
 
-    despachado(idpedido) {
+    despachado(idpedido,idusuario) {
       swal({
         title: "Cambiar pedido a despachado?",
         type: "warning",
@@ -480,7 +480,8 @@ export default {
 
           axios
             .put("/pedido/despachado", {
-              id: idpedido
+              id: idpedido,
+              idusuario: idusuario
             })
             .then(function(response) {
               me.listarPedido(1, "", "idusuario");

@@ -38897,6 +38897,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -38969,6 +38971,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       me.pagination.current_page = page;
       //Envia la petición para visualizar la data de esa página
       me.listarPedido(page, buscar, criterio);
+    },
+    cargarFactura: function cargarFactura(id) {
+      var me = this;
+      axios.put("/pedido/cargarFactura", {
+        idpedido: id
+      }).then(function (response) {
+        me.listarPedido(1, "", "idusuario");
+      }).catch(function (error) {
+        console.log(error);
+      });
     },
     descargarPedidos: function descargarPedidos(id) {
       var me = this;
@@ -39079,7 +39091,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         result.dismiss === swal.DismissReason.cancel) {}
       });
     },
-    despachado: function despachado(idpedido) {
+    despachado: function despachado(idpedido, idusuario) {
       var _this3 = this;
 
       swal({
@@ -39099,7 +39111,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           var me = _this3;
 
           axios.put("/pedido/despachado", {
-            id: idpedido
+            id: idpedido,
+            idusuario: idusuario
           }).then(function (response) {
             me.listarPedido(1, "", "idusuario");
             swal("Despachado!", "El pedido ha sido modificado con éxito.", "success");
@@ -39363,7 +39376,20 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("td", [
-                      _vm._m(2, true),
+                      _c("a", { attrs: { href: "#" } }, [
+                        _c(
+                          "i",
+                          {
+                            staticClass: "material-icons",
+                            on: {
+                              click: function($event) {
+                                _vm.cargarFactura(pedido.id)
+                              }
+                            }
+                          },
+                          [_vm._v("attachment")]
+                        )
+                      ]),
                       _vm._v(" "),
                       _c("a", { attrs: { href: "#" } }, [
                         pedido.factura == 1
@@ -39434,7 +39460,10 @@ var render = function() {
                                   staticClass: "badge badge-warning",
                                   on: {
                                     click: function($event) {
-                                      _vm.despachado(pedido.id)
+                                      _vm.despachado(
+                                        pedido.id,
+                                        pedido.id_usuario
+                                      )
                                     }
                                   }
                                 },
@@ -39603,7 +39632,7 @@ var render = function() {
                   ? _c(
                       "div",
                       [
-                        _vm._m(3),
+                        _vm._m(2),
                         _vm._v(" "),
                         _vm._l(_vm.cart, function(item) {
                           return _c(
@@ -39722,7 +39751,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("ID Pedido")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Usuario")]),
+        _c("th", [_vm._v("Cliente")]),
         _vm._v(" "),
         _c("th", [_vm._v("Total")]),
         _vm._v(" "),
@@ -39734,14 +39763,6 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Estado")])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("a", { attrs: { href: "#" } }, [
-      _c("i", { staticClass: "material-icons" }, [_vm._v("attachment")])
     ])
   },
   function() {

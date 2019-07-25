@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Exports\PedidosExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
+use App\Notifications\TemplateEmail;
+use App\User;
 use App\Pedido;
 use App\Detalle_pedido;
 use App\Http\Controllers\Controller;
@@ -22,12 +24,12 @@ class PedidoController extends Controller
         if($rol==1){
         if ($buscar==''){
             $pedidos = Pedido::join('users','pedidos.idusuario','=','users.id')
-            ->select('pedidos.id','users.usuario as nombre_usuario','users.email as email_usuario','pedidos.total','pedidos.estado','pedidos.tracking','pedidos.bodega','pedidos.created_at','pedidos.updated_at','pedidos.factura')
+            ->select('pedidos.id','users.id as id_usuario','users.usuario as nombre_usuario','users.email as email_usuario','pedidos.total','pedidos.estado','pedidos.tracking','pedidos.bodega','pedidos.created_at','pedidos.updated_at','pedidos.factura')
             ->orderBy('pedidos.id', 'desc')->paginate(10);
         }
         else{
             $pedidos = Pedido::join('users','pedidos.idusuario','=','users.id')
-            ->select('pedidos.id','users.usuario as nombre_usuario','users.email as email_usuario','pedidos.total','pedidos.estado','pedidos.tracking','pedidos.bodega','pedidos.created_at','pedidos.updated_at','pedidos.factura')
+            ->select('pedidos.id','users.id as id_usuario','users.usuario as nombre_usuario','users.email as email_usuario','pedidos.total','pedidos.estado','pedidos.tracking','pedidos.bodega','pedidos.created_at','pedidos.updated_at','pedidos.factura')
             ->where('pedidos.'.$criterio, 'like', '%'. $buscar . '%')
             ->orderBy('pedidos.id', 'desc')->paginate(10);
         }
@@ -138,6 +140,11 @@ class PedidoController extends Controller
         $pedido = Pedido::findOrFail($request->id);
         $pedido->estado = '2';
         $pedido->save();
+
+       // $user = new User();
+        $user = User::findOrFail($request->idusuario);
+       // $user->email = 'alfombra.roja.santiago@gmail.com';   // This is the email you want to send to.
+        $user->notify(new TemplateEmail());
     }
 
     public function desactivarBodega(Request $request)
