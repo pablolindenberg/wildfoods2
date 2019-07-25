@@ -33,35 +33,39 @@
               </div>
             </div>
           </div>
-         
-          <table
-            class="table table-bordered table-striped table-sm"
-           
-          >
+
+          <table class="table table-bordered table-striped table-sm">
             <thead>
               <tr>
-                <th>Acciones</th>             
-                <th >Factura</th>
+                <th>Acciones</th>
+                <th>Factura</th>
                 <th>ID Pedido</th>
                 <th>Usuario</th>
                 <th>Total</th>
                 <th>Tracking ID</th>
                 <th>Fecha ingreso</th>
                 <th>Actualizado</th>
-               
               </tr>
             </thead>
-            <tbody >
+            <tbody>
               <tr v-for="pedido in arrayPedido" :key="pedido.id">
                 <td>
                   <a href="#">
                     <i @click="abrirModal(pedido.id)" class="material-icons">zoom_in</i>
                   </a>
                 </td>
-                
-                <td v-if="pedido.bodega==1 || pedido.bodega==0">
+
+                <td>
                   <a href="#">
-                    <i v-if="pedido.bodega==1 || pedido.bodega==0" class="material-icons">attachment</i>
+                    <i @click="cargarFactura(pedido.id)" class="material-icons">attachment</i>
+                  </a>
+
+                  <a href="#">
+                    <span
+                      v-if="pedido.factura==1"
+                      class="badge badge-success"
+                      @click="verFactura(pedido.id)"
+                    >Abrir</span>
                   </a>
                 </td>
                 <td v-text="pedido.id"></td>
@@ -70,7 +74,6 @@
                 <td v-text="pedido.tracking"></td>
                 <td v-text="pedido.created_at"></td>
                 <td v-text="pedido.updated_at"></td>
-                
               </tr>
             </tbody>
           </table>
@@ -259,16 +262,29 @@ export default {
       //Envia la petición para visualizar la data de esa página
       me.listarPedido(page, buscar, criterio);
     },
-    descargarPedidos(id){
+    descargarPedidos(id) {
       let me = this;
 
-       axios
-            .get("/pedido/descargar",{
-              idusuario: id
-            })          
+      axios
+        .get("/pedido/descargar", {
+          idusuario: id
+        })
         .catch(function(error) {
           console.log(error);
-        });  
+        });
+    },
+    cargarFactura(id) {
+      let me = this;
+      axios
+        .put("/pedido/cargarFactura",{
+        idpedido: id
+        })      
+        .then(function(response) {
+          me.listarPedido(1, "", "idusuario");
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     },
     verDetallePedido(page, buscar, criterio) {
       let me = this;

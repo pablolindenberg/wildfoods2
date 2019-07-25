@@ -51,7 +51,7 @@
                 <th>Bodega</th>
                 <th>Factura</th>
                 <th>ID Pedido</th>
-                <th>Usuario</th>
+                <th>Cliente</th>
                 <th>Total</th>
                 <th>Tracking ID</th>
                 <th>Fecha ingreso</th>
@@ -86,8 +86,15 @@
                 </td>
                 <td>
                   <a href="#">
-                    <i class="material-icons">attachment</i>
+                    <i 
+                    @click="cargarFactura(pedido.id)"
+                    class="material-icons">attachment</i>
                   </a>
+
+                   <a href="#">
+                      <span v-if="pedido.factura==1" class="badge badge-success" @click="verFactura(pedido.id)">Abrir</span>
+                    </a>
+
                 </td>
                 <td v-text="pedido.id"></td>
                 <td v-text="pedido.nombre_usuario"></td>
@@ -103,7 +110,7 @@
                   </div>
                   <div v-if="pedido.estado==1">
                     <a href="#">
-                      <span class="badge badge-warning" @click="despachado(pedido.id)">Pendiente</span>
+                      <span class="badge badge-warning" @click="despachado(pedido.id,pedido.id_usuario)">Pendiente</span>
                     </a>
                   </div>
                   <div v-if="pedido.estado==2">
@@ -300,6 +307,19 @@ export default {
       //Envia la petición para visualizar la data de esa página
       me.listarPedido(page, buscar, criterio);
     },
+    cargarFactura(id) {
+      let me = this;
+      axios
+        .put("/pedido/cargarFactura",{
+        idpedido: id
+        })      
+        .then(function(response) {
+          me.listarPedido(1, "", "idusuario");
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
     descargarPedidos(id){
       let me = this;
 
@@ -355,6 +375,11 @@ export default {
       this.tituloModal = "Detalle del pedido";
       this.tipoAccion = 2;
       this.verDetallePedido(1, idpedido, "idpedido");
+    },
+    verFactura(idepedido){
+      this.modal = 1;
+      this.tituloModal = "Factura "+ idpedido;
+      this.tipoAccion = 1;  
     },
 
     desactivarBodega(idpedido) {
@@ -436,7 +461,7 @@ export default {
       });
     },
 
-    despachado(idpedido) {
+    despachado(idpedido,idusuario) {
       swal({
         title: "Cambiar pedido a despachado?",
         type: "warning",
@@ -455,7 +480,8 @@ export default {
 
           axios
             .put("/pedido/despachado", {
-              id: idpedido
+              id: idpedido,
+              idusuario: idusuario
             })
             .then(function(response) {
               me.listarPedido(1, "", "idusuario");

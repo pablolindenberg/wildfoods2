@@ -17,15 +17,16 @@
                 <!-- h1>Productos</h1> -->
                 <producto></producto>
                 </template>
-
                 <template v-if="menu==3">
+                  <catalogo></catalogo>
+                </template>
+
+                <template v-if="menu==4">
                     <!--<h1>Pedidos</h1>-->
                     <pedido></pedido>
                 </template>
 
-                <template v-if="menu==4">
-                   <!-- <h1>Contenido del menú 4</h1>-->
-                </template>
+            
 
                 <template v-if="menu==5">
                    <!-- <h1>Contenido del menú 5</h1>-->
