@@ -55,10 +55,13 @@ Route::group(['middleware'=>['auth']],function(){
 
     Route::get('/pedido', 'PedidoController@index');  
     Route::post('/pedido/registrar', 'PedidoController@store');  
+    Route::put('/pedido/actualizar', 'PedidoController@update');
+
     Route::put('/pedido/activarBodega', 'PedidoController@activarBodega');
     Route::put('/pedido/desactivarBodega', 'PedidoController@desactivarBodega');
 
     Route::put('/pedido/activar', 'PedidoController@activar');
+    
     Route::put('/pedido/desactivar', 'PedidoController@desactivar');
     Route::put('/pedido/despachado', 'PedidoController@despachado');
 

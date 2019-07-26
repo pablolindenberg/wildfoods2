@@ -63,7 +63,10 @@
               <tr v-for="pedido in arrayPedido" :key="pedido.id">
                 <td>
                   <a href="#">
-                    <i @click="abrirModal(pedido.id)" class="material-icons">zoom_in</i>
+                    <i @click="abrirModal('ver',pedido.id,pedido)" class="material-icons">zoom_in</i>
+                  </a>
+                   <a href="#">
+                    <i @click="abrirModal('actualizar',pedido.id,pedido)" class="material-icons">edit</i>
                   </a>
                 </td>
                 <td >
@@ -176,6 +179,35 @@
             </button>
           </div>
           <div class="modal-body">
+            <div v-if="tipoAccion>2">
+               <form action method="post" enctype="multipart/form-data" class="form-horizontal">
+                <div class="form-group row">
+                  <label class="col-md-3 form-control-label" for="text-input">ID Usuario</label>
+                  <div class="col-md-9">
+                    <input type="text" class="form-control" v-model="idusuario">                                       
+                  </div>
+                </div>
+                 <div class="form-group row">
+                  <label class="col-md-3 form-control-label" for="text-input">Tracking ID</label>
+                  <div class="col-md-9">
+                    <input type="text" class="form-control" v-model="tracking">                                       
+                  </div>
+                </div>
+                 
+               </form>
+               
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
+               
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  @click="actualizarPedido()"
+                >Actualizar</button>
+              </div>
+
+            </div>    
+
             <div v-if="tipoAccion<=2">
               <div class="row">
                 <div class="col-md-2">
@@ -239,7 +271,8 @@ export default {
       total_carrito: 0,
       cart: [],
       modal: 0,
-
+      idusuario:"",
+      tracking:"",
       tituloModal: "",
       tipoAccion: 0,
       pagination: {
@@ -370,18 +403,44 @@ export default {
       this.cart = [];
     },
 
-    abrirModal(idpedido) {
+    abrirModal(accion,idpedido,data=[]) {
       this.modal = 1;
+      if(accion=="ver"){
       this.tituloModal = "Detalle del pedido";
       this.tipoAccion = 2;
       this.verDetallePedido(1, idpedido, "idpedido");
+      }
+      if(accion=="actualizar"){
+      this.tituloModal = "Actualizar pedido: "+idpedido;
+      this.tipoAccion = 3;
+      this.idpedido=idpedido;
+      this.idusuario=data["id_usuario"];
+      this.tracking=data["tracking"];
+
+      }
+    },
+     actualizarPedido() {
+      let me = this;
+      axios
+        .put("/pedido/actualizar", {
+          id: this.idpedido,
+          idusuario: this.idusuario,
+          tracking: this.tracking
+        })
+        .then(function(response) {
+           me.listarPedido(1, "", "idusuario");
+           me.cerrarModal();
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     },
     verFactura(idepedido){
       this.modal = 1;
       this.tituloModal = "Factura "+ idpedido;
-      this.tipoAccion = 1;  
+      this.tipoAccion = 3;  
     },
-
+   
     desactivarBodega(idpedido) {
       swal({
         title: "Desactivar para bodega?",

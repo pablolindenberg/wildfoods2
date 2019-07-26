@@ -38927,6 +38927,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -38935,7 +38967,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       total_carrito: 0,
       cart: [],
       modal: 0,
-
+      idusuario: "",
+      tracking: "",
       tituloModal: "",
       tipoAccion: 0,
       pagination: {
@@ -39044,16 +39077,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.tipoAccion = 0;
       this.cart = [];
     },
-    abrirModal: function abrirModal(idpedido) {
+    abrirModal: function abrirModal(accion, idpedido) {
+      var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+
       this.modal = 1;
-      this.tituloModal = "Detalle del pedido";
-      this.tipoAccion = 2;
-      this.verDetallePedido(1, idpedido, "idpedido");
+      if (accion == "ver") {
+        this.tituloModal = "Detalle del pedido";
+        this.tipoAccion = 2;
+        this.verDetallePedido(1, idpedido, "idpedido");
+      }
+      if (accion == "actualizar") {
+        this.tituloModal = "Actualizar pedido: " + idpedido;
+        this.tipoAccion = 3;
+        this.idpedido = idpedido;
+        this.idusuario = data["id_usuario"];
+        this.tracking = data["tracking"];
+      }
+    },
+    actualizarPedido: function actualizarPedido() {
+      var me = this;
+      axios.put("/pedido/actualizar", {
+        id: this.idpedido,
+        idusuario: this.idusuario,
+        tracking: this.tracking
+      }).then(function (response) {
+        me.listarPedido(1, "", "idusuario");
+        me.cerrarModal();
+      }).catch(function (error) {
+        console.log(error);
+      });
     },
     verFactura: function verFactura(idepedido) {
       this.modal = 1;
       this.tituloModal = "Factura " + idpedido;
-      this.tipoAccion = 1;
+      this.tipoAccion = 3;
     },
     desactivarBodega: function desactivarBodega(idpedido) {
       var _this = this;
@@ -39356,11 +39413,26 @@ var render = function() {
                             staticClass: "material-icons",
                             on: {
                               click: function($event) {
-                                _vm.abrirModal(pedido.id)
+                                _vm.abrirModal("ver", pedido.id, pedido)
                               }
                             }
                           },
                           [_vm._v("zoom_in")]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("a", { attrs: { href: "#" } }, [
+                        _c(
+                          "i",
+                          {
+                            staticClass: "material-icons",
+                            on: {
+                              click: function($event) {
+                                _vm.abrirModal("actualizar", pedido.id, pedido)
+                              }
+                            }
+                          },
+                          [_vm._v("edit")]
                         )
                       ])
                     ]),
@@ -39656,6 +39728,123 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "modal-body" }, [
+                _vm.tipoAccion > 2
+                  ? _c("div", [
+                      _c(
+                        "form",
+                        {
+                          staticClass: "form-horizontal",
+                          attrs: {
+                            action: "",
+                            method: "post",
+                            enctype: "multipart/form-data"
+                          }
+                        },
+                        [
+                          _c("div", { staticClass: "form-group row" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "col-md-3 form-control-label",
+                                attrs: { for: "text-input" }
+                              },
+                              [_vm._v("ID Usuario")]
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-md-9" }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.idusuario,
+                                    expression: "idusuario"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: { type: "text" },
+                                domProps: { value: _vm.idusuario },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.idusuario = $event.target.value
+                                  }
+                                }
+                              })
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group row" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "col-md-3 form-control-label",
+                                attrs: { for: "text-input" }
+                              },
+                              [_vm._v("Tracking ID")]
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-md-9" }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.tracking,
+                                    expression: "tracking"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: { type: "text" },
+                                domProps: { value: _vm.tracking },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.tracking = $event.target.value
+                                  }
+                                }
+                              })
+                            ])
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "modal-footer" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-secondary",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                _vm.cerrarModal()
+                              }
+                            }
+                          },
+                          [_vm._v("Cerrar")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                _vm.actualizarPedido()
+                              }
+                            }
+                          },
+                          [_vm._v("Actualizar")]
+                        )
+                      ])
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
                 _vm.tipoAccion <= 2
                   ? _c(
                       "div",

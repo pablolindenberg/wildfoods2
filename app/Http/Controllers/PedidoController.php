@@ -109,6 +109,12 @@ class PedidoController extends Controller
         // $pedido = Pedido::findOrFail($request->id);
         // $pedido->factura = $request->factura;
         // $pedido->save();
+        if (!$request->ajax()) return redirect('/');
+        $pedido = Pedido::findOrFail($request->id);
+        $pedido->idusuario=$request->idusuario;
+        $pedido->tracking=$request->tracking;
+        $pedido->save();
+        
     }
     public function cargarFactura(Request $request)
     {
